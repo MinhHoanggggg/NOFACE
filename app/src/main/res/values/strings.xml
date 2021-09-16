@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NOFACE</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_profile">Thông tin tài khoản</string>
+    <string name="nav_pass">Thay đổi mật khẩu</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_category">Chủ đề</string>
+    <string name="nav_open">Open nav drawer</string>
+    <string name="nav_close">Close nav drawer</string>
+</resources>
