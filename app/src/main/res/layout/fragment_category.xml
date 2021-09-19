@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context="CategoryActivity">
+    android:padding="2dp"
+    android:background="@color/purple_200">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:padding="5dp"
-        android:id="@+id/rcvCategoryList"
+    <TextView
+        android:textSize="40sp"
+        android:text="Category"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
+
+
 
 </LinearLayout>
