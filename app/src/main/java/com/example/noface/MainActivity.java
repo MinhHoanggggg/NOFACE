@@ -1,7 +1,6 @@
 package com.example.noface;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,19 +9,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.noface.fragment.CategoryFragment;
 import com.example.noface.fragment.HomeFragment;
-import com.example.noface.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int FRAGMENT_HOME = 0;
-    private static final int FRAGMENT_CATEGORY = 1;
-    private static final int FRAGMENT_PROFILE = 2;
+//    private static final int FRAGMENT_PROFILE = 2;
 
     private int CurrentFragment = FRAGMENT_HOME;
 
@@ -60,13 +57,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        //set fragment cho từng item
-        if(id == R.id.nav_home)
-        {
-            openHomeFragment();
-        }else if(id == R.id.nav_category){
-            openCategoryFragment();
+        switch(item.getItemId()) {
+            case R.id.nav_home:
+                openHomeFragment();
+                break;
+            case R.id.nav_category:
+                startActivity(new Intent(this, CategoryActivity.class));
+                break;
+
+            default:break;
         }
         setTitleToolbar();
 
@@ -91,13 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openCategoryFragment(){
-        if(CurrentFragment != FRAGMENT_CATEGORY){
-            replaceFragment(new CategoryFragment());
-            CurrentFragment = FRAGMENT_CATEGORY;
-        }
-    }
-
     private void setTitleToolbar(){
         String title = "";
         switch (CurrentFragment){
@@ -105,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 title = "Trang chủ";
                 break;
 
-            case FRAGMENT_CATEGORY:
-                title = "Chủ đề";
-                break;
+//            case ACTIVITY_CATEGORY:
+//                title = "Chủ đề";
+//                break;
         }
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(title);
