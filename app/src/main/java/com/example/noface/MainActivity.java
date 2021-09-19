@@ -10,7 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -59,32 +59,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitleToolbar();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        setTitleToolbar();
-        switch (item.getItemId()) {
+
+        //set fragment cho từng item
+        switch(item.getItemId()) {
             case R.id.nav_home:
-                openHomeFragment(); break;
+                openHomeFragment();
+                break;
             case R.id.nav_category:
-                openCategoryFragment(); break;
+                openCategoryFragment();
+                break;
+
+            default:break;
         }
+        setTitleToolbar();
+
         //Đóng drawer
         drawer_layout.closeDrawer(GravityCompat.START);
         return true;
-
-//        int id = item.getItemId();
-//        //set fragment cho từng item
-//        if(id == R.id.nav_home)
-//        {
-//            openHomeFragment();
-//        }else if(id == R.id.nav_category){
-//            openCategoryFragment();
-//        }
-//        setTitleToolbar();
-//
-//        //Đóng drawer
-//        drawer_layout.closeDrawer(GravityCompat.START);
-//        return true;
     }
 
     @Override

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "974384768773",
+    "firebase_url": "https://noface-2e0d0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "noface-2e0d0",
+    "storage_bucket": "noface-2e0d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974384768773:android:63ddb6d16e5cecfc0e396c",
+        "android_client_info": {
+          "package_name": "com.example.noface"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974384768773-6vg01javo5cc9dm2794j8r5p2ino8ri6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6vruK3_VgyJtWdADmsjeLHuMgJd012K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974384768773-6vg01javo5cc9dm2794j8r5p2ino8ri6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
