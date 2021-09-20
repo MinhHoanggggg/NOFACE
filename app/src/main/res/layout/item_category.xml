@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:id="@+id/rlt_itemCate"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <TextView
+            android:background="@drawable/custom_page"
+            android:textColor="@color/white"
+            android:id="@+id/txt_title"
+            android:textStyle="bold"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:text="Chủ đề 1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
