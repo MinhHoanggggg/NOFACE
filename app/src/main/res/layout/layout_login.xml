@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.LoginFragment">
+
     <EditText
         android:id="@+id/edtEmail"
         android:hint="Email"
@@ -34,7 +35,7 @@
         android:id="@+id/checkbox"
         android:text="Lưu thông tin dăng nhập"
         android:checked="false"
-        android:buttonTint="#D83428"
+        android:buttonTint="#F44336"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_width="wrap_content"

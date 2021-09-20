@@ -14,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager;
     ViewPagerAdapter adapter;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
