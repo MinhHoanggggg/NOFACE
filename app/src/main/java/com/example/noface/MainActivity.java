@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int CurrentFragment = FRAGMENT_HOME;
 
-
     private DrawerLayout drawer_layout;
     private NavigationView nav_view;
 
