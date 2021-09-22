@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CategoryActivity"
+        <activity android:name=".TopicActivity"
             android:exported="true"/>
     </application>
 

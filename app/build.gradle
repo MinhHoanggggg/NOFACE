@@ -49,4 +49,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui:0.6.0'
     implementation 'com.google.firebase:firebase-core:19.0.1'
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
+
+    //animation folding-cell
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
+
 }

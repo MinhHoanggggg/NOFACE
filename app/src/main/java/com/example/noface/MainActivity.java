@@ -15,11 +15,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.noface.fragment.HomeFragment;
+import com.example.noface.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int FRAGMENT_HOME = 0;
+    private static final int FRAGMENT_PROFILE = 4;
 
     private int CurrentFragment = FRAGMENT_HOME;
 
@@ -63,8 +65,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 openHomeFragment();
                 break;
-            case R.id.nav_category:
-                startActivity(new Intent(this, CategoryActivity.class));
+
+            case R.id.nav_topic:
+                startActivity(new Intent(this, TopicActivity.class));
+                break;
+
+            case R.id.nav_profile:
+                openProfileFragment();
                 break;
 
             default:break;
@@ -92,6 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openProfileFragment(){
+        if(CurrentFragment != FRAGMENT_PROFILE){
+            replaceFragment(new ProfileFragment());
+            CurrentFragment = FRAGMENT_PROFILE;
+        }
+    }
+
     private void setTitleToolbar(){
         String title = "";
         switch (CurrentFragment){
@@ -102,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            case ACTIVITY_CATEGORY:
 //                title = "Chủ đề";
 //                break;
+            case FRAGMENT_PROFILE:{
+                title = "Thông tin tài khoản";
+                break;
+            }
         }
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(title);

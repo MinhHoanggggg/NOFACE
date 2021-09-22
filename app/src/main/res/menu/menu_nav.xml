@@ -8,13 +8,18 @@
             android:title="@string/nav_home"
             android:icon="@drawable/ic_nav"/>
         <item
-            android:id="@+id/nav_category"
+            android:id="@+id/nav_topic"
             android:title="@string/nav_category"
             android:icon="@drawable/ic_nav"/>
     </group>
 
     <item android:title="@string/nav_account">
         <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_wall"
+                android:title="@string/nav_story"
+                android:icon="@drawable/ic_nav"/>
             <item
                 android:id="@+id/nav_profile"
                 android:title="@string/nav_profile"
@@ -23,6 +28,7 @@
                 android:id="@+id/nav_pass"
                 android:title="@string/nav_pass"
                 android:icon="@drawable/ic_nav"/>
+            </group>
         </menu>
     </item>
 </menu>
