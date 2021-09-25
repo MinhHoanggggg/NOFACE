@@ -11,21 +11,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noface.Adapter.CategoryAdapter;
-import com.example.noface.fragment.HomeFragment;
-import com.example.noface.model.Category;
+import com.example.noface.Adapter.TopicAdapter;
+import com.example.noface.model.Topic;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class CategoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class TopicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private ArrayList<Category> alCategory;
-    private CategoryAdapter CategoryAdapter;
-    private RecyclerView rcvCategoryList;
+    private ArrayList<Topic> alTopic;
+    private TopicAdapter TopicAdapter;
+    private RecyclerView rcvTopicList;
 
     private DrawerLayout drawer_layout;
     private NavigationView nav_view;
@@ -33,7 +31,7 @@ public class CategoryActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_topic);
 
         //set toolbar thay actionbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -42,7 +40,7 @@ public class CategoryActivity extends AppCompatActivity implements NavigationVie
         //ánh xạ
         drawer_layout = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
-        rcvCategoryList = findViewById(R.id.rcvCategoryList);
+        rcvTopicList = findViewById(R.id.rcvTopicList);
 
         //bắt sự kiện click icon home của nav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
@@ -55,25 +53,25 @@ public class CategoryActivity extends AppCompatActivity implements NavigationVie
         getSupportActionBar().setTitle("Chủ đề");
 
         //mặc định category
-        nav_view.setCheckedItem(R.id.nav_category);
+        nav_view.setCheckedItem(R.id.nav_topic);
 
         //data mẫu
-        alCategory = new ArrayList<>();
+        alTopic = new ArrayList<>();
         for(int i = 1; i <= 29; i++ ){
-            alCategory.add(new Category("Chủ đề"+ i, "chủ đề" + i));
+            alTopic.add(new Topic("Chủ đề"+ i, "chủ đề" + i));
         }
 
         //cuộn nuột hơn
-        rcvCategoryList.setHasFixedSize(true);
+        rcvTopicList.setHasFixedSize(true);
 
         //truyền data qua adapter
-        CategoryAdapter = new CategoryAdapter(alCategory, CategoryActivity.this);
+        TopicAdapter = new TopicAdapter(alTopic, TopicActivity.this);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
 
-        rcvCategoryList.setLayoutManager(gridLayoutManager);
-        rcvCategoryList.setAdapter(CategoryAdapter);
+        rcvTopicList.setLayoutManager(gridLayoutManager);
+        rcvTopicList.setAdapter(TopicAdapter);
     }
 
     @Override
@@ -83,8 +81,8 @@ public class CategoryActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_home:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
-            case R.id.nav_category:
-                startActivity(new Intent(this, CategoryActivity.class));
+            case R.id.nav_topic:
+                startActivity(new Intent(this, TopicActivity.class));
                 break;
             default:break;
         }

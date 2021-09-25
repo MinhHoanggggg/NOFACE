@@ -11,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.R;
-import com.example.noface.model.Category;
+import com.example.noface.model.Topic;
 
 import java.util.ArrayList;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>{
+public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
 
-    private ArrayList<Category> lstCategory;
+    private ArrayList<Topic> lstTopic;
     private Context context;
 
-    public CategoryAdapter(ArrayList<Category> lstCategory, Context context) {
-        this.lstCategory = lstCategory;
+    public TopicAdapter(ArrayList<Topic> lstTopic, Context context) {
+        this.lstTopic = lstTopic;
         this.context = context;
     }
 
@@ -29,7 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_topic, parent,false);
         return new ViewHolder(view);
     }
 
@@ -46,7 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return lstCategory.size();
+        return lstTopic.size();
     }
 
 

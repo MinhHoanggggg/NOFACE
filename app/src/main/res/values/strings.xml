@@ -4,7 +4,15 @@
     <string name="nav_profile">Thông tin tài khoản</string>
     <string name="nav_pass">Thay đổi mật khẩu</string>
     <string name="nav_home">Trang chủ</string>
+    <string name="nav_story">Quản lí bài viết</string>
     <string name="nav_category">Chủ đề</string>
     <string name="nav_open">Open nav drawer</string>
     <string name="nav_close">Close nav drawer</string>
+
+    <!--    profile-->
+    <string name="name">Tên cá nhân</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="email">Email</string>
+    <string name="information">Thông tin cá nhân</string>
+
 </resources>
