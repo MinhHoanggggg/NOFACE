@@ -41,11 +41,11 @@ public class HomeFragment extends Fragment {
     //getData từ API
     private ArrayList<Posts> getDataPosts(){
         ArrayList<Posts> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++){
-            list.add(new Posts("Đây là Title \n" + "nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo" +
-                    "nội dung demo nội dung demo","nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung" +
-                    "nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung"));
-        }
+//        for (int i = 0; i < 20; i++){
+//            list.add(new Posts("Đây là Title \n" + "nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo" +
+//                    "nội dung demo nội dung demo","nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung" +
+//                    "nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung"));
+//        }
         return list;
     }
 }

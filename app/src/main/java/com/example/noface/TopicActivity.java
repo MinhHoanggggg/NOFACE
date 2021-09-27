@@ -1,8 +1,13 @@
 package com.example.noface;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,17 +16,26 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.TopicAdapter;
+import com.example.noface.model.ListTopic;
 import com.example.noface.model.Topic;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class TopicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private ArrayList<Topic> alTopic;
     private TopicAdapter TopicAdapter;
     private RecyclerView rcvTopicList;
 
@@ -52,26 +66,14 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         nav_view.setNavigationItemSelectedListener(this);
         getSupportActionBar().setTitle("Chủ đề");
 
-        //mặc định category
+        //mặc định set category
         nav_view.setCheckedItem(R.id.nav_topic);
 
-        //data mẫu
-        alTopic = new ArrayList<>();
-        for(int i = 1; i <= 29; i++ ){
-            alTopic.add(new Topic("Chủ đề"+ i, "chủ đề" + i));
-        }
+        //get data từ api
+        GetAllTopic();
 
         //cuộn nuột hơn
         rcvTopicList.setHasFixedSize(true);
-
-        //truyền data qua adapter
-        TopicAdapter = new TopicAdapter(alTopic, TopicActivity.this);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-
-        rcvTopicList.setLayoutManager(gridLayoutManager);
-        rcvTopicList.setAdapter(TopicAdapter);
     }
 
     @Override
@@ -100,4 +102,55 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             startActivity(new Intent(this, MainActivity.class));
         }
     }
+
+    //get data từ API
+    private void GetAllTopic() {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetAllTopic()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ListTopic listTopic) {
+        try {
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+            gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+            rcvTopicList.setLayoutManager(gridLayoutManager);
+
+            //truyền data qua adapter
+            TopicAdapter = new TopicAdapter(listTopic.getTopics(), TopicActivity.this);
+            rcvTopicList.setAdapter(TopicAdapter);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        dismissProgressDialog();
+    }
+
+    private void handleError(Throwable throwable) {
+        Toast.makeText(getApplicationContext(), "Đã có lỗi xãy ra!!!", Toast.LENGTH_SHORT).show();
+    }
+
+
+        private static ProgressDialog progressDialog;
+
+        public static void showProgressDialog(Context context, String message){
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+
+        public static void dismissProgressDialog(){
+            progressDialog.dismiss();
+        }
 }
