@@ -11,12 +11,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //set toolbar thay actionbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -54,6 +59,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         replaceFragment(new HomeFragment());
         nav_view.setCheckedItem(R.id.nav_home);
         setTitleToolbar();
+
+        //lấy thông tin user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+
+
+            // Check if user's email is verified
+
+            if(user.isEmailVerified()){
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+                String uid = user.getUid();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Vui lòng xác thực Email", Toast.LENGTH_SHORT).show();
+                user.sendEmailVerification();
+            }
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+
+        }
+
+
     }
 
     @SuppressLint("NonConstantResourceId")

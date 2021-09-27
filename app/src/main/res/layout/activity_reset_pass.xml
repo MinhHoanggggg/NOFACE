@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResetPass"
+    android:fillViewport="true"
+    android:isScrollContainer="false"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_bg"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:background="@drawable/ic_logo"
+                />
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_weight="0.75"
+            android:layout_height="0dp"
+            android:id="@+id/constraint2"
+            android:orientation="vertical"
+            android:background="@drawable/shadow_login"
+            >
+            <LinearLayout
+                android:id="@+id/tabLayout"
+                android:layout_weight="0.15"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/custom_table"
+                app:tabTextColor="@color/black"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Forget Password"
+                    android:gravity="center"
+                    android:textSize="25dp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:background="@drawable/custom_page"
+                android:layout_weight="0.85"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chúng tôi cần xác thực Email của bạn để có thể thay đổi mật khẩu "
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textColor="#000000"/>
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập Email "
+                    android:padding="10sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/custom_edt"
+                    />
+                <Button
+                    android:id="@+id/btnResPass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_btn"
+                    app:backgroundTint="@null"
+                    android:text="Reset password"/>
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_btn"
+                    app:backgroundTint="@null"
+                    android:text="Back"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+
+
+</ScrollView>

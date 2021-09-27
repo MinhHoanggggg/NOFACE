@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.noface.MainActivity;
 import com.example.noface.Others.ShowNotifyUser;
 import com.example.noface.R;
+import com.example.noface.ResetPass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
     private Button btnLogin;
+    private TextView txtForPass;
     private EditText edtEmail,edtPass;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -36,6 +39,7 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLogin);
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPass = view.findViewById(R.id.edtPass);
+        txtForPass = view.findViewById(R.id.txtForPass);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +53,12 @@ public class LoginFragment extends Fragment {
                     ShowNotifyUser.showProgressDialog(getContext(),"Đang tải...");
                     loginUser(mail,pass);
                 }
+            }
+        });
+        txtForPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), ResetPass.class));
             }
         });
         return view;
@@ -72,5 +82,6 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
+
 
 }

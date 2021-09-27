@@ -12,21 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NOFACE">
         <activity
+            android:name=".ResetPass"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:windowSoftInputMode="adjustResize"
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".TopicActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".TopicActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
