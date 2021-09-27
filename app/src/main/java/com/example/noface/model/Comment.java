@@ -2,14 +2,22 @@ package com.example.noface.model;
 
 import java.time.DateTimeException;
 
-public class Posts {
+public class Comment {
 
-    public Posts(Integer idpost, String iduser, String title, String content, DateTimeException time) {
+    public Comment(Integer idcmt, Integer idpost, String iduser, String content, DateTimeException time) {
+        Idcmt = idcmt;
         Idpost = idpost;
         Iduser = iduser;
-        this.title = title;
-        this.content = content;
+        Content = content;
         Time = time;
+    }
+
+    public Integer getIdcmt() {
+        return Idcmt;
+    }
+
+    public void setIdcmt(Integer idcmt) {
+        Idcmt = idcmt;
     }
 
     public Integer getIdpost() {
@@ -28,20 +36,12 @@ public class Posts {
         Iduser = iduser;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
-        return content;
+        return Content;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        Content = content;
     }
 
     public DateTimeException getTime() {
@@ -52,9 +52,9 @@ public class Posts {
         Time = time;
     }
 
+    private Integer Idcmt;
     private Integer Idpost;
     private String Iduser;
-    private String title;
-    private String content;
+    private String Content;
     private DateTimeException Time;
 }

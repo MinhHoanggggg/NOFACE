@@ -2,28 +2,38 @@ package com.example.noface.model;
 
 public class Topic {
 
-    public Topic(String ID_Topic, String name) {
-        this.ID_Topic = ID_Topic;
-        this.name = name;
+    public Topic(String idTopic, String nameTopic, String img) {
+        IdTopic = idTopic;
+        NameTopic = nameTopic;
+        Img = img;
     }
 
-    public String getID_Topic() {
-        return ID_Topic;
+    public String getIdTopic() {
+        return IdTopic;
     }
 
-    public void setID_Topic(String ID_Topic) {
-        this.ID_Topic = ID_Topic;
+    public void setIdTopic(String idTopic) {
+        IdTopic = idTopic;
     }
 
-    public String getName() {
-        return name;
+    public String getNameTopic() {
+        return NameTopic;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameTopic(String nameTopic) {
+        NameTopic = nameTopic;
     }
 
-    private String ID_Topic;
-    private String name;
+    public String getImg() {
+        return Img;
+    }
+
+    public void setImg(String img) {
+        Img = img;
+    }
+
+    private String IdTopic;
+    private String NameTopic;
+    private String Img;
 
 }
