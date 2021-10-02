@@ -40,7 +40,10 @@ public class LoginFragment extends Fragment {
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPass = view.findViewById(R.id.edtPass);
         txtForPass = view.findViewById(R.id.txtForPass);
+        if(mAuth.getCurrentUser() != null){
+            startActivity(new Intent(getActivity(),MainActivity.class));
 
+        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,8 +53,10 @@ public class LoginFragment extends Fragment {
                 if(mail.isEmpty()||pass.isEmpty()){
                     Toast.makeText(getContext(), "Nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 }else {
-                    ShowNotifyUser.showProgressDialog(getContext(),"Đang tải...");
-                    loginUser(mail,pass);
+
+                        ShowNotifyUser.showProgressDialog(getContext(), "Đang tải...");
+                        loginUser(mail, pass);
+
                 }
             }
         });
@@ -81,6 +86,7 @@ public class LoginFragment extends Fragment {
                         }
                     }
                 });
+
     }
 
 

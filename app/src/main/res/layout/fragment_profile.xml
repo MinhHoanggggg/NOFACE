@@ -2,8 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="THÔNG TIN"
+        android:gravity="center"
+        android:textSize="30sp"/>
     <LinearLayout
         android:background="@drawable/custom_bottom_boder"
         android:layout_marginTop="17dp"
@@ -22,14 +29,13 @@
             android:layout_height="match_parent">
             <TextView
                 android:textStyle="bold"
-                android:text="@string/name"
+                android:text="Tên hiển thị"
                 android:textSize="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <EditText
                 android:textSize="16dp"
-                android:text="@string/name"
-                android:id="@+id/txt_name"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -61,10 +67,10 @@
                 android:textSize="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <EditText
                 android:textSize="16dp"
-                android:text="@string/phone"
-                android:id="@+id/txt_phone"
+
+                android:id="@+id/edtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -96,10 +102,10 @@
                 android:textSize="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <EditText
                 android:textSize="16dp"
-                android:text="@string/email"
-                android:id="@+id/txt_email"
+
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -109,6 +115,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cập nhật "
+        android:background="@drawable/custom_btn"
+        app:backgroundTint="@null"
+        android:id="@+id/btnUpdate"/>
 
 
 

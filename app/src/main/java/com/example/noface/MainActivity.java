@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,9 +30,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PROFILE = 4;
 
     private int CurrentFragment = FRAGMENT_HOME;
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DrawerLayout drawer_layout;
     private NavigationView nav_view;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,51 +41,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-        //set toolbar thay actionbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+            //set toolbar thay actionbar
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        //ánh xạ
-        drawer_layout = findViewById(R.id.drawer_layout);
-        nav_view = findViewById(R.id.nav_view);
-
-        //bắt sự kiện click icon home của nav
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
-                                                                R.string.nav_open, R.string.nav_close);
-        drawer_layout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        //bắt sự kiện click item của nav
-        nav_view.setNavigationItemSelectedListener(this);
-
-        //mặc định home
-        replaceFragment(new HomeFragment());
-        nav_view.setCheckedItem(R.id.nav_home);
-        setTitleToolbar();
-
-        //lấy thông tin user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
+            //ánh xạ
+            drawer_layout = findViewById(R.id.drawer_layout);
+            nav_view = findViewById(R.id.nav_view);
 
 
-            // Check if user's email is verified
+            //bắt sự kiện click icon home của nav
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
+                    R.string.nav_open, R.string.nav_close);
+            drawer_layout.addDrawerListener(toggle);
+            toggle.syncState();
 
-            if(user.isEmailVerified()){
-                String name = user.getDisplayName();
-                String email = user.getEmail();
-                Uri photoUrl = user.getPhotoUrl();
-                String uid = user.getUid();
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Vui lòng xác thực Email", Toast.LENGTH_SHORT).show();
-                user.sendEmailVerification();
-            }
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
+            //bắt sự kiện click item của nav
+            nav_view.setNavigationItemSelectedListener(this);
 
-        }
+            //mặc định home
+            replaceFragment(new HomeFragment());
+            nav_view.setCheckedItem(R.id.nav_home);
+            setTitleToolbar();
+
+
 
 
     }
@@ -90,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+        int idItem = item.getItemId();
         //set fragment cho từng item
-        switch(item.getItemId()) {
+        switch(idItem) {
             case R.id.nav_home:
                 openHomeFragment();
                 break;
