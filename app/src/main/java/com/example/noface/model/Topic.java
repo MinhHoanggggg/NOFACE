@@ -1,39 +1,50 @@
 package com.example.noface.model;
 
+import java.util.List;
+
 public class Topic {
 
-    public Topic(String idTopic, String nameTopic, String img) {
-        IdTopic = idTopic;
-        NameTopic = nameTopic;
-        Img = img;
+    public Topic(String idtopic, String topicName, String img, List<Posts> lstpost) {
+        this.idtopic = idtopic;
+        this.topicName = topicName;
+        this.img = img;
+        this.lstpost = lstpost;
     }
 
-    public String getIdTopic() {
-        return IdTopic;
+    public String getIdtopic() {
+        return idtopic;
     }
 
-    public void setIdTopic(String idTopic) {
-        IdTopic = idTopic;
+    public void setIdtopic(String idtopic) {
+        this.idtopic = idtopic;
     }
 
-    public String getNameTopic() {
-        return NameTopic;
+    public String getTopicName() {
+        return topicName;
     }
 
-    public void setNameTopic(String nameTopic) {
-        NameTopic = nameTopic;
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 
     public String getImg() {
-        return Img;
+        return img;
     }
 
     public void setImg(String img) {
-        Img = img;
+        this.img = img;
     }
 
-    private String IdTopic;
-    private String NameTopic;
-    private String Img;
+    public List<Posts> getLstpost() {
+        return lstpost;
+    }
 
+    public void setLstpost(List<Posts> lstpost) {
+        this.lstpost = lstpost;
+    }
+
+    private String idtopic;
+    private String topicName;
+    private String img;
+    private List<Posts> lstpost;
 }

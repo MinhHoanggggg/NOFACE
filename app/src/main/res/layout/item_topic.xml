@@ -6,11 +6,6 @@
     app:cardCornerRadius="10dp"
     android:layout_margin="5dp">
 
-    <LinearLayout
-        android:id="@+id/rlt_itemCate"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-
         <TextView
             android:background="@drawable/custom_page"
             android:textColor="@color/white"
@@ -21,7 +16,6 @@
             android:textSize="30dp"
             android:text="Chủ đề 1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="100dp"/>
 
-    </LinearLayout>
 </androidx.cardview.widget.CardView>
