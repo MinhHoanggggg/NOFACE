@@ -28,6 +28,10 @@
                 android:id="@+id/nav_pass"
                 android:title="@string/nav_pass"
                 android:icon="@drawable/ic_nav"/>
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="@string/nav_logout"
+                    android:icon="@drawable/ic_nav"/>
             </group>
         </menu>
     </item>

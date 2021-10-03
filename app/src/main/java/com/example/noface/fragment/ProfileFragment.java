@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.noface.Others.ShowNotifyUser;
 import com.example.noface.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,13 +35,15 @@ public class ProfileFragment extends Fragment {
         edtPhone = view.findViewById(R.id.edtPhone);
         edtName = view.findViewById(R.id.edtName);
         btnUpdate = view.findViewById(R.id.btnUpdate);
-        if(!user.isEmailVerified())
-                showDialog();
+        if(!user.isEmailVerified()) {
+            showDialog();
+        }
         edtEmail.setText(user.getEmail());
         edtName.setText(user.getDisplayName());
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ShowNotifyUser.showProgressDialog(getContext(),"Đang tải..");
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(edtName.getText().toString())
 
@@ -51,6 +54,7 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    ShowNotifyUser.dismissProgressDialog();
                                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -71,11 +75,13 @@ public class ProfileFragment extends Fragment {
                          @Override
                          public void onComplete(@NonNull Task<Void> task) {
                              if (task.isSuccessful()) {
-                                 Toast.makeText(getContext(), "Đã gửi email xác thực", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(getContext(), "Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn", Toast.LENGTH_SHORT).show();
                              }
                          }
                      });
          }
      });
+     AlertDialog al = builder.create();
+     al.show();
  }
 }
