@@ -4,18 +4,18 @@ import java.util.List;
 
 public class Topic {
 
-    public Topic(String idtopic, String topicName, String img, List<Posts> lstpost) {
+    public Topic(Integer idtopic, String topicName, String img, List<Posts> lstpost) {
         this.idtopic = idtopic;
         this.topicName = topicName;
         this.img = img;
         this.lstpost = lstpost;
     }
 
-    public String getIdtopic() {
+    public Integer getIdtopic() {
         return idtopic;
     }
 
-    public void setIdtopic(String idtopic) {
+    public void setIdtopic(Integer idtopic) {
         this.idtopic = idtopic;
     }
 
@@ -43,7 +43,7 @@ public class Topic {
         this.lstpost = lstpost;
     }
 
-    private String idtopic;
+    private Integer idtopic;
     private String topicName;
     private String img;
     private List<Posts> lstpost;

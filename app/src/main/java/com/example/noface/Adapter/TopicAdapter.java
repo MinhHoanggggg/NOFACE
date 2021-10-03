@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.R;
@@ -37,8 +38,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.txt_title.setText(lstTopic.get(position).getTopicName());
-
+        holder.txt_title.setText(String.valueOf(lstTopic.get(position).getTopicName()));
+//        holder.txtcontent.setText(new StringBuilder(lstTopic.get(position).title.substring(0,20).append("...").toString()));
         holder.txt_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +56,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView txt_title;
+        private TextView txt_title;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

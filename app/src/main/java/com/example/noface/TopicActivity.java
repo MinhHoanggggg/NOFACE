@@ -1,7 +1,5 @@
 package com.example.noface;
 
-import static com.example.noface.service.ServiceAPI.BASE_Service;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.TopicAdapter;
@@ -47,7 +46,17 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         //ánh xạ
         drawer_layout = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
+
+        //tạo rcv
         rcvTopicList = findViewById(R.id.rcvTopicList);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        rcvTopicList.setLayoutManager(gridLayoutManager);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+//        rcvTopicList.setLayoutManager(layoutManager);
+
+        //cuộn nuột hơn
+        rcvTopicList.setHasFixedSize(true);
 
         //bắt sự kiện click icon home của nav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
@@ -64,9 +73,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         //get data từ api
         GetAllTopic();
-
-        //cuộn nuột hơn
-        rcvTopicList.setHasFixedSize(true);
     }
 
     @Override
@@ -98,8 +104,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     //get data từ API
     private void GetAllTopic() {
+
         ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE_Service)
+                .baseUrl("https://localhost:44343/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
@@ -114,12 +121,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     private void handleResponse(ArrayList<Topic> topics) {
         try {
 //            showProgressDialog(getApplicationContext(), "Đang tải dữ liệu");
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-            gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-            rcvTopicList.setLayoutManager(gridLayoutManager);
 
-            //truyền data qua adapter
-            TopicAdapter topicAdapter = new TopicAdapter(topics, TopicActivity.this);
+            //set adapter cho rcv
+            TopicAdapter topicAdapter = new TopicAdapter(topics, this);
             rcvTopicList.setAdapter(topicAdapter);
 
         }catch (Exception e){

@@ -63,10 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new HomeFragment());
             nav_view.setCheckedItem(R.id.nav_home);
             setTitleToolbar();
-
-
-
-
     }
 
     @SuppressLint("NonConstantResourceId")
