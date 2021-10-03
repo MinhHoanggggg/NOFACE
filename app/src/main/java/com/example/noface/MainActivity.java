@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int FRAGMENT_HOME = 0;
+    private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_PROFILE = 4;
 
     private int CurrentFragment = FRAGMENT_HOME;
@@ -78,11 +80,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_topic:
                 startActivity(new Intent(this, TopicActivity.class));
                 break;
-
+            case R.id.nav_pass:
+                openPassFragment();
+                break;
             case R.id.nav_profile:
                 openProfileFragment();
                 break;
-
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+                break;
             default:break;
         }
         setTitleToolbar();
@@ -105,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(CurrentFragment != FRAGMENT_HOME){
             replaceFragment(new HomeFragment());
             CurrentFragment = FRAGMENT_HOME;
+        }
+    }
+    private void openPassFragment(){
+        if(CurrentFragment != FRAGMENT_PASS){
+            replaceFragment(new ChangePass());
+            CurrentFragment = FRAGMENT_PASS;
         }
     }
 
