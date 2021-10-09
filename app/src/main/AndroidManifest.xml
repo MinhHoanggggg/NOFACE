@@ -13,6 +13,9 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.NOFACE">
         <activity
+            android:name=".PostActivity"
+            android:exported="true" />
+        <activity
             android:name=".ResetPass"
             android:exported="true" />
         <activity

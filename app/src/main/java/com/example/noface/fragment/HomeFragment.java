@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.HomeAdapter;
+import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
@@ -22,7 +23,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView rcv_posts;
     private HomeAdapter homeAdapter;
-
+    private ArrayList<String> danhSach;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
@@ -31,10 +32,17 @@ public class HomeFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
-        rcv_posts.setFocusable(false);
+//        rcv_posts.setFocusable(false);
+//
+//        homeAdapter = new HomeAdapter(getContext(), getDataPosts());
+//        rcv_posts.setAdapter(homeAdapter);
 
-        homeAdapter = new HomeAdapter(getContext(), getDataPosts());
-        rcv_posts.setAdapter(homeAdapter);
+        danhSach = new ArrayList<>();
+        for(int i=1;i<=10;i++){
+            danhSach.add("");
+        }
+        PostAdapter courseAdapter = new PostAdapter(danhSach, getContext());
+        rcv_posts.setAdapter(courseAdapter);
         return view;
     }
 
