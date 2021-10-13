@@ -5,12 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center_horizontal">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="THÔNG TIN"
         android:gravity="center"
         android:textSize="30sp"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+
+        android:id="@+id/imgAva"
+        />
     <LinearLayout
         android:background="@drawable/custom_bottom_boder"
         android:layout_marginTop="17dp"

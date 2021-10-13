@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noface.Others.ShowNotifyUser;
@@ -26,6 +27,7 @@ public class ChangePass extends Fragment {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private Button btnChange;
     private EditText edtPass,edtREpass,edtNewpass;
+    private TextView imgAva;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +37,7 @@ public class ChangePass extends Fragment {
         edtPass = view.findViewById(R.id.edtPass);
         edtREpass = view.findViewById(R.id.edtREpass);
         btnChange = view.findViewById(R.id.btnChange);
+
 
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override

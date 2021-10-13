@@ -40,10 +40,7 @@ public class LoginFragment extends Fragment {
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPass = view.findViewById(R.id.edtPass);
         txtForPass = view.findViewById(R.id.txtForPass);
-        if(mAuth.getCurrentUser() != null){
-            startActivity(new Intent(getActivity(),MainActivity.class));
 
-        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.noface.LoginActivity;
 import com.example.noface.Others.ShowNotifyUser;
 import com.example.noface.R;
+import com.example.noface.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -28,11 +29,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
 public class RegisterFragment extends Fragment {
-    private EditText edtEmail, edtPass, edtREpass,edtPhone;
+    private EditText edtEmail, edtPass, edtREpass;//,edtPhone;
     private Button btnRegister;
     private FirebaseAuth mAuth;
     private String mVerificationId;
@@ -111,7 +114,7 @@ public class RegisterFragment extends Fragment {
                         if (task.isSuccessful()) {
                             ShowNotifyUser.dismissProgressDialog();
                             mAuth = FirebaseAuth.getInstance();
-
+                            pushRealtime(mAuth.getCurrentUser());
                             Toast.makeText(getContext(), "Đăng ký thành công",
                                     Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -222,5 +225,11 @@ public class RegisterFragment extends Fragment {
                 b.cancel();
             }
         });
+    }
+    public void pushRealtime(@NonNull FirebaseUser fUser){
+        FirebaseDatabase   database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+        User lUser = new User(fUser.getUid(),"",fUser.getEmail(),"",false);
+        myRef.child(lUser.getIdUser()).setValue(lUser);
     }
 }
