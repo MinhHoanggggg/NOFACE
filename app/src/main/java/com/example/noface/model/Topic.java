@@ -1,50 +1,56 @@
 package com.example.noface.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Topic {
 
-    public Topic(Integer idtopic, String topicName, String img, List<Posts> lstpost) {
-        this.idtopic = idtopic;
-        this.topicName = topicName;
-        this.img = img;
-        this.lstpost = lstpost;
+    private Integer IDTopic;
+    private String TopicName;
+    private String Img;
+
+    @SerializedName("lstPost")
+    private List<Posts> Post;
+
+
+    public Topic(Integer IDTopic, String topicName, String img, List<Posts> post) {
+        this.IDTopic = IDTopic;
+        TopicName = topicName;
+        Img = img;
+        Post = post;
     }
 
-    public Integer getIdtopic() {
-        return idtopic;
+    public Integer getIDTopic() {
+        return IDTopic;
     }
 
-    public void setIdtopic(Integer idtopic) {
-        this.idtopic = idtopic;
+    public void setIDTopic(Integer IDTopic) {
+        this.IDTopic = IDTopic;
     }
 
     public String getTopicName() {
-        return topicName;
+        return TopicName;
     }
 
     public void setTopicName(String topicName) {
-        this.topicName = topicName;
+        TopicName = topicName;
     }
 
     public String getImg() {
-        return img;
+        return Img;
     }
 
     public void setImg(String img) {
-        this.img = img;
+        Img = img;
     }
 
-    public List<Posts> getLstpost() {
-        return lstpost;
+    public List<Posts> getPost() {
+        return Post;
     }
 
-    public void setLstpost(List<Posts> lstpost) {
-        this.lstpost = lstpost;
+    public void setPost(List<Posts> post) {
+        Post = post;
     }
 
-    private Integer idtopic;
-    private String topicName;
-    private String img;
-    private List<Posts> lstpost;
 }

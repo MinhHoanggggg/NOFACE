@@ -1,5 +1,7 @@
 package com.example.noface;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,14 +14,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.TopicAdapter;
 import com.example.noface.model.Topic;
 import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,8 +56,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         rcvTopicList.setLayoutManager(gridLayoutManager);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        rcvTopicList.setLayoutManager(layoutManager);
 
         //cuộn nuột hơn
         rcvTopicList.setHasFixedSize(true);
@@ -106,7 +108,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     private void GetAllTopic() {
 
         ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl("https://localhost:44343/")
+                .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
@@ -117,6 +119,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
 
     private void handleResponse(ArrayList<Topic> topics) {
         try {

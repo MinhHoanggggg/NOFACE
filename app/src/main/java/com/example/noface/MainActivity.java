@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
+import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_PROFILE = 4;
+    private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int MY_REQUEST_CODE = 10;
+
     private final ProfileFragment profileFragment = new ProfileFragment();
     private final ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -81,9 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
             //set toolbar thay actionbar
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -91,9 +91,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //ánh xạ
             drawer_layout = findViewById(R.id.drawer_layout);
             nav_view = findViewById(R.id.nav_view);
-
-
-
 
             //bắt sự kiện click icon home của nav
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
@@ -122,7 +119,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 openHomeFragment();
                 break;
-
+            case R.id.nav_post_manager:
+                openPostManagerFragment();
+                break;
             case R.id.nav_topic:
                 startActivity(new Intent(this, TopicActivity.class));
                 break;
@@ -176,6 +175,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openPostManagerFragment(){
+        if(CurrentFragment != FRAGMENT_POST_MANAGER){
+            replaceFragment(new PostManagerFragment());
+            CurrentFragment = FRAGMENT_POST_MANAGER;
+        }
+    }
+
     private void setTitleToolbar(){
         String title = "";
         switch (CurrentFragment){
@@ -188,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                break;
             case FRAGMENT_PROFILE:{
                 title = "Thông tin tài khoản";
+                break;
+            }
+            case FRAGMENT_POST_MANAGER:{
+                title = "Quản lí bài viết";
                 break;
             }
         }
