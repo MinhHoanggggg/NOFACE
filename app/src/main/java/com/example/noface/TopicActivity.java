@@ -20,8 +20,6 @@ import com.example.noface.Adapter.TopicAdapter;
 import com.example.noface.model.Topic;
 import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         drawer_layout = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
 
-        //tạo rcv
+        //init rcv
         rcvTopicList = findViewById(R.id.rcvTopicList);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -104,7 +102,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    //get data từ API
+//    get data từ API
     private void GetAllTopic() {
 
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -121,10 +119,11 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     }
 
 
+
+
     private void handleResponse(ArrayList<Topic> topics) {
         try {
 //            showProgressDialog(getApplicationContext(), "Đang tải dữ liệu");
-
             //set adapter cho rcv
             TopicAdapter topicAdapter = new TopicAdapter(topics, this);
             rcvTopicList.setAdapter(topicAdapter);
@@ -140,4 +139,5 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 //        dismissProgressDialog();
         Toast.makeText(getApplicationContext(), "Đã có lỗi xãy ra!!!", Toast.LENGTH_SHORT).show();
     }
+
 }

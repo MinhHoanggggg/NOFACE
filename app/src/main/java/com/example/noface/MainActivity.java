@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setTitleToolbar(){
         String title = "";
         switch (CurrentFragment){
-            case FRAGMENT_HOME:
+            case FRAGMENT_HOME:{
                 title = "Trang chủ";
-                break;
+                break;}
 
 //            case ACTIVITY_CATEGORY:
 //                title = "Chủ đề";

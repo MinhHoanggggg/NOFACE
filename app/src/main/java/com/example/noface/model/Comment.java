@@ -4,36 +4,37 @@ import java.time.DateTimeException;
 
 public class Comment {
 
-    public Comment(Integer idcmt, Integer idpost, String iduser, String content, DateTimeException time) {
-        Idcmt = idcmt;
-        Idpost = idpost;
-        Iduser = iduser;
+
+    public Comment(Integer IDCmt, Integer IDPost, String IDUser, String content, DateTimeException time) {
+        this.IDCmt = IDCmt;
+        this.IDPost = IDPost;
+        this.IDUser = IDUser;
         Content = content;
         Time = time;
     }
 
-    public Integer getIdcmt() {
-        return Idcmt;
+    public Integer getIDCmt() {
+        return IDCmt;
     }
 
-    public void setIdcmt(Integer idcmt) {
-        Idcmt = idcmt;
+    public void setIDCmt(Integer IDCmt) {
+        this.IDCmt = IDCmt;
     }
 
-    public Integer getIdpost() {
-        return Idpost;
+    public Integer getIDPost() {
+        return IDPost;
     }
 
-    public void setIdpost(Integer idpost) {
-        Idpost = idpost;
+    public void setIDPost(Integer IDPost) {
+        this.IDPost = IDPost;
     }
 
-    public String getIduser() {
-        return Iduser;
+    public String getIDUser() {
+        return IDUser;
     }
 
-    public void setIduser(String iduser) {
-        Iduser = iduser;
+    public void setIDUser(String IDUser) {
+        this.IDUser = IDUser;
     }
 
     public String getContent() {
@@ -52,9 +53,9 @@ public class Comment {
         Time = time;
     }
 
-    private Integer Idcmt;
-    private Integer Idpost;
-    private String Iduser;
+    private Integer IDCmt;
+    private Integer IDPost;
+    private String IDUser;
     private String Content;
     private DateTimeException Time;
 }

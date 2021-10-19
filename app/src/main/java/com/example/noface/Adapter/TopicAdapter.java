@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.R;
 import com.example.noface.model.Topic;
+import com.example.noface.other.ItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
 
@@ -25,7 +27,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
         this.context = context;
     }
 
-    private ArrayList<Topic> lstTopic;
+    private final ArrayList<Topic> lstTopic;
     private Context context;
 
     @NonNull
@@ -38,14 +40,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.txt_title.setText(String.valueOf(lstTopic.get(position).getTopicName()));
+        holder.txt_title.setText(lstTopic.get(position).getTopicName());
 //        holder.txtcontent.setText(new StringBuilder(lstTopic.get(position).title.substring(0,20).append("...").toString()));
-        holder.txt_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Đã chọn chủ đề", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.txt_title.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(context, "Đã chọn chủ đề", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
@@ -54,13 +56,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txt_title;
+        private final TextView txt_title;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_title = itemView.findViewById(R.id.txt_title);
         }
+
     }
 }

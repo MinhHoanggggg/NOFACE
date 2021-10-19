@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noface.Adapter.HomeAdapter;
+//import com.example.noface.Adapter.HomeAdapter;
 import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     private RecyclerView rcv_posts;
-    private HomeAdapter homeAdapter;
+//    private HomeAdapter homeAdapter;
     private ArrayList<String> danhSach;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

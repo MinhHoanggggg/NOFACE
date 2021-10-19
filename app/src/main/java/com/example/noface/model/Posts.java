@@ -1,47 +1,61 @@
 package com.example.noface.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.DateTimeException;
+import java.util.ArrayList;
 
 public class Posts {
 
-    public Posts(Integer idpost, String iduser, String title, String content, DateTimeException time) {
-        Idpost = idpost;
-        Iduser = iduser;
-        this.title = title;
-        this.content = content;
+    public Posts(Integer IDPost, Integer IDTopic, String IDUser, String title, String content, DateTimeException time, ArrayList<Like> likes, ArrayList<Comment> cmts) {
+        this.IDPost = IDPost;
+        this.IDTopic = IDTopic;
+        this.IDUser = IDUser;
+        Title = title;
+        Content = content;
         Time = time;
+        Likes = likes;
+        Cmts = cmts;
     }
 
-    public Integer getIdpost() {
-        return Idpost;
+    public Integer getIDPost() {
+        return IDPost;
     }
 
-    public void setIdpost(Integer idpost) {
-        Idpost = idpost;
+    public void setIDPost(Integer IDPost) {
+        this.IDPost = IDPost;
     }
 
-    public String getIduser() {
-        return Iduser;
+    public Integer getIDTopic() {
+        return IDTopic;
     }
 
-    public void setIduser(String iduser) {
-        Iduser = iduser;
+    public void setIDTopic(Integer IDTopic) {
+        this.IDTopic = IDTopic;
+    }
+
+    public String getIDUser() {
+        return IDUser;
+    }
+
+    public void setIDUser(String IDUser) {
+        this.IDUser = IDUser;
     }
 
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        Title = title;
     }
 
     public String getContent() {
-        return content;
+        return Content;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        Content = content;
     }
 
     public DateTimeException getTime() {
@@ -52,9 +66,32 @@ public class Posts {
         Time = time;
     }
 
-    private Integer Idpost;
-    private String Iduser;
-    private String title;
-    private String content;
+    public ArrayList<Like> getLikes() {
+        return Likes;
+    }
+
+    public void setLikes(ArrayList<Like> likes) {
+        Likes = likes;
+    }
+
+    public ArrayList<Comment> getCmts() {
+        return Cmts;
+    }
+
+    public void setCmts(ArrayList<Comment> cmts) {
+        Cmts = cmts;
+    }
+
+    private Integer IDPost;
+    private Integer IDTopic;
+    private String IDUser;
+    private String Title;
+    private String Content;
     private DateTimeException Time;
+
+    ArrayList<Like> Likes;
+
+    @SerializedName("Comment")
+    ArrayList<Comment> Cmts;
+
 }
