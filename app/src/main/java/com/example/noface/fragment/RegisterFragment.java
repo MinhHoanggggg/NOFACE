@@ -229,7 +229,7 @@ public class RegisterFragment extends Fragment {
     public void pushRealtime(@NonNull FirebaseUser fUser){
         FirebaseDatabase   database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
-        User lUser = new User(fUser.getUid(),"",fUser.getEmail(),"",false);
+        User lUser = new User(fUser.getUid(),"",fUser.getEmail(),"",false,"");
         myRef.child(lUser.getIdUser()).setValue(lUser);
     }
 }

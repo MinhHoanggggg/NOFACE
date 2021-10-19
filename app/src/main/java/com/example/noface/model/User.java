@@ -8,16 +8,18 @@ public class User {
     private String email;
     private String phone;
     private boolean mailChecked;
+    private String avaPath;
 
     public User() {
     }
 
-    public User(String idUser, String name, String email, String phone, boolean mailChecked) {
+    public User(String idUser, String name, String email, String phone, boolean mailChecked, String avaPath) {
         this.idUser = idUser;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.mailChecked = mailChecked;
+        this.avaPath = avaPath;
     }
 
     public String getIdUser() {
@@ -58,5 +60,13 @@ public class User {
 
     public void setMailChecked(boolean mailChecked) {
         this.mailChecked = mailChecked;
+    }
+
+    public String getAvaPath() {
+        return avaPath;
+    }
+
+    public void setAvaPath(String avaPath) {
+        this.avaPath = avaPath;
     }
 }

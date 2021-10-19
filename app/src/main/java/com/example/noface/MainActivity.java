@@ -35,13 +35,19 @@ import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
+import com.example.noface.model.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PASS = 5;
@@ -53,18 +59,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode()== RESULT_OK){
+            if (result.getResultCode() == RESULT_OK) {
                 Intent intent = result.getData();
-                if(intent == null){
+                if (intent == null) {
                     return;
                 }
-                Uri uri= intent.getData();
-                if(uri == null){
+                Uri uri = intent.getData();
+                if (uri == null) {
                     uri = user.getPhotoUrl();
                 }
                 profileFragment.setPhotoUri(uri);
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     profileFragment.setBitMapImgView(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -75,14 +81,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int CurrentFragment = FRAGMENT_HOME;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     private DrawerLayout drawer_layout;
     private NavigationView nav_view;
-
+    private User lUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
             //set toolbar thay actionbar
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -102,150 +110,208 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             nav_view.setNavigationItemSelectedListener(this);
 
             ///Thay doi nav header
-            changeHeader();
+            changeHeader(user);
 
             //mặc định home
             replaceFragment(new HomeFragment());
             nav_view.setCheckedItem(R.id.nav_home);
             setTitleToolbar();
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int idItem = item.getItemId();
-        //set fragment cho từng item
-        switch(idItem) {
-            case R.id.nav_home:
-                openHomeFragment();
-                break;
-            case R.id.nav_post_manager:
-                openPostManagerFragment();
-                break;
-            case R.id.nav_topic:
-                startActivity(new Intent(this, TopicActivity.class));
-                break;
-            case R.id.nav_pass:
-                openPassFragment();
-                break;
-            case R.id.nav_profile:
-                openProfileFragment();
-                break;
-            case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
-                break;
-            default:break;
         }
-        setTitleToolbar();
 
-        //Đóng drawer
-        drawer_layout.closeDrawer(GravityCompat.START);
-        return true;
-    }
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public boolean onNavigationItemSelected (@NonNull MenuItem item){
+            int idItem = item.getItemId();
+            //set fragment cho từng item
+            switch (idItem) {
+                case R.id.nav_home:
+                    openHomeFragment();
+                    break;
+                case R.id.nav_post_manager:
+                    openPostManagerFragment();
+                    break;
+                case R.id.nav_topic:
+                    startActivity(new Intent(this, TopicActivity.class));
+                    break;
+                case R.id.nav_pass:
+                    openPassFragment();
+                    break;
+                case R.id.nav_profile:
+                    openProfileFragment();
+                    break;
+                case R.id.nav_logout:
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+            setTitleToolbar();
 
-    @Override
-    public void onBackPressed() {
-        if(drawer_layout.isDrawerOpen(GravityCompat.START)){
+            //Đóng drawer
             drawer_layout.closeDrawer(GravityCompat.START);
-        }else {
-            super.onBackPressed();
+            return true;
         }
-    }
 
-    private void openHomeFragment(){
-        if(CurrentFragment != FRAGMENT_HOME){
-            replaceFragment(new HomeFragment());
-            CurrentFragment = FRAGMENT_HOME;
+        @Override
+        public void onBackPressed () {
+            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                drawer_layout.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
-    }
-    private void openPassFragment(){
-        if(CurrentFragment != FRAGMENT_PASS){
-            replaceFragment(new ChangePass());
-            CurrentFragment = FRAGMENT_PASS;
-        }
-    }
 
-    private void openProfileFragment(){
-        if(CurrentFragment != FRAGMENT_PROFILE){
-            replaceFragment(profileFragment);
-            CurrentFragment = FRAGMENT_PROFILE;
+        private void openHomeFragment () {
+            if (CurrentFragment != FRAGMENT_HOME) {
+                replaceFragment(new HomeFragment());
+                CurrentFragment = FRAGMENT_HOME;
+            }
         }
-    }
-
-    private void openPostManagerFragment(){
-        if(CurrentFragment != FRAGMENT_POST_MANAGER){
-            replaceFragment(new PostManagerFragment());
-            CurrentFragment = FRAGMENT_POST_MANAGER;
+        private void openPassFragment () {
+            if (CurrentFragment != FRAGMENT_PASS) {
+                replaceFragment(new ChangePass());
+                CurrentFragment = FRAGMENT_PASS;
+            }
         }
-    }
 
-    private void setTitleToolbar(){
-        String title = "";
-        switch (CurrentFragment){
-            case FRAGMENT_HOME:{
-                title = "Trang chủ";
-                break;}
+        private void openProfileFragment () {
+            if (CurrentFragment != FRAGMENT_PROFILE) {
+                replaceFragment(profileFragment);
+                CurrentFragment = FRAGMENT_PROFILE;
+            }
+        }
+
+        private void openPostManagerFragment () {
+            if (CurrentFragment != FRAGMENT_POST_MANAGER) {
+                replaceFragment(new PostManagerFragment());
+                CurrentFragment = FRAGMENT_POST_MANAGER;
+            }
+        }
+
+        private void setTitleToolbar () {
+            String title = "";
+            switch (CurrentFragment) {
+                case FRAGMENT_HOME: {
+                    title = "Trang chủ";
+                    break;
+                }
 
 //            case ACTIVITY_CATEGORY:
 //                title = "Chủ đề";
 //                break;
-            case FRAGMENT_PROFILE:{
-                title = "Thông tin tài khoản";
-                break;
+                case FRAGMENT_PROFILE: {
+                    title = "Thông tin tài khoản";
+                    break;
+                }
+                case FRAGMENT_POST_MANAGER: {
+                    title = "Quản lí bài viết";
+                    break;
+                }
             }
-            case FRAGMENT_POST_MANAGER:{
-                title = "Quản lí bài viết";
-                break;
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(title);
             }
         }
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(title);
-        }
-    }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, fragment);
-        fragmentTransaction.commit();
-    }
-    public void changeHeader(){
-        View headerView = nav_view.getHeaderView(0);
-        TextView navUsername = headerView.findViewById(R.id.txtNavName);
-        if(user.getDisplayName() == null){
-            navUsername.setText("Ẩn danh");
+        private void replaceFragment (Fragment fragment){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, fragment);
+            fragmentTransaction.commit();
         }
-        else{
-            navUsername.setText(user.getDisplayName());
+        public void changeHeader (FirebaseUser user){
+
+            View headerView = nav_view.getHeaderView(0);
+            TextView navUsername = headerView.findViewById(R.id.txtNavName);
+            ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
+            if (user.getDisplayName() == null) {
+                navUsername.setText("Ẩn danh");
+            } else {
+                navUsername.setText(user.getDisplayName());
+            }
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            String refName = user.getUid().toString();
+            DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    lUser = snapshot.getValue(User.class);
+                    if (lUser.getAvaPath() != null) {
+                        switch (lUser.getAvaPath()) {
+                            case "ava1":
+                                imgNavAva.setImageResource(R.drawable.ava1);
+                                break;
+                            case "ava2":
+                                imgNavAva.setImageResource(R.drawable.ava2);
+                                break;
+                            case "ava3":
+                                imgNavAva.setImageResource(R.drawable.ava3);
+                                break;
+                            case "ava4":
+                                imgNavAva.setImageResource(R.drawable.ava4);
+                                break;
+                            case "ava5":
+                                imgNavAva.setImageResource(R.drawable.ava5);
+                                break;
+                            case "ava6":
+                                imgNavAva.setImageResource(R.drawable.ava6);
+                                break;
+                            case "ava7":
+                                imgNavAva.setImageResource(R.drawable.ava7);
+                                break;
+                            case "ava8":
+                                imgNavAva.setImageResource(R.drawable.ava8);
+                                break;
+                            case "ava9":
+                                imgNavAva.setImageResource(R.drawable.ava9);
+                                break;
+                            case "ava10":
+                                imgNavAva.setImageResource(R.drawable.ava10);
+                                break;
+                            default:
+                                break;
+                        }
+                    } else
+                        imgNavAva.setImageResource(R.drawable.ic_user);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+//        Uri photoUrl = user.getPhotoUrl();
+//        Glide.with(this).load(photoUrl).error(R.drawable.ic_user).into(imgNavAva);
+
         }
-
-        ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
-        Uri photoUrl = user.getPhotoUrl();
-        Glide.with(this).load(photoUrl).error(R.drawable.ic_user).into(imgNavAva);
-
-    }
 ///xin cap quyen
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == MY_REQUEST_CODE){
-            if(grantResults.length>10 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                openGallery();
-            }else{
-                Toast.makeText(getApplicationContext(), "Vui lòng cho phéo truy cập hình ", Toast.LENGTH_SHORT).show();
+        @Override
+        public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults){
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == MY_REQUEST_CODE) {
+                if (grantResults.length > 10 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Vui lòng cho phéo truy cập hình ", Toast.LENGTH_SHORT).show();
+                }
             }
         }
-    }
-    public void openGallery(){
-     Intent intent = new Intent();
-     intent.setType("image/*");
-     intent.setAction(Intent.ACTION_GET_CONTENT);
-        mActivityResultLauncher.launch(Intent.createChooser(intent,"Select Picture"));
+        public void openGallery () {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
 
+        }
     }
-}
+
+
 
 
 

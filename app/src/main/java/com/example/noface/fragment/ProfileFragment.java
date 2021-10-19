@@ -6,6 +6,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,12 +22,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.noface.DialogFragmentAvatar;
 import com.example.noface.MainActivity;
 import com.example.noface.Others.ShowNotifyUser;
 import com.example.noface.R;
+import com.example.noface.SelectAva;
 import com.example.noface.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -90,7 +96,7 @@ public class ProfileFragment extends Fragment {
                                     lUser.setPhone(edtPhone.getText().toString());
                                     pushRealtime(lUser);
                                     //
-                                mainActivity.changeHeader();
+                                mainActivity.changeHeader(user);
                                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -100,7 +106,9 @@ public class ProfileFragment extends Fragment {
         imgAva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickRequestPermission();
+               // onClickRequestPermission();
+                DialogFragmentAvatar dialogFragment = new DialogFragmentAvatar();
+                dialogFragment.show(getChildFragmentManager(),"DialogFragmentAvatar");
             }
         });
         return view ;
@@ -154,8 +162,8 @@ public class ProfileFragment extends Fragment {
    ////
  private void setUI(FirebaseUser user){
 
-         Uri photoUrl = user.getPhotoUrl();
-         Glide.with(this.getActivity()).load(photoUrl).error(R.drawable.ic_user).into(imgAva);
+//         Uri photoUrl = user.getPhotoUrl();
+//         Glide.with(this.getActivity()).load(photoUrl).error(R.drawable.ic_user).into(imgAva);
      //
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = user.getUid().toString();
@@ -174,6 +182,43 @@ public class ProfileFragment extends Fragment {
                 if (!lUser.isMailChecked()){
                     showDialog();
                 }
+                if(lUser.getAvaPath()!=null){
+                    switch (lUser.getAvaPath()){
+                        case "ava1":
+                            imgAva.setImageResource(R.drawable.ava1);
+                            break;
+                        case "ava2":
+                            imgAva.setImageResource(R.drawable.ava2);
+                            break;
+                        case "ava3":
+                            imgAva.setImageResource(R.drawable.ava3);
+                            break;
+                        case "ava4":
+                            imgAva.setImageResource(R.drawable.ava4);
+                            break;
+                        case "ava5":
+                            imgAva.setImageResource(R.drawable.ava5);
+                            break;
+                        case "ava6":
+                            imgAva.setImageResource(R.drawable.ava6);
+                            break;
+                        case "ava7":
+                            imgAva.setImageResource(R.drawable.ava7);
+                            break;
+                        case "ava8":
+                            imgAva.setImageResource(R.drawable.ava8);
+                            break;
+                        case "ava9":
+                            imgAva.setImageResource(R.drawable.ava9);
+                            break;
+                        case "ava10":
+                            imgAva.setImageResource(R.drawable.ava10);
+                            break;
+                        default: break;
+                    }
+                }
+                else
+                    imgAva.setImageResource(R.drawable.ic_user);
             }
 
             @Override
@@ -188,5 +233,44 @@ public class ProfileFragment extends Fragment {
         FirebaseDatabase   database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users").child(lUser.getIdUser());
         myRef.setValue(lUser);
+    }
+    public void setAva(String avaPath){
+        lUser.setAvaPath(avaPath);
+        if(!avaPath.isEmpty()){
+            switch (avaPath){
+                case "ava1":
+                    imgAva.setImageResource(R.drawable.ava1);
+                    break;
+                case "ava2":
+                    imgAva.setImageResource(R.drawable.ava2);
+                    break;
+                case "ava3":
+                    imgAva.setImageResource(R.drawable.ava3);
+                    break;
+                case "ava4":
+                    imgAva.setImageResource(R.drawable.ava4);
+                    break;
+                case "ava5":
+                    imgAva.setImageResource(R.drawable.ava5);
+                    break;
+                case "ava6":
+                    imgAva.setImageResource(R.drawable.ava6);
+                    break;
+                case "ava7":
+                    imgAva.setImageResource(R.drawable.ava7);
+                    break;
+                case "ava8":
+                    imgAva.setImageResource(R.drawable.ava8);
+                    break;
+                case "ava9":
+                    imgAva.setImageResource(R.drawable.ava9);
+                    break;
+                case "ava10":
+                    imgAva.setImageResource(R.drawable.ava10);
+                    break;
+                default: break;
+            }
+        }
+
     }
 }
