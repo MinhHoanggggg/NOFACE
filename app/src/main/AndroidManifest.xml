@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NOFACE" >
         <activity
-            android:name=".SelectAva"
-            android:exported="true" />
-        <activity
             android:name=".ResetPass"
             android:exported="true" />
         <activity
