@@ -5,7 +5,7 @@ import java.time.DateTimeException;
 public class Comment {
 
 
-    public Comment(Integer IDCmt, Integer IDPost, String IDUser, String content, DateTimeException time) {
+    public Comment(Integer IDCmt, Integer IDPost, String IDUser, String content, String time) {
         this.IDCmt = IDCmt;
         this.IDPost = IDPost;
         this.IDUser = IDUser;
@@ -45,11 +45,11 @@ public class Comment {
         Content = content;
     }
 
-    public DateTimeException getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public void setTime(DateTimeException time) {
+    public void setTime(String time) {
         Time = time;
     }
 
@@ -57,5 +57,5 @@ public class Comment {
     private Integer IDPost;
     private String IDUser;
     private String Content;
-    private DateTimeException Time;
+    private String Time;
 }

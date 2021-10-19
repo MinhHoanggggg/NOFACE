@@ -7,7 +7,16 @@ import java.util.ArrayList;
 
 public class Posts {
 
-    public Posts(Integer IDPost, Integer IDTopic, String IDUser, String title, String content, DateTimeException time, ArrayList<Like> likes, ArrayList<Comment> cmts) {
+
+
+    private int IDPost;
+    private String IDTopic;
+    private String IDUser;
+    private String Title;
+    private String Content;
+    private String Time;
+
+    public Posts(int IDPost, String IDTopic, String IDUser, String title, String content, String time, ArrayList<Like> likes, ArrayList<Comment> cmts) {
         this.IDPost = IDPost;
         this.IDTopic = IDTopic;
         this.IDUser = IDUser;
@@ -18,19 +27,19 @@ public class Posts {
         Cmts = cmts;
     }
 
-    public Integer getIDPost() {
+    public int getIDPost() {
         return IDPost;
     }
 
-    public void setIDPost(Integer IDPost) {
+    public void setIDPost(int IDPost) {
         this.IDPost = IDPost;
     }
 
-    public Integer getIDTopic() {
+    public String getIDTopic() {
         return IDTopic;
     }
 
-    public void setIDTopic(Integer IDTopic) {
+    public void setIDTopic(String IDTopic) {
         this.IDTopic = IDTopic;
     }
 
@@ -58,11 +67,11 @@ public class Posts {
         Content = content;
     }
 
-    public DateTimeException getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public void setTime(DateTimeException time) {
+    public void setTime(String time) {
         Time = time;
     }
 
@@ -81,13 +90,6 @@ public class Posts {
     public void setCmts(ArrayList<Comment> cmts) {
         Cmts = cmts;
     }
-
-    private Integer IDPost;
-    private Integer IDTopic;
-    private String IDUser;
-    private String Title;
-    private String Content;
-    private DateTimeException Time;
 
     ArrayList<Like> Likes;
 

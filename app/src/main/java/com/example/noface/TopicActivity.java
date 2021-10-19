@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.TopicAdapter;
@@ -126,6 +127,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 //            showProgressDialog(getApplicationContext(), "Đang tải dữ liệu");
             //set adapter cho rcv
             TopicAdapter topicAdapter = new TopicAdapter(topics, this);
+
             rcvTopicList.setAdapter(topicAdapter);
 
         }catch (Exception e){
