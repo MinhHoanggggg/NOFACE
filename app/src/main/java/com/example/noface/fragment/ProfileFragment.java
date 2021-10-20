@@ -68,10 +68,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ShowNotifyUser.showProgressDialog(getContext(),"Đang tải..");
+                String username = edtName.getText().toString();
+                if(username.isEmpty()){
+                    username ="Ẩn danh";
+                }
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(edtName.getText().toString())
+                        .setDisplayName(username)
                         .setPhotoUri(photoUri)
                         .build();
+
 
                 user.updateProfile(profileUpdates)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -85,7 +90,11 @@ public class ProfileFragment extends Fragment {
                                     }
                                     else
                                         lUser.setMailChecked(false);
-                                    lUser.setName(edtName.getText().toString());
+                                    String username =edtName.getText().toString();
+                                    if(username.isEmpty()){
+                                        username ="Ẩn danh";
+                                    }
+                                    lUser.setName(username);
                                     lUser.setPhone(edtPhone.getText().toString());
                                     pushRealtime(lUser);
                                     //
