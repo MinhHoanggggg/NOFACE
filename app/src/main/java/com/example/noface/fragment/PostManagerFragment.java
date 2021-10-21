@@ -72,6 +72,6 @@ public class PostManagerFragment extends Fragment {
 
     private void handleError(Throwable throwable) {
 //        dismissProgressDialog();
-        Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Sẽ cập nhật sau", Toast.LENGTH_SHORT).show();
     }
 }

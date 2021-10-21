@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.noface.MainActivity;
-import com.example.noface.Others.ShowNotifyUser;
+import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.example.noface.ResetPass;
 import com.google.android.gms.tasks.OnCompleteListener;

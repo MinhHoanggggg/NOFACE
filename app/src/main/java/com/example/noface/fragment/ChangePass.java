@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.noface.Others.ShowNotifyUser;
+import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

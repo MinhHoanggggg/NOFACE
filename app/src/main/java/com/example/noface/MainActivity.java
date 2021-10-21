@@ -210,6 +210,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     title = "Quản lí bài viết";
                     break;
                 }
+                case FRAGMENT_PASS: {
+                    title = "Đổi mật khẩu";
+                    break;
+                }
             }
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(title);
