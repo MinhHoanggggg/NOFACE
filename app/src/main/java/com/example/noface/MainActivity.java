@@ -1,5 +1,7 @@
 package com.example.noface;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,11 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.noface.Adapter.TopicAdapter;
 import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
+import com.example.noface.model.Posts;
 import com.example.noface.model.User;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,8 +49,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -116,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new HomeFragment());
             nav_view.setCheckedItem(R.id.nav_home);
             setTitleToolbar();
+
         }
 
         @SuppressLint("NonConstantResourceId")
@@ -313,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
 
         }
-    }
+}
 
 
 

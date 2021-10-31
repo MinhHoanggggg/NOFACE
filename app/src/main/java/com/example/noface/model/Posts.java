@@ -2,29 +2,21 @@ package com.example.noface.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.DateTimeException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Posts {
 
-
-
-    private int IDPost;
-    private String IDTopic;
-    private String IDUser;
-    private String Title;
-    private String Content;
-    private String Time;
-
-    public Posts(int IDPost, String IDTopic, String IDUser, String title, String content, String time, ArrayList<Like> likes, ArrayList<Comment> cmts) {
+    public Posts(int IDPost, int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<Likes> likes, ArrayList<Comment> comment) {
         this.IDPost = IDPost;
         this.IDTopic = IDTopic;
         this.IDUser = IDUser;
         Title = title;
         Content = content;
         Time = time;
+        ImagePost = imagePost;
         Likes = likes;
-        Cmts = cmts;
+        Comment = comment;
     }
 
     public int getIDPost() {
@@ -35,11 +27,11 @@ public class Posts {
         this.IDPost = IDPost;
     }
 
-    public String getIDTopic() {
+    public int getIDTopic() {
         return IDTopic;
     }
 
-    public void setIDTopic(String IDTopic) {
+    public void setIDTopic(int IDTopic) {
         this.IDTopic = IDTopic;
     }
 
@@ -75,25 +67,41 @@ public class Posts {
         Time = time;
     }
 
-    public ArrayList<Like> getLikes() {
+    public String getImagePost() {
+        return ImagePost;
+    }
+
+    public void setImagePost(String imagePost) {
+        ImagePost = imagePost;
+    }
+
+    public ArrayList<Likes> getLikes() {
         return Likes;
     }
 
-    public void setLikes(ArrayList<Like> likes) {
+    public void setLikes(ArrayList<Likes> likes) {
         Likes = likes;
     }
 
-    public ArrayList<Comment> getCmts() {
-        return Cmts;
+    public ArrayList<Comment> getComment() {
+        return Comment;
     }
 
-    public void setCmts(ArrayList<Comment> cmts) {
-        Cmts = cmts;
+    public void setComment(ArrayList<Comment> comment) {
+        Comment = comment;
     }
 
-    ArrayList<Like> Likes;
+    private int IDPost;
+    private int IDTopic;
+    private String IDUser;
+    private String Title;
+    private String Content;
+    private String Time;
+    private String ImagePost;
 
-    @SerializedName("Comment")
-    ArrayList<Comment> Cmts;
+    @SerializedName("lstLike")
+    private ArrayList<Likes> Likes;
 
+    @SerializedName("lstComment")
+    private ArrayList<Comment> Comment;
 }

@@ -1,5 +1,7 @@
 package com.example.noface.fragment;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +18,21 @@ import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
+import com.example.noface.service.ServiceAPI;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
     private RecyclerView rcv_posts;
-//    private HomeAdapter homeAdapter;
-    private ArrayList<String> danhSach;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
@@ -32,28 +41,41 @@ public class HomeFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
-//        rcv_posts.setFocusable(false);
-//
-//        homeAdapter = new HomeAdapter(getContext(), getDataPosts());
-//        rcv_posts.setAdapter(homeAdapter);
 
-        danhSach = new ArrayList<>();
-        for(int i=1;i<=10;i++){
-            danhSach.add("");
-        }
-        PostAdapter courseAdapter = new PostAdapter(danhSach, getContext());
-        rcv_posts.setAdapter(courseAdapter);
+        //API data postrending
+        PostTrending();
         return view;
     }
 
-    //getData từ API
-    private ArrayList<Posts> getDataPosts(){
-        ArrayList<Posts> list = new ArrayList<>();
-//        for (int i = 0; i < 20; i++){
-//            list.add(new Posts("Đây là Title \n" + "nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo nội dung demo" +
-//                    "nội dung demo nội dung demo","nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung" +
-//                    "nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung nội dung"));
-//        }
-        return list;
+    //    get data từ API
+    private void PostTrending() {
+
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.PostTrending()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ArrayList<Posts> posts) {
+        try {
+
+            PostAdapter postAdapter = new PostAdapter(posts, getContext());
+            rcv_posts.setAdapter(postAdapter);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        dismissProgressDialog();
+    }
+
+    private void handleError(Throwable throwable) {
+
     }
 }

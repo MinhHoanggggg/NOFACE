@@ -119,9 +119,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         );
     }
 
-
-
-
     private void handleResponse(ArrayList<Topic> topics) {
         try {
 //            showProgressDialog(getApplicationContext(), "Đang tải dữ liệu");

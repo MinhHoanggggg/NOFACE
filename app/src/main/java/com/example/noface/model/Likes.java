@@ -1,26 +1,25 @@
 package com.example.noface.model;
 
-public class Like {
-
-    public Like(String ID, String IDPost, String IDUser) {
+public class Likes {
+    public Likes(int ID, int IDPost, String IDUser) {
         this.ID = ID;
         this.IDPost = IDPost;
         this.IDUser = IDUser;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
-    public String getIDPost() {
+    public int getIDPost() {
         return IDPost;
     }
 
-    public void setIDPost(String IDPost) {
+    public void setIDPost(int IDPost) {
         this.IDPost = IDPost;
     }
 
@@ -32,8 +31,8 @@ public class Like {
         this.IDUser = IDUser;
     }
 
-    private String ID;
-    private String IDPost;
+    private int ID;
+    private int IDPost;
     private String IDUser;
 
 }
