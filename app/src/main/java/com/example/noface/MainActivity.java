@@ -38,6 +38,7 @@ import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
+import com.example.noface.fragment.TopicFragment;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
 import com.example.noface.service.ServiceAPI;
@@ -63,9 +64,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int FRAGMENT_HOME = 0;
+    private static final int FRAGMENT_POST_MANAGER = 1;
+    private static final int FRAGMENT_TOPIC = 2;
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_PROFILE = 4;
-    private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int MY_REQUEST_CODE = 10;
 
     private final ProfileFragment profileFragment = new ProfileFragment();
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     openPostManagerFragment();
                     break;
                 case R.id.nav_topic:
-                    startActivity(new Intent(this, TopicActivity.class));
+                    openTopicFragment();
                     break;
                 case R.id.nav_pass:
                     openPassFragment();
@@ -205,6 +207,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
+    private void openTopicFragment () {
+        if (CurrentFragment != FRAGMENT_TOPIC) {
+            replaceFragment(new TopicFragment());
+            CurrentFragment = FRAGMENT_TOPIC;
+        }
+    }
+
         private void setTitleToolbar () {
             String title = "";
             switch (CurrentFragment) {
@@ -212,10 +221,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     title = "Trang chủ";
                     break;
                 }
-
-//            case ACTIVITY_CATEGORY:
-//                title = "Chủ đề";
-//                break;
+                case FRAGMENT_TOPIC:
+                    title = "Chủ đề";
+                    break;
                 case FRAGMENT_PROFILE: {
                     title = "Thông tin tài khoản";
                     break;
