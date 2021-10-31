@@ -185,39 +185,7 @@ public class ProfileFragment extends Fragment {
                     showDialog();
                 }
                 if(lUser.getAvaPath()!=null){
-                    switch (lUser.getAvaPath()){
-                        case "ava1":
-                            imgAva.setImageResource(R.drawable.ava1);
-                            break;
-                        case "ava2":
-                            imgAva.setImageResource(R.drawable.ava2);
-                            break;
-                        case "ava3":
-                            imgAva.setImageResource(R.drawable.ava3);
-                            break;
-                        case "ava4":
-                            imgAva.setImageResource(R.drawable.ava4);
-                            break;
-                        case "ava5":
-                            imgAva.setImageResource(R.drawable.ava5);
-                            break;
-                        case "ava6":
-                            imgAva.setImageResource(R.drawable.ava6);
-                            break;
-                        case "ava7":
-                            imgAva.setImageResource(R.drawable.ava7);
-                            break;
-                        case "ava8":
-                            imgAva.setImageResource(R.drawable.ava8);
-                            break;
-                        case "ava9":
-                            imgAva.setImageResource(R.drawable.ava9);
-                            break;
-                        case "ava10":
-                            imgAva.setImageResource(R.drawable.ava10);
-                            break;
-                        default: break;
-                    }
+                    setAva(lUser.getAvaPath());
                 }
                 else
                     imgAva.setImageResource(R.drawable.ic_user);

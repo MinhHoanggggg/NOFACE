@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:orientation="vertical">
-
-    <Button
-        android:textAllCaps="false"
-        android:text="Bạn đang nghĩ gì?"
-        android:textColor="@color/black"
-        android:layout_margin="5dp"
-        android:background="@drawable/botron_btn"
-        app:backgroundTint="@null"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        >
+        <Button
+            android:id="@+id/btnCreatePost"
+            android:textAllCaps="false"
+            android:text="Bạn đang nghĩ gì?"
+            android:textColor="@color/black"
+            android:layout_margin="5dp"
+            android:background="@drawable/botron_btn"
+            app:backgroundTint="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_posts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:layout_margin="5dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_posts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="5dp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

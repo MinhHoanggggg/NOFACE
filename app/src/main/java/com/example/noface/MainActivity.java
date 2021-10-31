@@ -41,6 +41,7 @@ import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
+import com.example.noface.other.SetAvatar;
 import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -265,40 +266,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     lUser = snapshot.getValue(User.class);
                     if (lUser.getAvaPath() != null) {
-                        switch (lUser.getAvaPath()) {
-                            case "ava1":
-                                imgNavAva.setImageResource(R.drawable.ava1);
-                                break;
-                            case "ava2":
-                                imgNavAva.setImageResource(R.drawable.ava2);
-                                break;
-                            case "ava3":
-                                imgNavAva.setImageResource(R.drawable.ava3);
-                                break;
-                            case "ava4":
-                                imgNavAva.setImageResource(R.drawable.ava4);
-                                break;
-                            case "ava5":
-                                imgNavAva.setImageResource(R.drawable.ava5);
-                                break;
-                            case "ava6":
-                                imgNavAva.setImageResource(R.drawable.ava6);
-                                break;
-                            case "ava7":
-                                imgNavAva.setImageResource(R.drawable.ava7);
-                                break;
-                            case "ava8":
-                                imgNavAva.setImageResource(R.drawable.ava8);
-                                break;
-                            case "ava9":
-                                imgNavAva.setImageResource(R.drawable.ava9);
-                                break;
-                            case "ava10":
-                                imgNavAva.setImageResource(R.drawable.ava10);
-                                break;
-                            default:
-                                break;
-                        }
+                        SetAvatar setAvatar = new SetAvatar();
+                        setAvatar.SetAva(imgNavAva,lUser.getAvaPath());
                     } else
                         imgNavAva.setImageResource(R.drawable.ic_user);
 
