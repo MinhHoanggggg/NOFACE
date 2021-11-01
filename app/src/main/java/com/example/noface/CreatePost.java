@@ -5,6 +5,10 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.noface.model.Message;
+import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
@@ -30,13 +36,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 public class CreatePost extends AppCompatActivity {
     private ImageView imgAvatar;
@@ -68,11 +77,21 @@ public class CreatePost extends AppCompatActivity {
                 finish();
             }
         });
+
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
             int id = idTopic.get((int)spnTopic.getSelectedItemId());
-                Toast.makeText(getApplicationContext(), ("id:"+id), Toast.LENGTH_SHORT).show();
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String strDate = sdf.format(c.getTime());
+
+                Posts posts = new Posts(0, id,
+                                        user.getUid(), edtTitle.getText().toString(),
+                                        edtContent.getText().toString(), strDate, "", null, null);
+                AddPost(posts);
             }
         });
 
@@ -102,11 +121,10 @@ public class CreatePost extends AppCompatActivity {
 
             }
         });
-        PostTrending();
+        GetAllTopic();
 
     }
-    private void PostTrending() {
-
+    private void GetAllTopic() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -122,7 +140,7 @@ public class CreatePost extends AppCompatActivity {
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(this,"Đã có lỗi");
+        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
     private void handleResponse(ArrayList<Topic> topics) {
@@ -146,4 +164,41 @@ public class CreatePost extends AppCompatActivity {
         spnTopic.setAdapter(adapter);
     }
 
+    private void AddPost(Posts posts) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.AddPost(posts)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Message message) {
+        ShowNotifyUser.dismissProgressDialog();
+        if(message.getStatus() == 0){
+            ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+        }else{
+            showAlertDialogVui(this, message.getNotification());
+        }
+    }
+
+    public void showAlertDialogVui(Context context, String message){
+        new AlertDialog.Builder(context)
+                .setTitle("Thông báo")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(new Intent(CreatePost.this, MainActivity.class));
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_input_add)
+                .show();
+    }
 }

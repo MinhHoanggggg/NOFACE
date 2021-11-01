@@ -1,12 +1,14 @@
 package com.example.noface.service;
 
 
+import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -23,5 +25,6 @@ public interface ServiceAPI {
     @GET("get-all-post-by-id/{id}")
     Observable<ArrayList<Posts>> PostByTopic(@Query("id") int id);
 
-
+    @POST("post-post")
+    Observable<Message> AddPost(@Body Posts posts);
 }
