@@ -56,6 +56,8 @@ public class CreatePost extends AppCompatActivity {
         edtContent = findViewById(R.id.edtContent);
         spnTopic = findViewById(R.id.spnTopic);
         btnCreate = findViewById(R.id.btnCreate);
+        btnBack = findViewById(R.id.btnBack);
+
         ShowNotifyUser.showProgressDialog(this,"Đang tải...");
         setUI(user);
         btnBack.setOnClickListener(new View.OnClickListener() {

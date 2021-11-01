@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreatePost.class));
+                startActivity(new Intent(getActivity(),CreatePost.class));
             }
         });
         return view;
