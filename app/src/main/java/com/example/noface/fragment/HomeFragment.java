@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +43,7 @@ public class HomeFragment extends Fragment {
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
-
+        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 

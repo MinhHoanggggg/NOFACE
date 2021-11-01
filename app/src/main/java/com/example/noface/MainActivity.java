@@ -313,12 +313,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         PostByTopicFragment fragment = new PostByTopicFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("id", String.valueOf(id));
-        fragment.setArguments(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("id", String.valueOf(id));
+//        fragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.content_frame, fragment);
         fragmentTransaction.commit();
+        if (fragment != null) {
+            fragment.idTopic = id;
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Hông có tìm thấy Fragment2 mà đòi truyền", Toast.LENGTH_LONG).show();
+        }
+            ////
+
     }
 }
 

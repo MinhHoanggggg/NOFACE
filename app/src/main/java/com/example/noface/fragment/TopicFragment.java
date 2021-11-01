@@ -3,6 +3,7 @@ package com.example.noface.fragment;
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +87,11 @@ public class TopicFragment extends Fragment {
             TopicAdapter topicAdapter = new TopicAdapter(topics, getContext(), new TopicAdapter.TopicAdapterListener() {
                 @Override
                 public void click(View view, int position) {
-                    iClickListener.sendData(6);
+                  int topicId =  topics.get(position).getIDTopic();
+
+                    iClickListener.sendData(topicId);
+
+
                 }
             });
             rcvTopicList.setAdapter(topicAdapter);

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.example.noface.CreatePost;
 import com.example.noface.R;
 import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Topic;
 import com.example.noface.service.ServiceAPI;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -32,25 +34,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostByTopicFragment extends Fragment{
     private Button btnCreatePost;
     private RecyclerView rcv_posts;
-    int id;
+    public  int idTopic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
+        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_post_by_topic, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
-
+        Toast.makeText(getContext(), "Post Topic", Toast.LENGTH_SHORT).show();
         Bundle bundle = getArguments();
         if(bundle != null){
             PostByTopic(bundle.getInt("id"));
         }
 
 //        //API data postrending
-//        PostByTopic(id);
+        PostByTopic(idTopic);
 //        ///
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +91,7 @@ public class PostByTopicFragment extends Fragment{
     }
 
     private void handleError(Throwable throwable) {
-
+        Toast.makeText(getContext(), "LOi cmmr", Toast.LENGTH_SHORT).show();
     }
+
 }

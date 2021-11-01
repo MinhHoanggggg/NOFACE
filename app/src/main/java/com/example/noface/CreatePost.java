@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
@@ -46,6 +47,7 @@ public class CreatePost extends AppCompatActivity {
     private ImageButton btnBack;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
+    ArrayList<Integer> idTopic = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,8 @@ public class CreatePost extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            int id = idTopic.get((int)spnTopic.getSelectedItemId());
+                Toast.makeText(getApplicationContext(), ("id:"+id), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,11 +128,13 @@ public class CreatePost extends AppCompatActivity {
     private void handleResponse(ArrayList<Topic> topics) {
         ShowNotifyUser.dismissProgressDialog();
         ArrayList<String> lstName = new ArrayList<>();
+
         for (int i =0; i<topics.size();i++){
             Topic topic = topics.get(i);
 
             if(topic !=null) {
                lstName.add(topic.getTopicName());
+                idTopic.add(topic.getIDTopic());
             }
         }
         changeSpn(lstName);
