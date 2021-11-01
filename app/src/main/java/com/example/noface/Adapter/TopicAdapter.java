@@ -10,10 +10,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.noface.MainActivity;
 import com.example.noface.PostActivity;
 import com.example.noface.R;
+import com.example.noface.fragment.PostByTopicFragment;
+import com.example.noface.inter.FragmentInterface;
+import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.other.ItemClickListener;
 
@@ -21,13 +26,16 @@ import java.util.ArrayList;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
 
-    public TopicAdapter(ArrayList<Topic> lstTopic, Context context) {
+
+    public TopicAdapter(ArrayList<Topic> lstTopic, Context context, TopicAdapterListener topicAdapterListener) {
         this.lstTopic = lstTopic;
         this.context = context;
+        this.topicAdapterListener = topicAdapterListener;
     }
 
     private final ArrayList<Topic> lstTopic;
     private Context context;
+    private TopicAdapterListener topicAdapterListener;
 
     @NonNull
     @Override
@@ -38,13 +46,24 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txt_title.setText(lstTopic.get(position).getTopicName());
+        Topic lsttopic = lstTopic.get(position);
+
+        holder.txt_title.setText(lsttopic.getTopicName());
 //        holder.txtcontent.setText(new StringBuilder(lstTopic.get(position).title.substring(0,20).append("...").toString()));
 
-        holder.setItemClickListener(new ItemClickListener() {
+//        holder.txt_title.setOnClickListener(new View.OnClickListener() {
+
+//            @Override
+//            public void onClick(View view) {
+////                iClickListener.sendData(lsttopic.getIDTopic());
+//                Toast.makeText(view.getContext(), "bạng đã chọn "+ lsttopic.getIDTopic(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        holder.setItemClickListener(new ItemClickListener(){
             @Override
             public void onItemClick(View v, int pos) {
-                Toast.makeText(context, "Đã chọn chủ đề: "+ holder.txt_title.getText(), Toast.LENGTH_SHORT).show();
+                topicAdapterListener.click(v,pos);
             }
         });
     }
@@ -63,9 +82,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_title = itemView.findViewById(R.id.txt_title);
-
             itemView.setOnClickListener(this);
         }
+
+
         @Override
         public void onClick(View view) {
             this.itemClickListener.onItemClick(view, getAdapterPosition());
@@ -73,5 +93,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
         public void setItemClickListener(ItemClickListener ic) {
             this.itemClickListener = ic;
         }
+
+
+    }
+    public interface TopicAdapterListener{
+        void click(View view,int position);
     }
 }

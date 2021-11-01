@@ -39,39 +39,39 @@ public class PostManagerFragment extends Fragment {
 //        for(int i=1;i<=10;i++){
 //            danhSach.add("");
 //        }
-        GetPostByTopic();
+//        GetPostByTopic();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
         return view;
     }
 
-    //get data từ API
-    private void GetPostByTopic() {
-
-        ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE_Service)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ServiceAPI.class);
-
-        new CompositeDisposable().add(requestInterface.GetPostByID(6)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
-        );
-
-    }
-
-    private void handleResponse(ArrayList<Posts> posts) {
+//    //get data từ API
+//    private void GetPostByTopic() {
 //
-//        PostManagerAdapter adapter = new PostManagerAdapter(posts, getContext());
-//        rcv_posts.setAdapter(adapter);
-    }
-
-
-    private void handleError(Throwable throwable) {
-//        dismissProgressDialog();
-        Toast.makeText(getContext(), "Sẽ cập nhật sau", Toast.LENGTH_SHORT).show();
-    }
+//        ServiceAPI requestInterface = new Retrofit.Builder()
+//                .baseUrl(BASE_Service)
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build().create(ServiceAPI.class);
+//
+//        new CompositeDisposable().add(requestInterface.GetPostByID(6)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponse, this::handleError)
+//        );
+//
+//    }
+//
+//    private void handleResponse(ArrayList<Posts> posts) {
+////
+////        PostManagerAdapter adapter = new PostManagerAdapter(posts, getContext());
+////        rcv_posts.setAdapter(adapter);
+//    }
+//
+//
+//    private void handleError(Throwable throwable) {
+////        dismissProgressDialog();
+//        Toast.makeText(getContext(), "Sẽ cập nhật sau", Toast.LENGTH_SHORT).show();
+//    }
 }
