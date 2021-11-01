@@ -18,7 +18,9 @@
             android:textAllCaps="false"
             android:text="Bạn đang nghĩ gì?"
             android:textColor="@color/black"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:background="@drawable/botron_btn"
             app:backgroundTint="@null"
             android:layout_width="match_parent"
@@ -27,9 +29,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_posts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="5dp"/>
+            android:layout_height="wrap_content" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

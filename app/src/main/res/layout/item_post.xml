@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true"
-    app:cardElevation="5dp">
+    app:cardElevation="3dp">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -69,45 +69,38 @@
 
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal">
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="(4) Yêu thích"
+                android:textColor="@color/black" />
+
             <TextView
                 android:id="@+id/txtCmt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="Bình luận (10)"
-                android:gravity="top|right"
-                android:textColor="@color/black"/>
-            <Button
-                android:layout_marginTop="2dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                app:backgroundTint="@null"
-                android:background="@drawable/ic_postcmt"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="(4) Hưởng ứng"
-                android:gravity="bottom"
-                android:textColor="@color/black"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:textColor="@color/black"
-                android:gravity="center"/>
-            <Button
-                android:layout_marginTop="2dp"
+                android:textColor="@color/black" />
+
+            <ImageButton
+                android:paddingLeft="40dp"
+                android:background="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:backgroundTint="@null"
-                android:background="@drawable/ic_share_no"/>
+                android:src="@drawable/ic_share_no"
+                app:backgroundTint="@null" />
         </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
