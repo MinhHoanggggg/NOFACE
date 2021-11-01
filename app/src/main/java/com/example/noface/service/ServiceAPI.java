@@ -21,7 +21,7 @@ public interface ServiceAPI {
     Observable<ArrayList<Posts>> PostTrending();
 
     @GET("get-all-post-by-id")
-    Observable<ArrayList<Posts>> GetPostByID(@Query("id") int id);
+    Observable<ArrayList<Posts>> PostByTopic(@Query("id") int id);
 
 
 }

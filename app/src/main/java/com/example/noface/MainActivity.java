@@ -36,9 +36,11 @@ import com.bumptech.glide.Glide;
 import com.example.noface.Adapter.TopicAdapter;
 import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
+import com.example.noface.fragment.PostByTopicFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
+import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
@@ -62,10 +64,11 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInterface{
 
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_POST_MANAGER = 1;
+    private static final int FRAGMENT_POST_BY_TOPIC = 1;
     private static final int FRAGMENT_TOPIC = 2;
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_PROFILE = 4;
@@ -304,6 +307,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
 
         }
+
+    @Override
+    public void sendData(int id) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        PostByTopicFragment fragment = new PostByTopicFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id", String.valueOf(id));
+        fragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame, fragment);
+        fragmentTransaction.commit();
+    }
 }
 
 
