@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.example.noface.R;
 
 public class SetAvatar {
-    public void SetAva(ImageView img, String path){
+    public static  void SetAva(ImageView img, String path){
 
             switch (path){
                 case "ava1":

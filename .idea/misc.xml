@@ -33,7 +33,7 @@
         <entry key="app/src/main/res/drawable/custom_login.xml" value="0.221875" />
         <entry key="app/src/main/res/drawable/custom_table.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/ic_nav.xml" value="0.11354166666666667" />
-        <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.39300411522633744" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.335" />
@@ -52,6 +52,7 @@
         <entry key="app/src/main/res/layout/item_ava.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_post.xml" value="0.12545289855072464" />
+        <entry key="app/src/main/res/layout/item_spinner.xml" value="0.10914855072463768" />
         <entry key="app/src/main/res/layout/item_topic.xml" value="0.12545289855072464" />
         <entry key="app/src/main/res/layout/layout_login.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_register.xml" value="0.335" />
