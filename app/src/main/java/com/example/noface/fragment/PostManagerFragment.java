@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.Adapter.PostAdapter;
-import com.example.noface.Adapter.PostManagerAdapter;
+
 import com.example.noface.CreatePost;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
