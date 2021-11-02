@@ -22,6 +22,7 @@ import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +38,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.lstPost = lstPost;
         this.context = context;
     }
+
 
     private ArrayList<Posts> lstPost;
     private Context context;
@@ -63,7 +65,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         String date = lstPost.get(position).getTime();
         String title = lstPost.get(position).getTitle();
         String content = lstPost.get(position).getContent();
-
+        setUserPost(idUser.trim(),holder.imgAvatar);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -111,5 +113,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             this.itemClickListener = ic;
         }
     }
+    public void setUserPost(String idUser,ImageView img){
 
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        String refName = idUser;
+        DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User lUser = snapshot.getValue(User.class);
+                    SetAvatar.SetAva(img,lUser.getAvaPath());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }

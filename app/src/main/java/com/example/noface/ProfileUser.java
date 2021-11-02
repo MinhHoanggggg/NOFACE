@@ -1,29 +1,22 @@
-package com.example.noface.fragment;
+package com.example.noface;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.noface.Adapter.PostAdapter;
 
-import com.example.noface.CreatePost;
-import com.example.noface.R;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.model.Posts;
-import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
@@ -45,47 +38,41 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostManagerFragment extends Fragment {
-    private Button btnCreatePost;
-    private RecyclerView rcv_posts;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+public class ProfileUser extends AppCompatActivity {
+
+    private RecyclerView rcv_posts_user;
+
     private User lUser;
-    private ImageView img_mng_Ava;
-    private TextView txtName;
-
+    private ImageView img_user_Ava;
+    private TextView txtNameUser;
+    private ImageButton btnUserBack;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_posts_manager, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_user);
 
-        rcv_posts = view.findViewById(R.id.rcv_posts);
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
-        img_mng_Ava = view.findViewById(R.id.img_mng_Ava);
-        txtName = view.findViewById(R.id.txtName);
+        rcv_posts_user = findViewById(R.id.rcv_posts_user);
+        btnUserBack = findViewById(R.id.btnUserBack);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rcv_posts.setLayoutManager(linearLayoutManager);
-
-        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
-
-        //API data
-        String userid = user.getUid();
-        Wall(userid);
-        ///Set UI
-        setUI(user);
-
-
-        //cuộn nuột hơn
-        rcv_posts.setHasFixedSize(true);
-        ///
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
+        img_user_Ava = findViewById(R.id.img_user_Ava);
+        txtNameUser =  findViewById(R.id.txtNameUser);
+        ///Get ID
+        Intent intent = getIntent();
+        String idUser = intent.getStringExtra("idUser");
+        //
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcv_posts_user.setLayoutManager(linearLayoutManager);
+        //Set UI
+        Wall(idUser.trim());
+        setUI(idUser.trim());
+        ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
+        btnUserBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreatePost.class));
+                finish();
             }
         });
-        return view;
     }
-
     //    get data từ API
     private void Wall(String userid) {
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -103,8 +90,8 @@ public class PostManagerFragment extends Fragment {
 
     private void handleResponse(ArrayList<Posts> posts) {
         try {
-            PostAdapter postAdapter = new PostAdapter(posts, getContext());
-            rcv_posts.setAdapter(postAdapter);
+            PostAdapter postAdapter = new PostAdapter(posts, ProfileUser.this);
+            rcv_posts_user.setAdapter(postAdapter);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -113,25 +100,25 @@ public class PostManagerFragment extends Fragment {
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
 
-    private void setUI(FirebaseUser user) {
+    private void setUI(String idUser) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = user.getUid().toString();
+        String refName = idUser;
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lUser = snapshot.getValue(User.class);
                 if (!lUser.getName().isEmpty()) {
-                    txtName.setText(lUser.getName());
+                    txtNameUser.setText(lUser.getName());
                 }
                 if (lUser.getAvaPath() != null) {
-                    SetAvatar.SetAva(img_mng_Ava,lUser.getAvaPath());
+                    SetAvatar.SetAva(img_user_Ava,lUser.getAvaPath());
                 } else
-                    img_mng_Ava.setImageResource(R.drawable.ic_user);
+                    img_user_Ava.setImageResource(R.drawable.ic_user);
             }
 
             @Override
