@@ -5,6 +5,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.noface.Adapter.CommentAdapter;
+import com.example.noface.Adapter.TopicAdapter;
+import com.example.noface.model.Comment;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
@@ -38,11 +42,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity {
-    private TextView tvlike, tvName, tvDate, tvTitle, tvContent,tvCate;
+    private TextView tvName, tvDate, tvTitle, tvContent,tvCate;
     private ImageView imgAvatar, imgAvatarUser;
     private EditText edt_cmt;
     private ImageButton btnSend;
     private RecyclerView rcv_cmt;
+    private Button btnLike,btnCmt;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
     String idUser;
@@ -58,8 +63,9 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        tvlike = findViewById(R.id.tvlike);
         tvName = findViewById(R.id.tvName);
+        btnLike = findViewById(R.id.btnLike);
+        btnCmt = findViewById(R.id.btnCmt);
         tvCate = findViewById(R.id.tvCate);
         tvDate = findViewById(R.id.tvDate);
         tvTitle = findViewById(R.id.tvTitle);
@@ -79,32 +85,33 @@ public class PostActivity extends AppCompatActivity {
          content = intent.getStringExtra("content");
         setUI();
 
+        int idpost = idPost;
+        GetCmt(idpost);
     }
 
 
-    public void onClickBtn(View view) {
-        tvlike.setText("Bạn và 1k\nHưởng ứng");
-        if (f == false) {
-            tvlike.setText("Bạn và 1k\nHưởng ứng");
-            f = true;
-        } else {
-            tvlike.setText("1k\nHưởng ứng");
-            f = false;
-        }
-    }
+//    public void onClickBtn(View view) {
+//        tvlike.setText("Bạn và 1k\nHưởng ứng");
+//        if (f == false) {
+//            tvlike.setText("Bạn và 1k\nHưởng ứng");
+//            f = true;
+//        } else {
+//            tvlike.setText("1k\nHưởng ứng");
+//            f = false;
+//        }
+//    }
 
     public void setUI() {
-        ShowNotifyUser.showProgressDialog(this,"Đang tải...");
+        ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
         tvDate.setText(date);
         tvContent.setText(content);
         tvTitle.setText(title);
         GetAllTopic();
         setUserPost(idUser.trim());
         setUser(user);
-
     }
 
-    //get Topic API
+    //=============================get Topic API=============================
     private void GetAllTopic() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -119,24 +126,54 @@ public class PostActivity extends AppCompatActivity {
         );
     }
 
-    private void handleError(Throwable throwable) {
-
-        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
-    }
-
     private void handleResponse(ArrayList<Topic> topics) {
         for(int i =0; i<topics.size();i++ ){
             Topic topic = topics.get(i);
             int id = topic.getIDTopic();
             if(topic !=null && id == idTopic) {
 
-                    tvCate.setText(topic.getTopicName());
+                tvCate.setText(topic.getTopicName());
 
             }
         }
         ShowNotifyUser.dismissProgressDialog();
 
     }
+    //=============================end get Topic API=============================
+
+    //=============================get Cmt API===================================
+    private void GetCmt(int id) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetCmt(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse1, this::handleError)
+        );
+    }
+
+    private void handleResponse1(ArrayList<Comment> comments) {
+        try {
+
+            //set adapter cho rcv
+            CommentAdapter cmtAdapter = new CommentAdapter(comments, PostActivity.this);
+            rcv_cmt.setAdapter(cmtAdapter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        ShowNotifyUser.dismissProgressDialog();
+    }
+    //=============================end get Cmt API===================================
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+    }
+
     private void setUserPost(String idUser){
 
 //         Uri photoUrl = user.getPhotoUrl();
@@ -192,6 +229,6 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
 }

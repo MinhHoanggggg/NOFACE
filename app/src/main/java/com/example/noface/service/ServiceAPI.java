@@ -1,6 +1,7 @@
 package com.example.noface.service;
 
 
+import com.example.noface.model.Comment;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
@@ -30,4 +31,7 @@ public interface ServiceAPI {
 
     @GET("get-all-post-by-user/{id}")
     Observable<ArrayList<Posts>> Wall(@Query("id") String id);
+
+    @GET("get-all-cmt-by-id/{id}")
+    Observable<ArrayList<Comment>> GetCmt(@Query("id") int id);
 }

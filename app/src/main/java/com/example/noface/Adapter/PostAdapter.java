@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,15 @@ import com.example.noface.R;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
+import com.example.noface.model.User;
 import com.example.noface.other.ItemClickListener;
+import com.example.noface.other.SetAvatar;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -43,13 +52,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txt_title.setText(lstPost.get(position).getTitle());
         holder.tvTime.setText(lstPost.get(position).getTime());
-//        holder.txtCmt.setText(lstPost.get(position).getLikes().size());
+
+//      holder.txtCmt.setText(lstPost.get(position).getLikes().size());
         int idTopic =lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
         String idUser = lstPost.get(position).getIDUser();
         String date = lstPost.get(position).getTime();
         String title = lstPost.get(position).getTitle();
         String content = lstPost.get(position).getContent();
+
+
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -61,7 +73,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("title",title);
                 intent.putExtra("content",content);
                 context.startActivity(intent);
-
             }
         });
     }
@@ -73,6 +84,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView txt_title, tv_name, tvTime, txtCmt;
+        public ImageView imgAvatar;
+
 
         public ItemClickListener itemClickListener;
         public ViewHolder(@NonNull View itemView) {
@@ -81,6 +94,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tv_name = itemView.findViewById(R.id.tv_name);
             tvTime = itemView.findViewById(R.id.tvTime);
             txtCmt = itemView.findViewById(R.id.txtCmt);
+            imgAvatar = itemView.findViewById(R.id.imgAvatar);
+
             itemView.setOnClickListener(this);
         }
 
@@ -92,4 +107,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             this.itemClickListener = ic;
         }
     }
+
 }

@@ -22,10 +22,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp">
-                <ImageView android:id="@+id/imgAvatar"
-                    android:background="@drawable/ic_user"
+
+                <ImageView
+                    android:id="@+id/imgAvatar"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_user" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -38,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full name"
-                        android:textColor="@color/black"
+                        android:textColor="#737373"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
@@ -47,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Day - time"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -73,11 +76,12 @@
                 android:layout_marginRight="10dp"/>
 
             <TextView
+                android:padding="5dp"
                 android:id="@+id/tvContent"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
@@ -87,51 +91,58 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray"
+                android:background="#D6D6D6"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"/>
+
             <LinearLayout
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-                <ToggleButton
-                    android:id="@+id/like"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnLike"
+                    android:textAllCaps="false"
+                    android:background="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="onClickBtn"
-                    android:textOn=""
-                    android:textOff=""
-                    android:background="@drawable/ic_btn_likes" />
-                <TextView
-                    android:id="@+id/tvlike"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="1k\nHưởng ứng"
+                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:gravity=""/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"/>
+                    android:text="(4) Yêu thích" />
+
                 <Button
-                    android:layout_marginTop="2dp"
+                    android:id="@+id/btnCmt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:background="@color/white"
                     app:backgroundTint="@null"
-                    android:background="@drawable/ic_share_no"/>
+                    android:gravity="center"
+                    android:text="Bình luận (10)"
+                    android:textColor="@color/black" />
+
+                <!--                <ImageButton-->
+<!--                    android:paddingLeft="40dp"-->
+<!--                    android:background="@color/white"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:src="@drawable/ic_share_no"-->
+<!--                    app:backgroundTint="@null" />-->
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray"
+                android:background="#D6D6D6"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"/>
+
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_weight="5"
@@ -139,33 +150,38 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
 
+
+
         <LinearLayout
+            android:padding="10dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/imgAvatarUser"
-                android:background="@drawable/ic_user"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:layout_width="0dp"/>
+                android:background="@drawable/ic_user"/>
+
             <EditText
                 android:id="@+id/edt_cmt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:paddingLeft="10sp"
-                android:textSize="20sp"
-                android:hint="Text here" />
+                android:hint="Nhập bình luận..."
+                android:paddingLeft="15sp"
+                android:textSize="17sp" />
+
             <ImageButton
+                android:layout_marginBottom="5dp"
                 android:id="@+id/btnSend"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_sendcmt"
-                android:layout_height="25sp"
-                android:layout_weight="1"
-                android:layout_width="0dp"/>
+                android:background="@drawable/ic_send" />
         </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

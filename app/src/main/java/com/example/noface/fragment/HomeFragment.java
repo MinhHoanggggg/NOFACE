@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment {
 
     //    get data từ API
     private void PostTrending() {
-
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
