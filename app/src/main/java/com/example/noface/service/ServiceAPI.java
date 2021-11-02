@@ -27,4 +27,7 @@ public interface ServiceAPI {
 
     @POST("post-post")
     Observable<Message> AddPost(@Body Posts posts);
+
+    @GET("get-all-post-by-user/{id}")
+    Observable<ArrayList<Posts>> Wall(@Query("id") String id);
 }

@@ -22,6 +22,7 @@ import com.example.noface.CreatePost;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
+import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -43,13 +44,14 @@ public class HomeFragment extends Fragment {
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
-        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
+        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng mang động...");
         //API data postrending
         PostTrending();
-        ///
+
         btnCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,10 +86,11 @@ public class HomeFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-//        dismissProgressDialog();
+        ShowNotifyUser.dismissProgressDialog();
     }
 
     private void handleError(Throwable throwable) {
-
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 }

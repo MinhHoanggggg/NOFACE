@@ -21,6 +21,7 @@ import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Topic;
+import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -59,6 +60,7 @@ public class TopicFragment extends Fragment {
         //cuộn nuột hơn
         rcvTopicList.setHasFixedSize(true);
 
+        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng mang động...");
         //get data từ api
         GetAllTopic();
         return view;
@@ -82,16 +84,13 @@ public class TopicFragment extends Fragment {
 
     private void handleResponse(ArrayList<Topic> topics) {
         try {
-//            showProgressDialog(getContext(), "Đang tải dữ liệu");
+
             //set adapter cho rcv
             TopicAdapter topicAdapter = new TopicAdapter(topics, getContext(), new TopicAdapter.TopicAdapterListener() {
                 @Override
                 public void click(View view, int position) {
                   int topicId =  topics.get(position).getIDTopic();
-
                     iClickListener.sendData(topicId);
-
-
                 }
             });
             rcvTopicList.setAdapter(topicAdapter);
@@ -99,12 +98,12 @@ public class TopicFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-//        dismissProgressDialog();
+        ShowNotifyUser.dismissProgressDialog();
     }
 
 
     private void handleError(Throwable throwable) {
-//        dismissProgressDialog();
-        Toast.makeText(getContext(), "Đã có lỗi xãy ra!!!", Toast.LENGTH_SHORT).show();
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 }

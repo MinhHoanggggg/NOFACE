@@ -45,7 +45,7 @@ public class PostByTopicFragment extends Fragment{
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
-        Toast.makeText(getContext(), "Post Topic", Toast.LENGTH_SHORT).show();
+
         Bundle bundle = getArguments();
         if(bundle != null){
             PostByTopic(bundle.getInt("id"));
