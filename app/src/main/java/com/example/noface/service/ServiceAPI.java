@@ -34,4 +34,7 @@ public interface ServiceAPI {
 
     @GET("get-all-cmt-by-id/{id}")
     Observable<ArrayList<Comment>> GetCmt(@Query("id") int id);
+
+    @POST("post-cmt")
+    Observable<Message> SendCmt(@Body Comment comment);
 }

@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="5dp"
+    android:padding="5dp">
 
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@drawable/ic_user" />
 
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            tools:ignore="RtlSymmetry">
+            <TextView
+                android:id="@+id/tv_name"
+                android:text="Ẩn danh"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/black"
+                android:id="@+id/txtcmt"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+        </LinearLayout>
 </LinearLayout>

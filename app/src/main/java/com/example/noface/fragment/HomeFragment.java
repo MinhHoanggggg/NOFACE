@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
-        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng mang động...");
+        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
         //API data postrending
         PostTrending();
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.PostActivity;
 import com.example.noface.R;
 import com.example.noface.model.Comment;
+import com.example.noface.model.Likes;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
@@ -56,6 +57,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //      holder.txtCmt.setText(lstPost.get(position).getLikes().size());
         int idTopic =lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
+//        ArrayList<Likes> idLike = lstPost.get(position).getLikes();
+
         String idUser = lstPost.get(position).getIDUser();
         String date = lstPost.get(position).getTime();
         String title = lstPost.get(position).getTitle();
@@ -72,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("date",date);
                 intent.putExtra("title",title);
                 intent.putExtra("content",content);
+//                intent.putExtra("like", )
                 context.startActivity(intent);
             }
         });
