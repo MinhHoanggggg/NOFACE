@@ -38,7 +38,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:id="@+id/imgNavAva"
+                android:id="@+id/img_mng_Ava"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_user" />
@@ -55,11 +55,11 @@
             </LinearLayout>
 
             <TextView
-                app:layout_constraintTop_toBottomOf="@id/imgNavAva"
-                app:layout_constraintLeft_toLeftOf="@id/imgNavAva"
-                app:layout_constraintRight_toRightOf="@id/imgNavAva"
+                app:layout_constraintTop_toBottomOf="@id/img_mng_Ava"
+                app:layout_constraintLeft_toLeftOf="@id/img_mng_Ava"
+                app:layout_constraintRight_toRightOf="@id/img_mng_Ava"
                 android:id="@+id/txtName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"

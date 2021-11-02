@@ -50,7 +50,7 @@ public class PostManagerFragment extends Fragment {
     private RecyclerView rcv_posts;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
-    private ImageView imgAva;
+    private ImageView img_mng_Ava;
     private TextView txtName;
 
     @Override
@@ -59,7 +59,7 @@ public class PostManagerFragment extends Fragment {
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
         btnCreatePost = view.findViewById(R.id.btnCreatePost);
-        imgAva = view.findViewById(R.id.imgAva);
+        img_mng_Ava = view.findViewById(R.id.img_mng_Ava);
         txtName = view.findViewById(R.id.txtName);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -129,9 +129,9 @@ public class PostManagerFragment extends Fragment {
                     txtName.setText(lUser.getName());
                 }
                 if (lUser.getAvaPath() != null) {
-                    SetAvatar.SetAva(imgAva,lUser.getAvaPath());
+                    SetAvatar.SetAva(img_mng_Ava,lUser.getAvaPath());
                 } else
-                    imgAva.setImageResource(R.drawable.ic_user);
+                    img_mng_Ava.setImageResource(R.drawable.ic_user);
             }
 
             @Override
