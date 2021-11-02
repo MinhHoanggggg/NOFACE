@@ -87,6 +87,21 @@ public class PostActivity extends AppCompatActivity {
 
         int idpost = idPost;
         GetCmt(idpost);
+        Intent intent1 = new Intent(PostActivity.this, ProfileUser.class);
+        tvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent1.putExtra("idUser",idUser);
+                startActivity(intent1);
+            }
+        });
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent1.putExtra("idUser",idUser);
+                startActivity(intent1);
+            }
+        });
     }
 
 
