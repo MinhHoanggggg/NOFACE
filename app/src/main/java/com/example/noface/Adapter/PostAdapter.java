@@ -2,6 +2,7 @@ package com.example.noface.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +44,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.txt_title.setText(lstPost.get(position).getTitle());
         holder.tvTime.setText(lstPost.get(position).getTime());
 //        holder.txtCmt.setText(lstPost.get(position).getLikes().size());
-
+        int idTopic =lstPost.get(position).getIDTopic();
+        int idPost = lstPost.get(position).getIDPost();
+        String idUser = lstPost.get(position).getIDUser();
+        String date = lstPost.get(position).getTime();
+        String title = lstPost.get(position).getTitle();
+        String content = lstPost.get(position).getContent();
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                context.startActivity(new Intent(context, PostActivity.class));
+                Intent intent = new Intent(context, PostActivity.class);
+                intent.putExtra("idTopic",idTopic);
+                intent.putExtra("idPost",idPost);
+                intent.putExtra("idUser",idUser);
+                intent.putExtra("date",date);
+                intent.putExtra("title",title);
+                intent.putExtra("content",content);
+                context.startActivity(intent);
+
             }
         });
     }
