@@ -39,6 +39,7 @@ public interface ServiceAPI {
     @POST("post-cmt")
     Observable<Message> SendCmt(@Body Comment comment);
 
-    @POST("like-post")
-    Observable<Message> Like(@Body Likes likes);
+    @POST("like-post/{idpost}/{iduser}")
+    Observable<Message> Like(@Query("idpost") int idpost,
+                             @Query("iduser") String iduser);
 }

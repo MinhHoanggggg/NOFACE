@@ -63,13 +63,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
         String id = user.getUid();
         for(Likes likes : alLikes){
-            holder.CbLike.setChecked(id.equals(idlike));
+            holder.CbLike.setChecked(id.equals(likes.getIDUser().trim()));
         }
 
 
         int idTopic =lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
-//        int idLike = alLikes.get(position).getID();
         String idUser = lstPost.get(position).getIDUser();
         String date = lstPost.get(position).getTime();
         String title = lstPost.get(position).getTitle();
@@ -87,6 +86,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("date",date);
                 intent.putExtra("title",title);
                 intent.putExtra("content",content);
+                intent.putExtra("likes", alLikes.size());
                 Boolean checkLike = holder.CbLike.isChecked();
                 intent.putExtra("checklike", checkLike);
                 context.startActivity(intent);

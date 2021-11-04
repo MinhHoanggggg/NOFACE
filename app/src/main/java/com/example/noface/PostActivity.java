@@ -51,7 +51,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity {
-    private TextView tvName, tvDate, tvTitle, tvContent,tvCate, tv_namePhake, txtcmtPhake;
+    private TextView tvName, tvDate, tvTitle, tvContent,tvCate, tv_namePhake, txtcmtPhake, txtlike;
     private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake;
     private EditText edt_cmt;
     private ImageButton btnSend;
@@ -60,8 +60,7 @@ public class PostActivity extends AppCompatActivity {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
     String idUser;
-    int idTopic;
-    int idPost;
+    int idTopic, sumLike, idPost;
     String date;
     String title;
     String content;
@@ -85,6 +84,7 @@ public class PostActivity extends AppCompatActivity {
         tv_namePhake = findViewById(R.id.tv_namePhake);
         txtcmtPhake = findViewById(R.id.txtcmtPhake);
         imgAvatarPhake = findViewById(R.id.imgAvatarPhake);
+        txtlike = findViewById(R.id.txtlike);
 
         Intent intent = getIntent();
          idUser = intent.getStringExtra("idUser");
@@ -93,11 +93,12 @@ public class PostActivity extends AppCompatActivity {
          date = intent.getStringExtra("date");
          title = intent.getStringExtra("title");
          content = intent.getStringExtra("content");
+         sumLike = intent.getIntExtra("likes", 0);
          checkLike = intent.getBooleanExtra("checklike",false);
 
-//         if(checkLike){
-//             CbLike.setChecked(true);
-//         }
+         if(checkLike){
+             CbLike.setChecked(true);
+         }
         setUI();
 
         int idpost = idPost;
@@ -141,11 +142,14 @@ public class PostActivity extends AppCompatActivity {
         CbLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(checkLike){
-////                    Like();
-//                }else {
-//
-//                }
+                int dem = Integer.parseInt(txtlike.getText().toString());
+                if(!CbLike.isChecked()){
+                    dem--;
+                }else{
+                    dem++;
+                }
+                txtlike.setText(String.valueOf(dem));
+                Like(idpost, user.getUid());
             }
         });
     }
@@ -158,6 +162,7 @@ public class PostActivity extends AppCompatActivity {
         GetAllTopic();
         setUserPost(idUser.trim());
         setUser(user);
+        txtlike.setText(String.valueOf(sumLike));
     }
 
     //=============================get Topic API=============================
@@ -244,23 +249,27 @@ public class PostActivity extends AppCompatActivity {
     //=============================end post Cmt API===================================
 
     //=============================get like API===================================
-//    private void Like(Likes likes) {
-//        ServiceAPI requestInterface = new Retrofit.Builder()
-//                .baseUrl(BASE_Service)
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build().create(ServiceAPI.class);
-//
-//        new CompositeDisposable().add(requestInterface.Like(likes)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponseLike, this::handleError)
-//        );
-//    }
-//
-//    private void handleResponseLike(Message message) {
-//
-//    }
+    private void Like(int idPost, String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.Like(idPost, idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseLike, this::handleError)
+        );
+    }
+
+    private void handleResponseLike(Message message) {
+        if(message.getStatus() == 1)
+            Toast.makeText(getApplicationContext(), "Thank you <3", Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+        }
+    }
     //=============================get like API===================================
 
     private void handleError(Throwable throwable) {
