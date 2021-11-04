@@ -99,9 +99,7 @@ public class Posts {
     private String Time;
     private String ImagePost;
 
-    @SerializedName("lstLike")
     private ArrayList<Likes> Likes;
 
-    @SerializedName("lstComment")
     private ArrayList<Comment> Comment;
 }

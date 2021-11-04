@@ -2,6 +2,7 @@ package com.example.noface.service;
 
 
 import com.example.noface.model.Comment;
+import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
@@ -37,4 +38,7 @@ public interface ServiceAPI {
 
     @POST("post-cmt")
     Observable<Message> SendCmt(@Body Comment comment);
+
+    @POST("like-post")
+    Observable<Message> Like(@Body Likes likes);
 }

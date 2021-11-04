@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_POST_MANAGER = 1;
-    private static final int FRAGMENT_POST_BY_TOPIC = 1;
     private static final int FRAGMENT_TOPIC = 2;
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_PROFILE = 4;
@@ -287,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        Glide.with(this).load(photoUrl).error(R.drawable.ic_user).into(imgNavAva);
 
         }
+
 ///xin cap quyen
         @Override
         public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,

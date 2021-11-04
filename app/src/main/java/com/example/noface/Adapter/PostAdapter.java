@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,9 +40,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.context = context;
     }
 
-
-    private ArrayList<Posts> lstPost;
-    private Context context;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final ArrayList<Posts> lstPost;
+    private final Context context;
 
 
     @NonNull
@@ -56,11 +57,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.txt_title.setText(lstPost.get(position).getTitle());
         holder.tvTime.setText(lstPost.get(position).getTime());
 
-//      holder.txtCmt.setText(lstPost.get(position).getLikes().size());
+        holder.txtCmt.setText(String.valueOf(lstPost.get(position).getComment().size()));
+        holder.txtlike.setText(String.valueOf(lstPost.get(position).getLikes().size()));
+
+        ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
+        String id = user.getUid();
+        for(Likes likes : alLikes){
+            holder.CbLike.setChecked(id.equals(idlike));
+        }
+
+
         int idTopic =lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
-//        ArrayList<Likes> idLike = lstPost.get(position).getLikes();
-
+//        int idLike = alLikes.get(position).getID();
         String idUser = lstPost.get(position).getIDUser();
         String date = lstPost.get(position).getTime();
         String title = lstPost.get(position).getTitle();
@@ -68,6 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         setUserPost(idUser.trim(),holder.imgAvatar);
 
         holder.setItemClickListener(new ItemClickListener() {
+
             @Override
             public void onItemClick(View v, int pos) {
                 Intent intent = new Intent(context, PostActivity.class);
@@ -77,7 +87,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("date",date);
                 intent.putExtra("title",title);
                 intent.putExtra("content",content);
-//                intent.putExtra("like", )
+                Boolean checkLike = holder.CbLike.isChecked();
+                intent.putExtra("checklike", checkLike);
                 context.startActivity(intent);
             }
         });
@@ -89,7 +100,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView txt_title, tv_name, tvTime, txtCmt;
+        public TextView txt_title, tv_name, tvTime, txtCmt, txtlike;
+        public CheckBox CbLike;
         public ImageView imgAvatar;
 
 
@@ -99,7 +111,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             txt_title = itemView.findViewById(R.id.txt_title);
             tv_name = itemView.findViewById(R.id.tv_name);
             tvTime = itemView.findViewById(R.id.tvTime);
+            txtlike = itemView.findViewById(R.id.txtlike);
             txtCmt = itemView.findViewById(R.id.txtCmt);
+            CbLike = itemView.findViewById(R.id.CbLike);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
 
             itemView.setOnClickListener(this);

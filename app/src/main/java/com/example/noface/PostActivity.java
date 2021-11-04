@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.Adapter.CommentAdapter;
 import com.example.noface.Adapter.TopicAdapter;
 import com.example.noface.model.Comment;
+import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
@@ -64,8 +65,7 @@ public class PostActivity extends AppCompatActivity {
     String date;
     String title;
     String content;
-
-    Boolean f = false;
+    Boolean checkLike = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +93,16 @@ public class PostActivity extends AppCompatActivity {
          date = intent.getStringExtra("date");
          title = intent.getStringExtra("title");
          content = intent.getStringExtra("content");
+         checkLike = intent.getBooleanExtra("checklike",false);
+
+//         if(checkLike){
+//             CbLike.setChecked(true);
+//         }
         setUI();
 
         int idpost = idPost;
         GetCmt(idpost);
+
         Intent intent1 = new Intent(PostActivity.this, ProfileUser.class);
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +118,6 @@ public class PostActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
-    }
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +133,7 @@ public class PostActivity extends AppCompatActivity {
 
                 Comment comment = new Comment(0, idpost, user.getUid(), txtcmtPhake.getText().toString(), strDate);
 
-                //gọi api
+                //gọi api gửi cmt
                 SendCmt(comment);
             }
         });
@@ -136,25 +141,14 @@ public class PostActivity extends AppCompatActivity {
         CbLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(CbLike.isChecked() == false){
-
-                }else {
-
-                }
+//                if(checkLike){
+////                    Like();
+//                }else {
+//
+//                }
             }
         });
     }
-
-    //    public void onClickBtn(View view) {
-//        tvlike.setText("Bạn và 1k\nHưởng ứng");
-//        if (f == false) {
-//            tvlike.setText("Bạn và 1k\nHưởng ứng");
-//            f = true;
-//        } else {
-//            tvlike.setText("1k\nHưởng ứng");
-//            f = false;
-//        }
-//    }
 
     public void setUI() {
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
@@ -240,14 +234,34 @@ public class PostActivity extends AppCompatActivity {
         new CompositeDisposable().add(requestInterface.SendCmt(comment)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse2, this::handleError)
+                .subscribe(this::handleResponseCMT, this::handleError)
         );
     }
 
-    private void handleResponse2(Message message) {
+    private void handleResponseCMT(Message message) {
         Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
     }
     //=============================end post Cmt API===================================
+
+    //=============================get like API===================================
+//    private void Like(Likes likes) {
+//        ServiceAPI requestInterface = new Retrofit.Builder()
+//                .baseUrl(BASE_Service)
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build().create(ServiceAPI.class);
+//
+//        new CompositeDisposable().add(requestInterface.Like(likes)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponseLike, this::handleError)
+//        );
+//    }
+//
+//    private void handleResponseLike(Message message) {
+//
+//    }
+    //=============================get like API===================================
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
