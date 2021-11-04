@@ -137,12 +137,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:textAllCaps="false"
                     android:background="@color/white"
-                    app:backgroundTint="@null"
                     android:gravity="center"
+                    android:textSize="15sp"
                     android:text="Bình luận (10)"
-                    android:textColor="@color/black" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    app:backgroundTint="@null" />
 
                 <!--                <ImageButton-->
 <!--                    android:paddingLeft="40dp"-->

@@ -1,8 +1,10 @@
 package com.example.noface.Adapter;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.PostActivity;
 import com.example.noface.R;
-import com.example.noface.model.Comment;
 import com.example.noface.model.Likes;
+import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
-import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
+import com.example.noface.other.ShowNotifyUser;
+import com.example.noface.service.ServiceAPI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,10 +33,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     public PostAdapter(ArrayList<Posts> lstPost, Context context) {
         this.lstPost = lstPost;
@@ -52,12 +62,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txt_title.setText(lstPost.get(position).getTitle());
         holder.tvTime.setText(lstPost.get(position).getTime());
 
-        holder.txtCmt.setText(String.valueOf(lstPost.get(position).getComment().size()));
+        holder.txtCmt.setText(lstPost.get(position).getComment().size() + " bình luận");
         holder.txtlike.setText(String.valueOf(lstPost.get(position).getLikes().size()));
 
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
@@ -67,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
 
-        int idTopic =lstPost.get(position).getIDTopic();
+        int idTopic = lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
         String idUser = lstPost.get(position).getIDUser();
         String date = lstPost.get(position).getTime();
@@ -75,8 +86,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         String content = lstPost.get(position).getContent();
         setUserPost(idUser.trim(),holder.imgAvatar);
 
-        holder.setItemClickListener(new ItemClickListener() {
+        holder.CbLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int dem = Integer.parseInt(holder.txtlike.getText().toString());
+                if(!holder.CbLike.isChecked()){
+                    dem--;
+                }else{
+                    dem++;
+                }
+                holder.txtlike.setText(String.valueOf(dem));
+                Like(idPost, user.getUid());
+            }
+        });
 
+        holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 Intent intent = new Intent(context, PostActivity.class);
@@ -86,7 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 intent.putExtra("date",date);
                 intent.putExtra("title",title);
                 intent.putExtra("content",content);
-                intent.putExtra("likes", alLikes.size());
+                intent.putExtra("likes", Integer.valueOf(holder.txtlike.getText().toString()));
                 Boolean checkLike = holder.CbLike.isChecked();
                 intent.putExtra("checklike", checkLike);
                 context.startActivity(intent);
@@ -117,7 +141,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
 
             itemView.setOnClickListener(this);
+            
+            
         }
+        
 
         @Override
         public void onClick(View view) {
@@ -127,8 +154,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             this.itemClickListener = ic;
         }
     }
-    public void setUserPost(String idUser,ImageView img){
 
+
+    public void setUserPost(String idUser,ImageView img){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = idUser;
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -137,7 +165,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User lUser = snapshot.getValue(User.class);
                     SetAvatar.SetAva(img,lUser.getAvaPath());
-
             }
 
             @Override
@@ -146,5 +173,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+    }
+
+    //=============================get like API===================================
+    private void Like(int idPost, String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.Like(idPost, idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseLike, this::handleError)
+        );
+    }
+
+    private void handleResponseLike(Message message) {
+        if(message.getStatus() == 1)
+            Toast.makeText(context.getApplicationContext(), "Thank you <3", Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(context.getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    //=============================get like API===================================
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(context.getApplicationContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 }

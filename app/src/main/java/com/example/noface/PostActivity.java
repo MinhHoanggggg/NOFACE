@@ -2,10 +2,10 @@ package com.example.noface;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,16 +16,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.CommentAdapter;
-import com.example.noface.Adapter.TopicAdapter;
+import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Comment;
-import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
-import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
@@ -50,17 +47,18 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostActivity extends AppCompatActivity {
-    private TextView tvName, tvDate, tvTitle, tvContent,tvCate, tv_namePhake, txtcmtPhake, txtlike;
+public class PostActivity extends AppCompatActivity{
+    private TextView tvName, tvDate, tvTitle, tvContent, tvCate, tv_namePhake, txtcmtPhake, txtlike;
     private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake;
     private EditText edt_cmt;
     private ImageButton btnSend;
     private RecyclerView rcv_cmt;
+    private Button btnCmt;
     private CheckBox CbLike;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
     String idUser;
-    int idTopic, sumLike, idPost;
+    int idTopic, sumLike, idPost, sumCmt;
     String date;
     String title;
     String content;
@@ -85,6 +83,7 @@ public class PostActivity extends AppCompatActivity {
         txtcmtPhake = findViewById(R.id.txtcmtPhake);
         imgAvatarPhake = findViewById(R.id.imgAvatarPhake);
         txtlike = findViewById(R.id.txtlike);
+        btnCmt = findViewById(R.id.btnCmt);
 
         Intent intent = getIntent();
          idUser = intent.getStringExtra("idUser");
@@ -112,6 +111,8 @@ public class PostActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+
+
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +134,6 @@ public class PostActivity extends AppCompatActivity {
                 String strDate = sdf.format(c.getTime());
 
                 Comment comment = new Comment(0, idpost, user.getUid(), txtcmtPhake.getText().toString(), strDate);
-
                 //gọi api gửi cmt
                 SendCmt(comment);
             }
@@ -219,6 +219,8 @@ public class PostActivity extends AppCompatActivity {
             rcv_cmt.setLayoutManager(linearLayoutManager);
             //set adapter cho rcv
             CommentAdapter cmtAdapter = new CommentAdapter(comments, PostActivity.this);
+            sumCmt = comments.size();
+            btnCmt.setText(sumCmt + " bình luận");
             rcv_cmt.setAdapter(cmtAdapter);
         }catch (Exception e){
             e.printStackTrace();
@@ -245,6 +247,8 @@ public class PostActivity extends AppCompatActivity {
 
     private void handleResponseCMT(Message message) {
         Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+        sumCmt++;
+        btnCmt.setText(sumCmt + " bình luận");
     }
     //=============================end post Cmt API===================================
 
@@ -333,6 +337,5 @@ public class PostActivity extends AppCompatActivity {
         });
 
     }
-
 
 }
