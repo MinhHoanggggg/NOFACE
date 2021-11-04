@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             Toast.makeText(getApplicationContext(), "Hông có tìm thấy Fragment2 mà đòi truyền", Toast.LENGTH_LONG).show();
         }
-            ////
+
 
     }
 }

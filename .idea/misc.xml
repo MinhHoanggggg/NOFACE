@@ -19,11 +19,9 @@
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_category.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_login.xml" value="0.15715579710144928" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_main.xml" value="0.15806159420289856" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_post.xml" value="0.36" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_topic.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/fragment_category.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/item_category.xml" value="0.24909420289855072" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/item_post.xml" value="0.4" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/menu/menu_nav.xml" value="0.2864583333333333" />
         <entry key="app/src/main/res/drawable-v24/custom1.xml" value="0.25" />
         <entry key="app/src/main/res/drawable-v24/custom_btn.xml" value="0.221875" />
@@ -39,9 +37,10 @@
         <entry key="app/src/main/res/drawable/custom_table.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/ic_nav.xml" value="0.11354166666666667" />
         <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.39300411522633744" />
+        <entry key="app/src/main/res/layout/activity_edit_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_post.xml" value="0.28615863141524106" />
+        <entry key="app/src/main/res/layout/activity_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_profile_user.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_reset_pass.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_select_ava.xml" value="0.17487373737373738" />
@@ -65,6 +64,8 @@
         <entry key="app/src/main/res/layout/item_topic.xml" value="0.12545289855072464" />
         <entry key="app/src/main/res/layout/layout_login.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_register.xml" value="0.335" />
+        <entry key="app/src/main/res/menu/menu_edit_post.xml" value="0.375" />
+        <entry key="app/src/main/res/menu/menu_edt_post.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/menu/menu_nav.xml" value="0.20153846153846153" />
       </map>
     </option>

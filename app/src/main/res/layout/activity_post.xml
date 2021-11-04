@@ -37,7 +37,7 @@
                     tools:ignore="RtlSymmetry">
                     <TextView
                         android:id="@+id/tvName"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Full name"
                         android:textColor="#737373"
@@ -46,12 +46,20 @@
                     <TextView
                         android:id="@+id/tvDate"
                         android:layout_marginTop="5dp"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Day - time"
                         android:textColor="@color/gray"
                         android:textSize="15sp" />
                 </LinearLayout>
+                <ImageButton
+                    android:backgroundTint="#FFFFFF"
+
+                    android:id="@+id/btnMenu"
+                    android:scaleType="centerCrop"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/menu_icon"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tvCate"

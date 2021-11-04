@@ -14,6 +14,9 @@
         android:theme="@style/Theme.NOFACE"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EditPost"
+            android:exported="true" />
+        <activity
             android:name=".ProfileUser"
             android:exported="true" />
         <activity
