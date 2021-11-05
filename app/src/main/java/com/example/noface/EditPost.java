@@ -15,7 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
@@ -46,6 +48,7 @@ public class EditPost extends AppCompatActivity {
     private ImageView img_post_Avatar;
     private ImageButton btn_post_Back;
     private Button btn_post_Save;
+    private PostActivity postActivity;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private int idPost;
@@ -72,10 +75,16 @@ public class EditPost extends AppCompatActivity {
         setUser(user);
         GetAllTopic();
         ///
+
         btn_post_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int index = getIndex(spn_post_Cate,spn_post_Cate.getSelectedItem().toString());
+                int idTopic = idTopics.get(index);
+                Posts lPost = new Posts(idPost,idTopic,user.getUid(),edt_post_Title.getText().toString(),edt_post_Content.getText().toString()
+                        ,tv_post_Date.getText().toString(), null,null, null);
+                PostPost(lPost);
+            //    postActivity.setUI(idPost);
             }
         });
         
@@ -131,6 +140,25 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+    private void PostPost(Posts posts) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.AddPost(posts)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Message message) {
+
+        Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+    }
+
     private void handleResponse(ArrayList<Topic> topics) {
 
 
@@ -159,11 +187,13 @@ public class EditPost extends AppCompatActivity {
            }
        }
        spn_post_Cate.setSelection(pos);
+
         ShowNotifyUser.dismissProgressDialog();
     }
 
 
     private void handleError(Throwable throwable) {
+        Toast.makeText(getApplicationContext(), "Không ổn gòi đại vương ơi !!!", Toast.LENGTH_SHORT).show();
     }
 
     public  void changeSpn(ArrayList<String> arraySpinner ){

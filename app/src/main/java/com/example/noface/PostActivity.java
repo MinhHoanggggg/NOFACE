@@ -105,6 +105,7 @@ public class PostActivity extends AppCompatActivity{
          if(checkLike){
              CbLike.setChecked(true);
          }
+        ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
         setUI(idPost);
 
         int idpost = idPost;
@@ -178,7 +179,7 @@ public class PostActivity extends AppCompatActivity{
     }
 
     public void setUI(int id) {
-        ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
+
 
         GetAllTopic();
         GetPost(id);
