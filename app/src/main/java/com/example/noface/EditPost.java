@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +56,7 @@ public class EditPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
+
         edt_post_Content = findViewById(R.id.edt_post_Content);
         edt_post_Title = findViewById(R.id.edt_post_Title);
         spn_post_Cate = findViewById(R.id.spn_post_Cate);
@@ -66,9 +68,16 @@ public class EditPost extends AppCompatActivity {
         Intent intent = getIntent();
         idPost = intent.getIntExtra("idPost",0);
         //SetUI
+        ShowNotifyUser.showProgressDialog(this,"Đang tải đợi xíu!!!");
         setUser(user);
         GetAllTopic();
-        GetPost(idPost);
+        ///
+        btn_post_Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         
 
 
@@ -122,9 +131,7 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
-
     private void handleResponse(ArrayList<Topic> topics) {
-        ShowNotifyUser.dismissProgressDialog();
 
 
         for (int i =0; i<topics.size();i++){
@@ -136,11 +143,11 @@ public class EditPost extends AppCompatActivity {
             }
         }
         changeSpn(lstName);
+        GetPost(idPost);
     }
 
 
     private void handleResponse(Posts posts) {
-
         edt_post_Content.setText(posts.getContent());
        edt_post_Title.setText(posts.getTitle());
        tv_post_Date.setText(posts.getTime());
@@ -152,7 +159,7 @@ public class EditPost extends AppCompatActivity {
            }
        }
        spn_post_Cate.setSelection(pos);
-
+        ShowNotifyUser.dismissProgressDialog();
     }
 
 

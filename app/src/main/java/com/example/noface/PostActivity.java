@@ -5,12 +5,14 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.example.noface.Adapter.CommentAdapter;
 import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Message;
+import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
@@ -51,7 +54,7 @@ public class PostActivity extends AppCompatActivity{
     private TextView tvName, tvDate, tvTitle, tvContent, tvCate, tv_namePhake, txtcmtPhake, txtlike;
     private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake;
     private EditText edt_cmt;
-    private ImageButton btnSend;
+    private ImageButton btnSend, btnMenu;
     private RecyclerView rcv_cmt;
     private Button btnCmt;
     private CheckBox CbLike;
@@ -84,9 +87,11 @@ public class PostActivity extends AppCompatActivity{
         imgAvatarPhake = findViewById(R.id.imgAvatarPhake);
         txtlike = findViewById(R.id.txtlike);
         btnCmt = findViewById(R.id.btnCmt);
+        btnMenu = findViewById(R.id.btnMenu);
 
         Intent intent = getIntent();
          idUser = intent.getStringExtra("idUser");
+         String idUs = idUser.trim();
          idTopic = intent.getIntExtra("idTopic", 0);
          idPost = intent.getIntExtra("idPost", 0);
          date = intent.getStringExtra("date");
@@ -94,11 +99,13 @@ public class PostActivity extends AppCompatActivity{
          content = intent.getStringExtra("content");
          sumLike = intent.getIntExtra("likes", 0);
          checkLike = intent.getBooleanExtra("checklike",false);
-
+        if(!idUs.equals(user.getUid())){
+            btnMenu.setVisibility(View.GONE);
+        }
          if(checkLike){
              CbLike.setChecked(true);
          }
-        setUI();
+        setUI(idPost);
 
         int idpost = idPost;
         GetCmt(idpost);
@@ -152,17 +159,31 @@ public class PostActivity extends AppCompatActivity{
                 Like(idpost, user.getUid());
             }
         });
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), btnMenu);
+                popup.inflate(R.menu.menu_edit_post);
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return menuItemClicked(item);
+                    }
+                });
+                // Show the PopupMenu.
+                popup.show();
+            }
+        });
     }
 
-    public void setUI() {
+    public void setUI(int id) {
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
-        tvDate.setText(date);
-        tvContent.setText(content);
-        tvTitle.setText(title);
+
         GetAllTopic();
-        setUserPost(idUser.trim());
-        setUser(user);
-        txtlike.setText(String.valueOf(sumLike));
+        GetPost(id);
+
+
     }
 
     //=============================get Topic API=============================
@@ -280,6 +301,32 @@ public class PostActivity extends AppCompatActivity{
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
+    ////
+    private void GetPost(int id) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetPost(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Posts posts) {
+        tvDate.setText(posts.getTime());
+        tvContent.setText(posts.getContent());
+        tvTitle.setText(posts.getTitle());
+        GetAllTopic();
+        String id=  posts.getIDUser().trim();
+        setUserPost(id);
+        setUser(user);
+        txtlike.setText(String.valueOf(sumLike));
+
+    }
 
     private void setUserPost(String idUser){
 
@@ -337,5 +384,22 @@ public class PostActivity extends AppCompatActivity{
         });
 
     }
+   ///MENU
+   private boolean menuItemClicked(MenuItem item) {
+       switch (item.getItemId()) {
+           case R.id.itemEdit:
+               Intent intent = new Intent(PostActivity.this,EditPost.class);
+               intent.putExtra("idPost",idPost);
+               startActivity(intent);
+               break;
+           case R.id.itemDel:
+               Toast.makeText(this, "Upload", Toast.LENGTH_SHORT).show();
+               break;
 
+           default:
+               Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+               break;
+       }
+       return true;
+   }
 }

@@ -54,7 +54,6 @@
                 </LinearLayout>
                 <ImageButton
                     android:backgroundTint="#FFFFFF"
-
                     android:id="@+id/btnMenu"
                     android:scaleType="centerCrop"
                     android:layout_width="30dp"
