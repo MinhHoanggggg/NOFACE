@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -45,4 +46,7 @@ public interface ServiceAPI {
     @POST("like-post/{idpost}/{iduser}")
     Observable<Message> Like(@Query("idpost") int idpost,
                              @Query("iduser") String iduser);
+
+    @DELETE("delete-post/{id}")
+    Observable<Message> DeletePost(@Query("id") int id);
 }

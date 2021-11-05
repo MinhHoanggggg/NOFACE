@@ -3,6 +3,9 @@ package com.example.noface;
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -394,7 +397,8 @@ public class PostActivity extends AppCompatActivity{
                startActivity(intent);
                break;
            case R.id.itemDel:
-               Toast.makeText(this, "Upload", Toast.LENGTH_SHORT).show();
+               showAlertDialog(getApplicationContext(), "Bạn chắc chắn xóa bài viết này?");
+
                break;
 
            default:
@@ -403,4 +407,38 @@ public class PostActivity extends AppCompatActivity{
        }
        return true;
    }
+
+    private void DeletePost(int id) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.DeletePost(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Message message) {
+        if(message.getStatus() == 1){
+            Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void showAlertDialog(Context context, String message){
+        new AlertDialog.Builder(context)
+                .setTitle("Thông báo")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        DeletePost(idPost);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }

@@ -127,6 +127,7 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
     private void GetAllTopic() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -140,6 +141,7 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
     private void PostPost(Posts posts) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
