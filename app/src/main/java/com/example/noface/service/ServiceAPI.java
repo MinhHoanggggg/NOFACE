@@ -2,9 +2,9 @@ package com.example.noface.service;
 
 
 import com.example.noface.model.Comment;
-import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
 
 import java.util.ArrayList;
@@ -18,6 +18,9 @@ import retrofit2.http.Query;
 
 public interface ServiceAPI {
     String BASE_Service = "http://www.noface.somee.com/";
+
+    @POST("get-token/{idUser}")
+    Observable<Token> GetToken(@Query("idUser") String idUser);
 
     @GET("get-all-topic")
     Observable<ArrayList<Topic>> GetAllTopic();
