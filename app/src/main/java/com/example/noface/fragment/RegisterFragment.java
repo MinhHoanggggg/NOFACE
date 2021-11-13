@@ -1,5 +1,7 @@
 package com.example.noface.fragment;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.noface.LoginActivity;
+import com.example.noface.model.Acc;
+import com.example.noface.model.Message;
+import com.example.noface.model.Posts;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.example.noface.model.User;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -31,14 +37,22 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterFragment extends Fragment {
     private EditText edtEmail, edtPass, edtREpass;//,edtPhone;
     private Button btnRegister;
     private FirebaseAuth mAuth;
     private String mVerificationId;
+    private String id;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
     private String TAG = "firebase - REGISTER";
@@ -75,7 +89,7 @@ public class RegisterFragment extends Fragment {
                     } else {
                         if (pass.equals(repass)) {
                             ShowNotifyUser.showProgressDialog(getContext(), "Vui lòng đợi");
-                           // sendVerificationCode("+84" + edtPhone.getText().toString());
+                            // sendVerificationCode("+84" + edtPhone.getText().toString());
                             createAccount(mail,pass);
 
                         } else {
@@ -115,9 +129,12 @@ public class RegisterFragment extends Fragment {
                             ShowNotifyUser.dismissProgressDialog();
                             mAuth = FirebaseAuth.getInstance();
                             pushRealtime(mAuth.getCurrentUser());
-                            Toast.makeText(getContext(), "Đăng ký thành công",
-                                    Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
+
+//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            id = mAuth.getCurrentUser().getUid();
+                            Acc acc = new Acc(id,"Ẩn Danh");
+                            Create(acc);
+
                         } else {
                             ShowNotifyUser.dismissProgressDialog();
                             Log.w(TAG, "Đăng ký thất bại", task.getException());
@@ -126,6 +143,34 @@ public class RegisterFragment extends Fragment {
                         }
                     }
                 });
+    }
+    //API
+    private void Create(Acc a) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.CreateUser(a)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Message message) {
+        if (message.getStatus() == 1) {
+            Toast.makeText(getContext(), "Đăng ký thành công nè", Toast.LENGTH_LONG).show();
+
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+        if (message.getStatus() == 0)
+            Toast.makeText(getContext(),  "Ủa ??", Toast.LENGTH_LONG).show();
+    }
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.showAlertDialog(getContext(),"Lỗi: "+throwable+"");
     }
 
     ///xac thuc otp

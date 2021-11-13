@@ -31,35 +31,27 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostByTopicFragment extends Fragment{
-    private Button btnCreatePost;
+public class PostByTopicFragment extends Fragment {
     private RecyclerView rcv_posts;
-    public  int idTopic;
+    public int idTopic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_post_by_topic, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_post_by_topic, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             PostByTopic(bundle.getInt("id"));
         }
 
-//        //API data postrending
+        //API data postrending
         PostByTopic(idTopic);
-//        ///
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreatePost.class));
-            }
-        });
+
         return view;
     }
 
@@ -84,7 +76,7 @@ public class PostByTopicFragment extends Fragment{
             PostAdapter postAdapter = new PostAdapter(posts, getContext());
             rcv_posts.setAdapter(postAdapter);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 //        dismissProgressDialog();

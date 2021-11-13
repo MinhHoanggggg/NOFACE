@@ -1,252 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PostActivity">
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    <LinearLayout
+        android:layout_weight="9"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+        android:layout_height="match_parent" >
 
-                <ImageView
-                    android:id="@+id/imgAvatar"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ic_user" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    tools:ignore="RtlSymmetry">
-                    <TextView
-                        android:id="@+id/tvName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Full name"
-                        android:textColor="#737373"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvDate"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Day - time"
-                        android:textColor="@color/gray"
-                        android:textSize="15sp" />
-                </LinearLayout>
-                <ImageButton
-                    android:backgroundTint="#FFFFFF"
-                    android:id="@+id/btnMenu"
-                    android:scaleType="centerCrop"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/menu_icon"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tvCate"
-                android:text="Category"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#46B2E3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-            <TextView
-                android:id="@+id/tvTitle"
-                android:text="Title"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-
-            <TextView
-                android:padding="5dp"
-                android:id="@+id/tvContent"
-                android:textSize="17sp"
-                android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="Phần bài viết chính sẽ trong này nè" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#D6D6D6"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent">
-
-                    <CheckBox
-                        android:stateListAnimator="@animator/anim_scale"
-                        android:background="@drawable/ic_like"
-                        android:id="@+id/CbLike"
-                        android:checked="false"
-                        android:button="@null"
-                        app:backgroundTint="@null"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        tools:ignore="NestedWeights" />
-                    <TextView
-                        android:id="@+id/txtlike"
-                        android:layout_weight="1"
-                        android:text="1"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:textSize="15sp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnCmt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:text="Bình luận (10)"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    app:backgroundTint="@null" />
-
-                <!--                <ImageButton-->
-<!--                    android:paddingLeft="40dp"-->
-<!--                    android:background="@color/white"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:src="@drawable/ic_share_no"-->
-<!--                    app:backgroundTint="@null" />-->
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#D6D6D6"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_cmt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/imgAvatarPhake"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:maxWidth="45dp"
-                android:maxHeight="45dp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginLeft="10dp"
-                tools:ignore="RtlSymmetry">
-                <TextView
-                    android:id="@+id/tv_namePhake"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:textColor="@color/black"
-                    android:id="@+id/txtcmtPhake"
-                    android:layout_marginTop="3dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </LinearLayout>
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/imgAvatar"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/ic_user" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            tools:ignore="RtlSymmetry">
+
+                            <TextView
+                                android:id="@+id/tvName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="Full name"
+                                android:textColor="#737373"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:hint="Day - time"
+                                android:textColor="@color/gray"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/btnMenu"
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="#FFFFFF"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_menu" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Title"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:padding="5dp"
+                        android:text="Phần bài viết chính sẽ trong này nè"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="10dp">
+                        <TextView
+                            android:text="#"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#46B2E3"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvCate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:text="Category"
+                            android:textColor="#46B2E3"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#D6D6D6" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <CheckBox
+                                android:id="@+id/CbLike"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/ic_like"
+                                android:button="@null"
+                                android:checked="false"
+                                android:stateListAnimator="@animator/anim_scale"
+                                app:backgroundTint="@null"
+                                tools:ignore="NestedWeights" />
+
+                            <TextView
+                                android:id="@+id/txtlike"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textAlignment="center"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnCmt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="Bình luận (10)"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:backgroundTint="@null" />
+
+                        <!--                <ImageButton-->
+                        <!--                    android:paddingLeft="40dp"-->
+                        <!--                    android:background="@color/white"-->
+                        <!--                    android:layout_width="0dp"-->
+                        <!--                    android:layout_height="match_parent"-->
+                        <!--                    android:layout_weight="1"-->
+                        <!--                    android:src="@drawable/ic_share_no"-->
+                        <!--                    app:backgroundTint="@null" />-->
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#D6D6D6" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_cmt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/imgAvatarPhake"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:maxWidth="45dp"
+                        android:maxHeight="45dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        tools:ignore="RtlSymmetry">
+
+                        <TextView
+                            android:id="@+id/tv_namePhake"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtcmtPhake"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 
 
-        <LinearLayout
-            android:padding="10dp"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgAvatarUser"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_user" />
+
+        <EditText
+            android:id="@+id/edt_cmt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="8"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:hint="Nhập bình luận..."
+            android:paddingLeft="15sp"
+            android:textSize="17sp" />
 
-            <ImageView
-                android:id="@+id/imgAvatarUser"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_user"/>
-
-            <EditText
-                android:id="@+id/edt_cmt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:hint="Nhập bình luận..."
-                android:paddingLeft="15sp"
-                android:textSize="17sp" />
-
-            <ImageButton
-                android:layout_marginBottom="5dp"
-                android:id="@+id/btnSend"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_send" />
-        </LinearLayout>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.core.widget.NestedScrollView>
+        <ImageButton
+            android:id="@+id/btnSend"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/ic_send" />
+    </LinearLayout>
+</LinearLayout>

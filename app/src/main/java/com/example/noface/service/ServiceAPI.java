@@ -1,10 +1,11 @@
 package com.example.noface.service;
 
 
+import com.example.noface.model.Acc;
 import com.example.noface.model.Comment;
+import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
-import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
 
 import java.util.ArrayList;
@@ -18,9 +19,6 @@ import retrofit2.http.Query;
 
 public interface ServiceAPI {
     String BASE_Service = "http://www.noface.somee.com/";
-
-    @POST("get-token/{idUser}")
-    Observable<Token> GetToken(@Query("idUser") String idUser);
 
     @GET("get-all-topic")
     Observable<ArrayList<Topic>> GetAllTopic();
@@ -49,6 +47,9 @@ public interface ServiceAPI {
     @POST("like-post/{idpost}/{iduser}")
     Observable<Message> Like(@Query("idpost") int idpost,
                              @Query("iduser") String iduser);
+
+    @POST("create-user")
+    Observable<Message> CreateUser(@Body Acc acc);
 
     @DELETE("delete-post/{id}")
     Observable<Message> DeletePost(@Query("id") int id);

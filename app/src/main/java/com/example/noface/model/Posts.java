@@ -6,9 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Posts {
-
-    public Posts(int IDPost, int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<Likes> likes, ArrayList<Comment> comment) {
+    public Posts(int IDPost, int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<com.example.noface.model.Likes> likes, ArrayList<com.example.noface.model.Comment> comment) {
         this.IDPost = IDPost;
+        this.IDTopic = IDTopic;
+        this.IDUser = IDUser;
+        Title = title;
+        Content = content;
+        Time = time;
+        ImagePost = imagePost;
+        Likes = likes;
+        Comment = comment;
+    }
+
+    public Posts(int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<Likes> likes, ArrayList<Comment> comment) {
         this.IDTopic = IDTopic;
         this.IDUser = IDUser;
         Title = title;

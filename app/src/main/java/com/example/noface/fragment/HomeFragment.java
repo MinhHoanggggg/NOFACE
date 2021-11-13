@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,15 +36,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
-    private Button btnCreatePost;
     private RecyclerView rcv_posts;
+    private ImageButton btn_create;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
+        btn_create = view.findViewById(R.id.btn_create);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
@@ -52,12 +53,13 @@ public class HomeFragment extends Fragment {
         //API data postrending
         PostTrending();
 
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
+        btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),CreatePost.class));
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), CreatePost.class));
             }
         });
+
         return view;
     }
 

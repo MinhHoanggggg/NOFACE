@@ -82,16 +82,15 @@ public class CreatePost extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
-            int id = idTopic.get((int)spnTopic.getSelectedItemId());
+                ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
+                int id = idTopic.get((int)spnTopic.getSelectedItemId());
 
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String strDate = sdf.format(c.getTime());
 
-                Posts posts = new Posts(0, id,
-                                        user.getUid(), edtTitle.getText().toString(),
-                                        edtContent.getText().toString(), strDate, "", null, null);
+                Posts posts = new Posts(id, user.getUid(), edtTitle.getText().toString(),
+                        edtContent.getText().toString(), strDate, "", null, null);
                 AddPost(posts);
             }
         });
@@ -152,7 +151,7 @@ public class CreatePost extends AppCompatActivity {
             Topic topic = topics.get(i);
 
             if(topic !=null) {
-               lstName.add(topic.getTopicName());
+                lstName.add(topic.getTopicName());
                 idTopic.add(topic.getIDTopic());
             }
         }

@@ -2,17 +2,12 @@ package com.example.noface.fragment;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,10 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.Adapter.PostAdapter;
 
-import com.example.noface.CreatePost;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
-import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
@@ -46,7 +39,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostManagerFragment extends Fragment {
-    private Button btnCreatePost;
     private RecyclerView rcv_posts;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
@@ -58,7 +50,6 @@ public class PostManagerFragment extends Fragment {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_posts_manager, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
-        btnCreatePost = view.findViewById(R.id.btnCreatePost);
         img_mng_Ava = view.findViewById(R.id.img_mng_Ava);
         txtName = view.findViewById(R.id.txtName);
 
@@ -70,19 +61,8 @@ public class PostManagerFragment extends Fragment {
         //API data
         String userid = user.getUid();
         Wall(userid);
-        ///Set UI
-        setUI(user);
-
-
-        //cuộn nuột hơn
-        rcv_posts.setHasFixedSize(true);
-        ///
-        btnCreatePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreatePost.class));
-            }
-        });
+        setUI(user); //Set UI
+        rcv_posts.setHasFixedSize(true); //cuộn nuột hơn
         return view;
     }
 

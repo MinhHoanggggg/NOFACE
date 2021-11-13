@@ -157,7 +157,7 @@ public class EditPost extends AppCompatActivity {
     }
 
     private void handleResponse(Message message) {
-
+        startActivity(new Intent(this, MainActivity.class));
         Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
     }
 
