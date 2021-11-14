@@ -397,7 +397,7 @@ public class PostActivity extends AppCompatActivity{
                startActivity(intent);
                break;
            case R.id.itemDel:
-               showAlertDialog(getApplicationContext(), "Bạn chắc chắn xóa bài viết này?");
+               showAlertDialog(this, "Bạn chắc chắn xóa bài viết này?");
 
                break;
 
