@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreatePost"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".CreatePost">
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/contranstop"
             android:layout_width="match_parent"
@@ -22,13 +24,13 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_baseline_arrow_back_24"
                 app:layout_constraintRight_toLeftOf="@id/txt_title"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:text="Tạo bài viết"
                 android:textColor="@color/black"
                 android:textSize="30sp"
@@ -50,99 +52,110 @@
                 app:layout_constraintBottom_toBottomOf="@id/contranstop"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/custom_top_boder"
             android:paddingTop="10dp"
-            android:textAlignment="center"
-            android:textSize="15dp"
             android:text="Bài viết của bạn sẽ được hiển thị ẩn danh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textAlignment="center"
+            android:textSize="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
-            <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/imgAvatar"
-                android:background="@drawable/ic_user"
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAvatar"
                 android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp"
+                android:background="@drawable/ic_user" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginLeft="10dp"
                 tools:ignore="RtlSymmetry">
+
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:hint="Full name"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
-
             <EditText
                 android:id="@+id/edtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập tiêu đề bài viết" />
-
         </LinearLayout>
+
         <LinearLayout
-            android:layout_margin="10dp"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
-            <TextView
 
-                android:text="Topic:"
-                android:textSize="20sp"
-                android:textColor="@color/black"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                />
+                android:text="Topic:"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
             <Spinner
-                android:spinnerMode="dialog"
+                android:id="@+id/spnTopic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spnTopic"
+                android:layout_weight="9"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                />
+                android:spinnerMode="dialog" />
+
+            <ImageButton
+                android:id="@+id/btnOpenfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_update_img" />
         </LinearLayout>
 
         <EditText
             android:id="@+id/edtContent"
-            android:textSize="20sp"
-            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
+            android:gravity="top"
             android:hint="Nhập nội dung"
             android:inputType="textMultiLine"
-            android:gravity="top"/>
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 </androidx.core.widget.NestedScrollView>

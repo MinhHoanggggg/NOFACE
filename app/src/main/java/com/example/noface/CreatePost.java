@@ -3,14 +3,19 @@ package com.example.noface;
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.noface.model.Img;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
@@ -27,6 +33,10 @@ import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,11 +44,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,15 +63,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.POST;
 
 public class CreatePost extends AppCompatActivity {
-    private ImageView imgAvatar;
+    private ImageView imgAvatar, imgView;
     private TextView tvName;
     private EditText edtTitle, edtContent;
     private Spinner spnTopic;
     private Button btnCreate;
-    private ImageButton btnBack;
+    private ImageButton btnBack, btnOpenfile;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
     ArrayList<Integer> idTopic = new ArrayList<>();
+    private Uri imageUri;
+    String mUri="", strDate="";
+    private StorageReference storageReference;
+    private StorageTask uploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +88,9 @@ public class CreatePost extends AppCompatActivity {
         spnTopic = findViewById(R.id.spnTopic);
         btnCreate = findViewById(R.id.btnCreate);
         btnBack = findViewById(R.id.btnBack);
+        btnOpenfile = findViewById(R.id.btnOpenfile);
+        imgView = findViewById(R.id.imgView);
+//        imgView.setVisibility(View.GONE); //VISIBLE
 
         ShowNotifyUser.showProgressDialog(this,"Đang tải...");
         setUI(user);
@@ -82,20 +104,46 @@ public class CreatePost extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
-                int id = idTopic.get((int)spnTopic.getSelectedItemId());
+//                ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
+//                int id = );
 
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String strDate = sdf.format(c.getTime());
+                strDate = sdf.format(c.getTime());
+                saveIMG();
 
-                Posts posts = new Posts(id, user.getUid(), edtTitle.getText().toString(),
-                        edtContent.getText().toString(), strDate, "", null, null);
-                AddPost(posts);
+//                Posts posts = new Posts(id, user.getUid(), edtTitle.getText().toString(),
+//                        edtContent.getText().toString(), strDate, mUri, null, null);
+//                AddPost(posts);
             }
         });
 
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+//        reference = FirebaseDatabase.getInstance().getReference("uploads");  //luu tru tren firebase
+        btnOpenfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFile();
+            }
+        });
     }
+    //openFile
+    private void openFile() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
+            imageUri = data.getData();
+            imgView.setImageURI(imageUri);
+        }
+    } //end.openFile
+
+
     private void setUI(FirebaseUser user){
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -201,4 +249,55 @@ public class CreatePost extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_input_add)
                 .show();
     }
+
+
+    //saveIMG
+    private String getFileExtention (Uri uri){
+        ContentResolver contentResolver = this.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+    private void saveIMG () {
+        if (imageUri != null) {
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
+                    + "." + getFileExtention(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        ShowNotifyUser.showProgressDialog(CreatePost.this, "Đang lưu bài viết...");
+                        Uri downloadUri = task.getResult();
+                        mUri = downloadUri.toString(); //SAve link img
+//                        Img uploadImg = new Img("test", mUri); // LUU
+//                        String uploadId = reference.push().getKey(); // TRU
+//                        reference.child(uploadId).setValue(uploadImg);//FIREBASE
+//                        Toast.makeText(CreatePost.this, "Đã lưu!", Toast.LENGTH_SHORT).show();
+//                        ShowNotifyUser.dismissProgressDialog();
+                        Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
+                                user.getUid(), edtTitle.getText().toString(),
+                                edtContent.getText().toString(), strDate, mUri, null, null);
+                        AddPost(posts);
+                    } else {
+                        Toast.makeText(CreatePost.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            mUri="";
+        }
+    } //end.saveIMG
 }
