@@ -90,7 +90,7 @@ public class CreatePost extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnOpenfile = findViewById(R.id.btnOpenfile);
         imgView = findViewById(R.id.imgView);
-//        imgView.setVisibility(View.GONE); //VISIBLE
+
 
         ShowNotifyUser.showProgressDialog(this,"Đang tải...");
         setUI(user);

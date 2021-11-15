@@ -2,7 +2,6 @@ package com.example.noface;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.CommentAdapter;
-import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
@@ -42,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity{
     private TextView tvName, tvDate, tvTitle, tvContent, tvCate, tv_namePhake, txtcmtPhake, txtlike;
-    private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake;
+    private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake, imgView;
     private EditText edt_cmt;
     private ImageButton btnSend, btnMenu;
     private RecyclerView rcv_cmt;
@@ -91,6 +90,8 @@ public class PostActivity extends AppCompatActivity{
         txtlike = findViewById(R.id.txtlike);
         btnCmt = findViewById(R.id.btnCmt);
         btnMenu = findViewById(R.id.btnMenu);
+        imgView = findViewById(R.id.imgView);
+        imgView.setVisibility(View.GONE); //VISIBLE
 
         Intent intent = getIntent();
          idUser = intent.getStringExtra("idUser");
@@ -329,7 +330,13 @@ public class PostActivity extends AppCompatActivity{
         setUserPost(id);
         setUser(user);
         txtlike.setText(String.valueOf(sumLike));
-
+        if (posts.getImagePost().length() > 15){
+            imgView.setVisibility(View.VISIBLE);
+            Picasso.get().load(posts.getImagePost()).into(imgView);
+        }
+        else {
+            imgView.setVisibility(View.GONE);
+        }
     }
 
     private void setUserPost(String idUser){

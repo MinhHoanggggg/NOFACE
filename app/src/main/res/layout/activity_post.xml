@@ -121,6 +121,12 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/imgView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:background="#D6D6D6"/>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
