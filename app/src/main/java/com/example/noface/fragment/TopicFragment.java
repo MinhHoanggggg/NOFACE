@@ -21,6 +21,7 @@ import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Topic;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -68,14 +69,14 @@ public class TopicFragment extends Fragment {
 
     //    get data từ API
     private void GetAllTopic() {
-
+        DataToken dataToken = new DataToken(getContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetAllTopic()
+        new CompositeDisposable().add(requestInterface.GetAllTopic(dataToken.getToken())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -84,7 +85,6 @@ public class TopicFragment extends Fragment {
 
     private void handleResponse(ArrayList<Topic> topics) {
         try {
-
             //set adapter cho rcv
             TopicAdapter topicAdapter = new TopicAdapter(topics, getContext(), new TopicAdapter.TopicAdapterListener() {
                 @Override

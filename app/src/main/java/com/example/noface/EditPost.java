@@ -25,6 +25,7 @@ import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
@@ -209,13 +210,14 @@ public class EditPost extends AppCompatActivity {
 
     }
     private void GetPost(int id) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetPost(id)
+        new CompositeDisposable().add(requestInterface.GetPost(dataToken.getToken(), id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -223,13 +225,14 @@ public class EditPost extends AppCompatActivity {
     }
 
     private void GetAllTopic() {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetAllTopic()
+        new CompositeDisposable().add(requestInterface.GetAllTopic(dataToken.getToken())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -237,13 +240,14 @@ public class EditPost extends AppCompatActivity {
     }
 
     private void PostPost(Posts posts) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.AddPost(posts)
+        new CompositeDisposable().add(requestInterface.AddPost(dataToken.getToken(), posts)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)

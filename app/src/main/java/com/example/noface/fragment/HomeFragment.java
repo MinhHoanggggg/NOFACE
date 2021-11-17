@@ -23,6 +23,7 @@ import com.example.noface.CreatePost;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -65,13 +66,14 @@ public class HomeFragment extends Fragment {
 
     //    get data từ API
     private void PostTrending() {
+        DataToken dataToken = new DataToken(getContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.PostTrending()
+        new CompositeDisposable().add(requestInterface.PostTrending(dataToken.getToken())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)

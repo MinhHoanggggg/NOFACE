@@ -29,6 +29,7 @@ import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
@@ -40,7 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -193,13 +194,14 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get Topic API=============================
     private void GetAllTopic() {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetAllTopic()
+        new CompositeDisposable().add(requestInterface.GetAllTopic(dataToken.getToken())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -223,13 +225,14 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get Cmt API===================================
     private void GetCmt(int id) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetCmt(id)
+        new CompositeDisposable().add(requestInterface.GetCmt(dataToken.getToken(), id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse1, this::handleError)
@@ -258,13 +261,14 @@ public class PostActivity extends AppCompatActivity{
     //=============================post Cmt API===================================
 
     private void SendCmt(Comment comment) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.SendCmt(comment)
+        new CompositeDisposable().add(requestInterface.SendCmt(dataToken.getToken(), comment)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseCMT, this::handleError)
@@ -280,13 +284,14 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get like API===================================
     private void Like(int idPost, String idUser) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.Like(idPost, idUser)
+        new CompositeDisposable().add(requestInterface.Like(dataToken.getToken(), idPost, idUser)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseLike, this::handleError)
@@ -308,13 +313,14 @@ public class PostActivity extends AppCompatActivity{
     }
     ////
     private void GetPost(int id) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetPost(id)
+        new CompositeDisposable().add(requestInterface.GetPost(dataToken.getToken(), id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -331,8 +337,8 @@ public class PostActivity extends AppCompatActivity{
         setUser(user);
         txtlike.setText(String.valueOf(sumLike));
         if (posts.getImagePost().length() > 15){
-            imgView.setVisibility(View.VISIBLE);
-            Picasso.get().load(posts.getImagePost()).into(imgView);
+//            imgView.setVisibility(View.VISIBLE);
+//            Picasso.get().load(posts.getImagePost()).into(imgView);
         }
         else {
             imgView.setVisibility(View.GONE);
@@ -416,13 +422,14 @@ public class PostActivity extends AppCompatActivity{
    }
 
     private void DeletePost(int id) {
+        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.DeletePost(id)
+        new CompositeDisposable().add(requestInterface.DeletePost(dataToken.getToken(), id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)

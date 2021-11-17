@@ -22,6 +22,7 @@ import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
@@ -177,13 +178,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     //=============================get like API===================================
     private void Like(int idPost, String idUser) {
+        DataToken dataToken = new DataToken(context.getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.Like(idPost, idUser)
+        new CompositeDisposable().add(requestInterface.Like(dataToken.getToken(), idPost, idUser)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseLike, this::handleError)

@@ -1,5 +1,7 @@
 package com.example.noface.fragment;
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,13 +17,24 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.noface.MainActivity;
+import com.example.noface.model.Token;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.example.noface.ResetPass;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginFragment extends Fragment {
     private Button btnLogin;
@@ -79,11 +92,39 @@ public class LoginFragment extends Fragment {
                             ShowNotifyUser.dismissProgressDialog();
                             Toast.makeText(getContext(), "Đăng nhập thành công",
                                     Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            assert user != null;
+                            String id = user.getUid();
+                            Login(id);
                         }
                     }
                 });
 
+    }
+
+    private void Login(String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetToken(idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Token token) {
+        DataToken dataToken = new DataToken(getContext());
+        dataToken.saveToken(token.getToken(), token.getRefreshToken());
+        startActivity(new Intent(getActivity(), MainActivity.class));
+    }
+
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
 

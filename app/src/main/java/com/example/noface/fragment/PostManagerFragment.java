@@ -18,6 +18,7 @@ import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
@@ -68,13 +69,14 @@ public class PostManagerFragment extends Fragment {
 
     //    get data từ API
     private void Wall(String userid) {
+        DataToken dataToken = new DataToken(getContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.Wall(userid)
+        new CompositeDisposable().add(requestInterface.Wall(dataToken.getToken(), userid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
