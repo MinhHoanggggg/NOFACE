@@ -165,6 +165,7 @@ public class PostActivity extends AppCompatActivity{
                 Like(idpost, user.getUid());
             }
         });
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +242,6 @@ public class PostActivity extends AppCompatActivity{
 
     private void handleResponse1(ArrayList<Comment> comments) {
         try {
-
             //init rcv
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostActivity.this,
             LinearLayoutManager.VERTICAL, false);

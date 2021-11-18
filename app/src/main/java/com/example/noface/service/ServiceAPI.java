@@ -26,7 +26,7 @@ public interface ServiceAPI {
     Observable<Token> GetToken(@Query("idUser") String idUser);
 
     @POST("refresh-token")
-    Observable<Token> RefreshToken(@Body String f5Token);
+    Observable<Token> RefreshToken(@Body Token token);
 
     @GET("get-all-topic")
     Observable<ArrayList<Topic>> GetAllTopic(@Header("Authorization") String token);

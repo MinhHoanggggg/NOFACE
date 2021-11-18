@@ -51,8 +51,10 @@ public class HomeFragment extends Fragment {
         rcv_posts.setLayoutManager(linearLayoutManager);
 
         ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
-        //API data postrending
-        PostTrending();
+        //token
+        DataToken dataToken = new DataToken(getContext());
+        String token = dataToken.getToken();
+        PostTrending(token);
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,15 +67,14 @@ public class HomeFragment extends Fragment {
     }
 
     //    get data từ API
-    private void PostTrending() {
-        DataToken dataToken = new DataToken(getContext());
+    private void PostTrending(String token) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.PostTrending(dataToken.getToken())
+        new CompositeDisposable().add(requestInterface.PostTrending(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)

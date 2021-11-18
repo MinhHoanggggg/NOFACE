@@ -3,16 +3,10 @@ package com.example.noface.other;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
+import android.os.SystemClock;
 
-import com.example.noface.LoginActivity;
-import com.example.noface.MainActivity;
 import com.example.noface.model.Token;
 import com.example.noface.service.ServiceAPI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DataToken {
 
     private final Context context;
-    boolean isTokenExpired = false;
 
     public DataToken(Context context) {
         this.context = context;
@@ -47,53 +40,32 @@ public class DataToken {
 
 
     public String getToken() {
-//        //xếp hàng
-        if(isTokenExpired){
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        SharedPreferences settings = context.getSharedPreferences("data", MODE_PRIVATE);
+        long expires = settings.getLong("expires", 0);
+        if (expires < System.currentTimeMillis()) {
+            long expiresRefreshToken = settings.getLong("expiresRefreshToken", 0);
+            if(expiresRefreshToken < System.currentTimeMillis()){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                assert user != null;
+                String id = user.getUid();
+                getNewToken(id);
             }
+            String refreshToken = settings.getString("refreshToken", "");
+            Token token = new Token("", refreshToken);
+            RefreshToken(token);
+            SystemClock.sleep(3000);
         }
-//            if(isTokenExpired){
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-        if(!isTokenExpired){
-            SharedPreferences settings = context.getSharedPreferences("data", MODE_PRIVATE);
-            long expires = settings.getLong("expires", 0);
-            if (expires < System.currentTimeMillis()) {
-                isTokenExpired = true;
-                long expiresRefreshToken = settings.getLong("expiresRefreshToken", 0);
-                if(expiresRefreshToken < System.currentTimeMillis()){
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    assert user != null;
-                    String id = user.getUid();
-                    getToken(id);
-                }else{
-                    String f5Token = settings.getString("refreshToken", "");
-                    RefreshToken(f5Token);
-                }
-            }else{
-                return settings.getString("token", "");
-            }
-        }
-
-        return getToken();
+        return settings.getString("token", "");
     }
 
-    private void RefreshToken(String f5Token) {
+    private void RefreshToken(Token token) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.RefreshToken(f5Token)
+        new CompositeDisposable().add(requestInterface.RefreshToken(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -102,10 +74,10 @@ public class DataToken {
 
     private void handleResponse(Token token) {
         saveToken(token.getToken(), token.getRefreshToken());
-        isTokenExpired = false;
     }
 
-    private void getToken(String idUser) {
+
+    private void getNewToken(String idUser) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -122,7 +94,6 @@ public class DataToken {
     private void handleResponse1(Token token) {
         DataToken dataToken = new DataToken(context.getApplicationContext());
         dataToken.saveToken(token.getToken(), token.getRefreshToken());
-        isTokenExpired = false;
     }
 
 
