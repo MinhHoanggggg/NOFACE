@@ -57,8 +57,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity{
-    private TextView tvName, tvDate, tvTitle, tvContent, tvCate, tv_namePhake, txtcmtPhake, txtlike;
-    private ImageView imgAvatar, imgAvatarUser, imgAvatarPhake, imgView;
+    private TextView tvName, tvDate, tvTitle, tvContent, tvCate, txtlike;
+    private ImageView imgAvatar, imgAvatarUser, imgView;
     private EditText edt_cmt;
     private ImageButton btnSend, btnMenu;
     private RecyclerView rcv_cmt;
@@ -78,7 +78,6 @@ public class PostActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        layoutCMT = findViewById(R.id.Layout);
         tvName = findViewById(R.id.tvName);
         CbLike = findViewById(R.id.CbLike);
         tvCate = findViewById(R.id.tvCate);
@@ -90,9 +89,6 @@ public class PostActivity extends AppCompatActivity{
         edt_cmt = findViewById(R.id.edt_cmt);
         btnSend = findViewById(R.id.btnSend);
         rcv_cmt = findViewById(R.id.rcv_cmt);
-        tv_namePhake = findViewById(R.id.tv_namePhake);
-        txtcmtPhake = findViewById(R.id.txtcmtPhake);
-        imgAvatarPhake = findViewById(R.id.imgAvatarPhake);
         txtlike = findViewById(R.id.txtlike);
         btnCmt = findViewById(R.id.btnCmt);
         btnMenu = findViewById(R.id.btnMenu);
@@ -130,7 +126,6 @@ public class PostActivity extends AppCompatActivity{
             }
         });
 
-
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,29 +137,21 @@ public class PostActivity extends AppCompatActivity{
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SetAvatar.SetAva(imgAvatarPhake,lUser.getAvaPath());
-                SetAvatar.SetAva(imgAvatarPhake,lUser.getAvaPath());
-                tv_namePhake.setText(lUser.getName());
-                tv_namePhake.setText(lUser.getName());
-                txtcmtPhake.setText(edt_cmt.getText().toString());
-                edt_cmt.setText("");
-
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String strDate = sdf.format(c.getTime());
-
-                Comment comment = new Comment(0, idpost, user.getUid(), txtcmtPhake.getText().toString(), strDate);
-                //gọi api gửi cmt
-                SendCmt(comment);
-                layoutCMT.setVisibility(View.VISIBLE);
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        GetCmt(idpost);
-
-                    }
-                }, 3000);
+                String cmt = edt_cmt.getText().toString();
+                if(cmt.length() == 0){
+                    Toast.makeText(getApplicationContext(), "Hãy nhập bình luận của bạn!", Toast.LENGTH_SHORT).show();
+                }else if(cmt.length() > 100){
+                    Toast.makeText(getApplicationContext(), "Bình luận của bạn quá dài!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Comment comment = new Comment(0, idpost, user.getUid(), cmt, strDate);
+                    //gọi api gửi cmt
+                    SendCmt(comment);
+                    edt_cmt.setText("");
+                }
+//                layoutCMT.setVisibility(View.VISIBLE);
             }
         });
 
@@ -198,15 +185,21 @@ public class PostActivity extends AppCompatActivity{
                 popup.show();
             }
         });
+
+        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 7000);
+    }
+
+
+    public class NewsletterTask extends TimerTask {
+        @Override
+        public void run() {
+            GetCmt(idPost);
+        }
     }
 
     public void setUI(int id) {
-
-
         GetAllTopic();
         GetPost(id);
-
-
     }
 
     //=============================get Topic API=============================
@@ -267,7 +260,6 @@ public class PostActivity extends AppCompatActivity{
             sumCmt = comments.size();
             btnCmt.setText(sumCmt + " bình luận");
             rcv_cmt.setAdapter(cmtAdapter);
-            layoutCMT.setVisibility(View.GONE);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -296,6 +288,7 @@ public class PostActivity extends AppCompatActivity{
         Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
         sumCmt++;
         btnCmt.setText(sumCmt + " bình luận");
+        GetCmt(idPost);
     }
     //=============================end post Cmt API===================================
 
