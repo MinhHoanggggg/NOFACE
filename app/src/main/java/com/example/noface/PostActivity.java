@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,8 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -69,11 +72,13 @@ public class PostActivity extends AppCompatActivity{
     String title;
     String content;
     Boolean checkLike = false;
+    LinearLayout layoutCMT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        layoutCMT = findViewById(R.id.Layout);
         tvName = findViewById(R.id.tvName);
         CbLike = findViewById(R.id.CbLike);
         tvCate = findViewById(R.id.tvCate);
@@ -137,8 +142,10 @@ public class PostActivity extends AppCompatActivity{
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SetAvatar.SetAva(imgAvatarPhake,pUser.getAvaPath());
-                tv_namePhake.setText(pUser.getName());
+                SetAvatar.SetAva(imgAvatarPhake,lUser.getAvaPath());
+                SetAvatar.SetAva(imgAvatarPhake,lUser.getAvaPath());
+                tv_namePhake.setText(lUser.getName());
+                tv_namePhake.setText(lUser.getName());
                 txtcmtPhake.setText(edt_cmt.getText().toString());
                 edt_cmt.setText("");
 
@@ -149,6 +156,15 @@ public class PostActivity extends AppCompatActivity{
                 Comment comment = new Comment(0, idpost, user.getUid(), txtcmtPhake.getText().toString(), strDate);
                 //gọi api gửi cmt
                 SendCmt(comment);
+                layoutCMT.setVisibility(View.VISIBLE);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        GetCmt(idpost);
+
+                    }
+                }, 3000);
             }
         });
 
@@ -251,6 +267,7 @@ public class PostActivity extends AppCompatActivity{
             sumCmt = comments.size();
             btnCmt.setText(sumCmt + " bình luận");
             rcv_cmt.setAdapter(cmtAdapter);
+            layoutCMT.setVisibility(View.GONE);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -378,7 +395,7 @@ public class PostActivity extends AppCompatActivity{
     private void setUser(FirebaseUser user){
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = user.getUid().toString();
+        String refName = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

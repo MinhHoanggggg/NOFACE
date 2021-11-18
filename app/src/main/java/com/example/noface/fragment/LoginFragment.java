@@ -67,6 +67,7 @@ public class LoginFragment extends Fragment {
                         ShowNotifyUser.showProgressDialog(getContext(), "Đang tải...");
                         loginUser(mail, pass);
 
+
                 }
             }
         });
@@ -119,7 +120,9 @@ public class LoginFragment extends Fragment {
     private void handleResponse(Token token) {
         DataToken dataToken = new DataToken(getContext());
         dataToken.saveToken(token.getToken(), token.getRefreshToken());
+
         startActivity(new Intent(getActivity(), MainActivity.class));
+        getActivity().finish();
     }
 
 
