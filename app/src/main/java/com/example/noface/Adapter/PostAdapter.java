@@ -66,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.CbLike.setChecked(false);
         holder.txt_title.setText(lstPost.get(position).getTitle());
         holder.tvTime.setText(lstPost.get(position).getTime());
 

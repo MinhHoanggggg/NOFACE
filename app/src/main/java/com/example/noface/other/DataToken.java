@@ -16,6 +16,7 @@ import com.example.noface.MainActivity;
 import com.example.noface.model.Token;
 import com.example.noface.service.ServiceAPI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DataToken {
 
     private final Context context;
+    boolean isTokenExpired = false;
 
     public DataToken(Context context) {
         this.context = context;
@@ -37,29 +39,51 @@ public class DataToken {
         SharedPreferences settings = context.getSharedPreferences("data", MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("token", "Bearer " +  token);
-        editor.putLong("expires", System.currentTimeMillis() + 7200000); //2h * 3600000
+        editor.putLong("expires", System.currentTimeMillis() + 7200000); //2h * 3600000    7200000
         editor.putString("refreshToken", refreshToken);
-        editor.putLong("expiresRefreshToken", System.currentTimeMillis() + 601200000); //7d * 24h * 3600000
+        editor.putLong("expiresRefreshToken", System.currentTimeMillis() + 601200000); //7d * 24h * 3600000    601200000
         editor.apply();
     }
 
 
     public String getToken() {
-        SharedPreferences settings = context.getSharedPreferences("data", MODE_PRIVATE);
-        long expires = settings.getLong("expires", 0);
-        if (expires < System.currentTimeMillis()) {
-            long expiresRefreshToken = settings.getLong("expiresRefreshToken", 0);
-            if(expiresRefreshToken < System.currentTimeMillis()){
-                FirebaseAuth.getInstance().signOut();
-                ((Activity)context).finish();
-                context.startActivity(new Intent(context, LoginActivity.class));
-                Toast.makeText(context.getApplicationContext(), "Bạn đã hết phiên đăng nhập, vui lòng đăng nhập lại",
-                Toast.LENGTH_SHORT).show();
+//        //xếp hàng
+        if(isTokenExpired){
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            String f5Token = settings.getString("refreshToken", "");
-            RefreshToken(f5Token);
         }
-        return settings.getString("token", "");
+//            if(isTokenExpired){
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        if(!isTokenExpired){
+            SharedPreferences settings = context.getSharedPreferences("data", MODE_PRIVATE);
+            long expires = settings.getLong("expires", 0);
+            if (expires < System.currentTimeMillis()) {
+                isTokenExpired = true;
+                long expiresRefreshToken = settings.getLong("expiresRefreshToken", 0);
+                if(expiresRefreshToken < System.currentTimeMillis()){
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    assert user != null;
+                    String id = user.getUid();
+                    getToken(id);
+                }else{
+                    String f5Token = settings.getString("refreshToken", "");
+                    RefreshToken(f5Token);
+                }
+            }else{
+                return settings.getString("token", "");
+            }
+        }
+
+        return getToken();
     }
 
     private void RefreshToken(String f5Token) {
@@ -78,7 +102,29 @@ public class DataToken {
 
     private void handleResponse(Token token) {
         saveToken(token.getToken(), token.getRefreshToken());
+        isTokenExpired = false;
     }
+
+    private void getToken(String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetToken(idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse1, this::handleError)
+        );
+    }
+
+    private void handleResponse1(Token token) {
+        DataToken dataToken = new DataToken(context.getApplicationContext());
+        dataToken.saveToken(token.getToken(), token.getRefreshToken());
+        isTokenExpired = false;
+    }
+
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.showAlertDialog(context.getApplicationContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");

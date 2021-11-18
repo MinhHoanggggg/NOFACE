@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment {
 
     private void handleResponse(ArrayList<Posts> posts) {
         try {
-
             PostAdapter postAdapter = new PostAdapter(posts, getContext());
             rcv_posts.setAdapter(postAdapter);
 

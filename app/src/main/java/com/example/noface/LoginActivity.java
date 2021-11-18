@@ -36,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if(user != null){
-            finish();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//            finish();
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         tabLayout =findViewById(R.id.tabLayout);
         viewPager =findViewById(R.id.viewPager);
