@@ -23,7 +23,7 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_edit_post.xml" value="0.264" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_login.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_post.xml" value="0.2" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_post.xml" value="0.264" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_profile_user.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_topic.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_change_pass.xml" value="0.264" />
@@ -32,6 +32,9 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_posts_manager.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_profile.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_topic.xml" value="0.25416666666666665" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/header_left_nav.xml" value="0.13020833333333334" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_ava.xml" value="0.13020833333333334" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_cmt.xml" value="0.16" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_post.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_topic.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/layout_login.xml" value="0.13020833333333334" />

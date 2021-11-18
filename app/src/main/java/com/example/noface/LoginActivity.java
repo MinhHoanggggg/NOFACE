@@ -36,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if(user != null){
+            String id = user.getUid();
+            Login(id);
 //            finish();
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//           startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         tabLayout =findViewById(R.id.tabLayout);
         viewPager =findViewById(R.id.viewPager);
@@ -66,5 +68,32 @@ public class LoginActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+    }
+
+    private void Login(String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetToken(idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Token token) {
+        DataToken dataToken = new DataToken(LoginActivity.this);
+        dataToken.saveToken(token.getToken(), token.getRefreshToken());
+
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+    }
+
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.showAlertDialog(LoginActivity.this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra nè");
     }
 }
