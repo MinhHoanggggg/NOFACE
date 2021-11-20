@@ -5,6 +5,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -45,8 +46,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -59,23 +63,27 @@ public class EditPost extends AppCompatActivity {
     private Spinner spn_post_Cate;
     private TextView tv_post_Name,tv_post_Date;
     private ImageView img_post_Avatar, imgView;
-    private ImageButton btn_post_Back, btnOpenfile;
+    private ImageButton btn_post_Back, btnOpenfile, btnCancel;
     private Button btn_post_Save;
-    private int idPost;
+    private int idPost, idTopic;
     private Uri imageUri;
-    String mUri="";
+    String mUri="", strDate="";
     private StorageReference storageReference;
     private StorageTask uploadTask;
-
+    Boolean oFile = false;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+    ConstraintLayout constraintLayout;
     private ArrayList<Integer> idTopics = new ArrayList<>();
     ArrayList<String> lstName = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
-
+        Intent intent = getIntent();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        strDate = sdf.format(c.getTime());
+        idPost = intent.getIntExtra("idPost",0);
         edt_post_Content = findViewById(R.id.edt_post_Content);
         edt_post_Title = findViewById(R.id.edt_post_Title);
         spn_post_Cate = findViewById(R.id.spn_post_Cate);
@@ -86,8 +94,8 @@ public class EditPost extends AppCompatActivity {
         btn_post_Save = findViewById(R.id.btn_post_Save);
         btnOpenfile = findViewById(R.id.btnOpenfile);
         imgView = findViewById(R.id.imgView);
-        Intent intent = getIntent();
-        idPost = intent.getIntExtra("idPost",0);
+        constraintLayout = findViewById(R.id._layout);
+        btnCancel = findViewById(R.id.btnCancel);
         //SetUI
         ShowNotifyUser.showProgressDialog(this,"Đang tải đợi xíu!!!");
         setUser(user);
@@ -97,17 +105,32 @@ public class EditPost extends AppCompatActivity {
         btn_post_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveIMG();
-//                int index = getIndex(spn_post_Cate,spn_post_Cate.getSelectedItem().toString());
-//                int idTopic = idTopics.get(index);
-//                Posts lPost = new Posts(idPost,idTopic,user.getUid(),edt_post_Title.getText().toString(),edt_post_Content.getText().toString()
-//                        ,tv_post_Date.getText().toString(), null,null, null);
-//                PostPost(lPost);
-            //    postActivity.setUI(idPost);
+                ShowNotifyUser.showProgressDialog(EditPost.this, "Đang lưu bài viết...");
+                int index = getIndex(spn_post_Cate, spn_post_Cate.getSelectedItem().toString());
+                idTopic = idTopics.get(index);
+                if (edt_post_Title.getText().length()==0 || edt_post_Content.getText().length()==0)
+                {
+                    ShowNotifyUser.dismissProgressDialog();
+                    Toast.makeText(EditPost.this, "Vui lòng nhập đầy đủ bài viết!", Toast.LENGTH_SHORT).show();
+                } else if (oFile == true){
+                    saveIMG();
+                }
+                else {
+                    Posts lPost = new Posts(idPost, idTopic, user.getUid(), edt_post_Title.getText().toString(),
+                            edt_post_Content.getText().toString(), strDate,
+                            mUri, null, null);
+                    PostPost(lPost);
+                }
             }
         });
 
-        //Openfile
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                oFile = false; mUri = "";
+                constraintLayout.setVisibility(View.GONE);
+            }
+        });
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
         btnOpenfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +153,11 @@ public class EditPost extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
             imageUri = data.getData();
             imgView.setImageURI(imageUri);
+            constraintLayout.setVisibility(View.VISIBLE);
+            oFile = true;
+        } else{
+            oFile = false;
+            constraintLayout.setVisibility(View.GONE);
         }
     } //end.openFile
 
@@ -158,16 +186,8 @@ public class EditPost extends AppCompatActivity {
                         ShowNotifyUser.showProgressDialog(EditPost.this, "Đang lưu bài viết...");
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString(); //SAve link img
-
-//                        Img uploadImg = new Img("test", mUri); // LUU
-//                        String uploadId = reference.push().getKey(); // TRU
-//                        reference.child(uploadId).setValue(uploadImg);//FIREBASE
-//                        Toast.makeText(CreatePost.this, "Đã lưu!", Toast.LENGTH_SHORT).show();
-//                        ShowNotifyUser.dismissProgressDialog();
-                        int index = getIndex(spn_post_Cate, spn_post_Cate.getSelectedItem().toString());
-                        int idTopic = idTopics.get(index);
                         Posts lPost = new Posts(idPost, idTopic, user.getUid(), edt_post_Title.getText().toString(),
-                                edt_post_Content.getText().toString(), tv_post_Date.getText().toString(),
+                                edt_post_Content.getText().toString(), strDate,
                                 mUri, null, null);
                         PostPost(lPost);
                     } else {
@@ -182,12 +202,12 @@ public class EditPost extends AppCompatActivity {
             });
         } else {
             mUri="";
+            ShowNotifyUser.dismissProgressDialog();
         }
     } //end.saveIMG
 
 
     private void setUser(FirebaseUser user) {
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -209,20 +229,6 @@ public class EditPost extends AppCompatActivity {
         });
 
     }
-    private void GetPost(int id) {
-        DataToken dataToken = new DataToken(getApplicationContext());
-        ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE_Service)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ServiceAPI.class);
-
-        new CompositeDisposable().add(requestInterface.GetPost(dataToken.getToken(), id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
-        );
-    }
 
     private void GetAllTopic() {
         DataToken dataToken = new DataToken(getApplicationContext());
@@ -237,6 +243,57 @@ public class EditPost extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
         );
+    }
+    private void handleResponse(ArrayList<Topic> topics) {
+        for (int i =0; i<topics.size();i++){
+            Topic topic = topics.get(i);
+            if(topic !=null) {
+                lstName.add(topic.getTopicName());
+                idTopics.add(topic.getIDTopic());
+            }
+        }
+        changeSpn(lstName);
+        GetPost(idPost);
+    }
+    public  void changeSpn(ArrayList<String> arraySpinner ){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_post_Cate.setAdapter(adapter);
+
+    }
+    private void GetPost(int id) {
+        DataToken dataToken = new DataToken(getApplicationContext());
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetPost(dataToken.getToken(), id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+    private void handleResponse(Posts posts) {
+        edt_post_Content.setText(posts.getContent());
+        edt_post_Title.setText(posts.getTitle());
+        tv_post_Date.setText(posts.getTime());
+        int pos = 0;
+        for (int i=0; i<idTopics.size(); i++){
+            int id = idTopics.get(i);
+            if(id == posts.getIDTopic()){
+                pos = i;
+            }
+        }
+        spn_post_Cate.setSelection(pos);
+        if (posts.getImagePost().length() >15){
+            constraintLayout.setVisibility(View.VISIBLE);
+            Picasso.get().load(posts.getImagePost()).into(imgView);
+        }
+
+        ShowNotifyUser.dismissProgressDialog();
     }
 
     private void PostPost(Posts posts) {
@@ -253,60 +310,22 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
-
     private void handleResponse(Message message) {
-        startActivity(new Intent(this, MainActivity.class));
-        Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
-    }
-
-    private void handleResponse(ArrayList<Topic> topics) {
-
-
-        for (int i =0; i<topics.size();i++){
-            Topic topic = topics.get(i);
-
-            if(topic !=null) {
-                lstName.add(topic.getTopicName());
-                idTopics.add(topic.getIDTopic());
-            }
-        }
-        changeSpn(lstName);
-        GetPost(idPost);
-    }
-
-
-    private void handleResponse(Posts posts) {
-        edt_post_Content.setText(posts.getContent());
-       edt_post_Title.setText(posts.getTitle());
-       tv_post_Date.setText(posts.getTime());
-       int pos = 0;
-       for (int i=0; i<idTopics.size(); i++){
-           int id = idTopics.get(i);
-           if(id == posts.getIDTopic()){
-               pos = i;
-           }
-       }
-       spn_post_Cate.setSelection(pos);
-
         ShowNotifyUser.dismissProgressDialog();
+        if(message.getStatus() == 0){
+            Toast.makeText(EditPost.this, "Không ổn rồi đại vương ơi! Đã có lỗi xảy ra", Toast.LENGTH_SHORT).show();
+        }else{
+            startActivity(new Intent(EditPost.this, MainActivity.class));
+        }
     }
-
 
     private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
         Toast.makeText(getApplicationContext(), "Không ổn gòi đại vương ơi !!!", Toast.LENGTH_SHORT).show();
     }
 
-    public  void changeSpn(ArrayList<String> arraySpinner ){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spn_post_Cate.setAdapter(adapter);
-
-    }
     private int getIndex(Spinner spinner, String myString){
-
         int index = 0;
-
         for (int i=0;i<spinner.getCount();i++){
             if (spinner.getItemAtPosition(i).equals(myString)){
                 index = i;

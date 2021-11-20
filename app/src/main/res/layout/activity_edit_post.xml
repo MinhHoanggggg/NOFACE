@@ -142,11 +142,28 @@
         android:padding="5dp"
         android:textColor="@color/black"
         android:textSize="17sp" />
-    <ImageView
-        android:id="@+id/imgView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
+        android:layout_height="200dp"
+        android:visibility="invisible">
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+        </ImageView>
+        <ImageButton
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/com_facebook_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="@id/imgView"
+            android:background="@null"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
-
-

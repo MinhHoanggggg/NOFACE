@@ -5,6 +5,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -69,7 +70,7 @@ public class CreatePost extends AppCompatActivity {
     private EditText edtTitle, edtContent;
     private Spinner spnTopic;
     private Button btnCreate;
-    private ImageButton btnBack, btnOpenfile;
+    private ImageButton btnBack, btnOpenfile, btnCancel;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
     ArrayList<Integer> idTopic = new ArrayList<>();
@@ -77,7 +78,8 @@ public class CreatePost extends AppCompatActivity {
     String mUri="", strDate="";
     private StorageReference storageReference;
     private StorageTask uploadTask;
-
+    Boolean oFile = false;
+    private ConstraintLayout constraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,36 +93,52 @@ public class CreatePost extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnOpenfile = findViewById(R.id.btnOpenfile);
         imgView = findViewById(R.id.imgView);
-
+        btnCancel = findViewById(R.id.btnCancel);
+        constraintLayout = findViewById(R.id._layout);
 
         ShowNotifyUser.showProgressDialog(this,"Đang tải...");
         setUI(user);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                startActivity(new Intent(CreatePost.this, MainActivity.class));
             }
         });
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ShowNotifyUser.showProgressDialog(v.getContext(),"Đang đăng bài viết...");
-//                int id = );
-
+                ShowNotifyUser.showProgressDialog(CreatePost.this, "Đang lưu bài viết...");
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 strDate = sdf.format(c.getTime());
-                saveIMG();
+                if (edtTitle.getText().length()==0 || edtContent.getText().length()==0)
+                {
+                    ShowNotifyUser.dismissProgressDialog();
+                    Toast.makeText(CreatePost.this, "Vui lòng nhập đầy đủ bài viết!", Toast.LENGTH_SHORT).show();
+                } else if (oFile == true){
+                    saveIMG();
+                }
+                else {
+                    Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
+                            user.getUid(), edtTitle.getText().toString(),
+                            edtContent.getText().toString(), strDate, mUri, null, null);
+                    AddPost(posts);
+                }
 
-//                Posts posts = new Posts(id, user.getUid(), edtTitle.getText().toString(),
-//                        edtContent.getText().toString(), strDate, mUri, null, null);
-//                AddPost(posts);
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                oFile = false; mUri = "";
+                constraintLayout.setVisibility(View.GONE);
+            }
+        });
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-//        reference = FirebaseDatabase.getInstance().getReference("uploads");  //luu tru tren firebase
         btnOpenfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,27 +146,10 @@ public class CreatePost extends AppCompatActivity {
             }
         });
     }
-    //openFile
-    private void openFile() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
-            imageUri = data.getData();
-            imgView.setImageURI(imageUri);
-        }
-    } //end.openFile
-
 
     private void setUI(FirebaseUser user){
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = user.getUid().toString();
+        String refName = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -158,7 +159,6 @@ public class CreatePost extends AppCompatActivity {
                     tvName.setText(lUser.getName());
                 }
                 if(lUser.getAvaPath()!=null){
-
                     SetAvatar.SetAva(imgAvatar,lUser.getAvaPath());
                 }
                 else
@@ -171,7 +171,6 @@ public class CreatePost extends AppCompatActivity {
             }
         });
         GetAllTopic();
-
     }
     private void GetAllTopic() {
         DataToken dataToken = new DataToken(getApplicationContext());
@@ -187,12 +186,6 @@ public class CreatePost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
-
-    private void handleError(Throwable throwable) {
-        ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
-    }
-
     private void handleResponse(ArrayList<Topic> topics) {
         ShowNotifyUser.dismissProgressDialog();
         ArrayList<String> lstName = new ArrayList<>();
@@ -214,6 +207,7 @@ public class CreatePost extends AppCompatActivity {
         spnTopic.setAdapter(adapter);
     }
 
+
     private void AddPost(Posts posts) {
         DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -228,7 +222,6 @@ public class CreatePost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
-
     private void handleResponse(Message message) {
         ShowNotifyUser.dismissProgressDialog();
         if(message.getStatus() == 0){
@@ -237,7 +230,6 @@ public class CreatePost extends AppCompatActivity {
             showAlertDialogVui(this, message.getNotification());
         }
     }
-
     public void showAlertDialogVui(Context context, String message){
         new AlertDialog.Builder(context)
                 .setTitle("Thông báo")
@@ -253,6 +245,32 @@ public class CreatePost extends AppCompatActivity {
                 .show();
     }
 
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! Đã có lỗi xảy ra");
+    }
+
+    //openFile
+    private void openFile() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
+            imageUri = data.getData();
+            imgView.setImageURI(imageUri);
+            constraintLayout.setVisibility(View.VISIBLE);
+            oFile = true;
+        } else{
+            oFile = false;
+            constraintLayout.setVisibility(View.GONE);
+        }
+    } //end.openFile
 
     //saveIMG
     private String getFileExtention (Uri uri){
@@ -277,18 +295,12 @@ public class CreatePost extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        ShowNotifyUser.showProgressDialog(CreatePost.this, "Đang lưu bài viết...");
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString(); //SAve link img
-//                        Img uploadImg = new Img("test", mUri); // LUU
-//                        String uploadId = reference.push().getKey(); // TRU
-//                        reference.child(uploadId).setValue(uploadImg);//FIREBASE
-//                        Toast.makeText(CreatePost.this, "Đã lưu!", Toast.LENGTH_SHORT).show();
-//                        ShowNotifyUser.dismissProgressDialog();
-                        Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
-                                user.getUid(), edtTitle.getText().toString(),
-                                edtContent.getText().toString(), strDate, mUri, null, null);
-                        AddPost(posts);
+                    Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
+                            user.getUid(), edtTitle.getText().toString(),
+                            edtContent.getText().toString(), strDate, mUri, null, null);
+                    AddPost(posts);
                     } else {
                         Toast.makeText(CreatePost.this, "Failed!", Toast.LENGTH_SHORT).show();
                     }
@@ -300,6 +312,7 @@ public class CreatePost extends AppCompatActivity {
                 }
             });
         } else {
+            ShowNotifyUser.dismissProgressDialog();
             mUri="";
         }
     } //end.saveIMG

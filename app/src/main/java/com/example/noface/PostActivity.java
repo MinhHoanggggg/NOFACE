@@ -43,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -154,7 +155,6 @@ public class PostActivity extends AppCompatActivity{
                     SendCmt(comment);
                     edt_cmt.setText("");
                 }
-//                layoutCMT.setVisibility(View.VISIBLE);
             }
         });
 
@@ -358,8 +358,8 @@ public class PostActivity extends AppCompatActivity{
         setUser(user);
         txtlike.setText(String.valueOf(sumLike));
         if (posts.getImagePost().length() > 15){
-//            imgView.setVisibility(View.VISIBLE);
-//            Picasso.get().load(posts.getImagePost()).into(imgView);
+            imgView.setVisibility(View.VISIBLE);
+            Picasso.get().load(posts.getImagePost()).into(imgView);
         }
         else {
             imgView.setVisibility(View.GONE);
@@ -460,6 +460,7 @@ public class PostActivity extends AppCompatActivity{
     private void handleResponse(Message message) {
         if(message.getStatus() == 1){
             Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(PostActivity.this,  MainActivity.class));
         }
     }
 

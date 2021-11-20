@@ -76,16 +76,14 @@
                     </LinearLayout>
 
                     <TextView
-                        android:fontFamily="sans-serif-medium"
                         android:id="@+id/tvTitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
                         android:text="Title"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="25sp"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvContent"
@@ -95,9 +93,10 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
+                        android:padding="5dp"
                         android:text="Phần bài viết chính sẽ trong này nè"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="17sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -124,9 +123,9 @@
 
                     <ImageView
                         android:id="@+id/imgView"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:padding="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:padding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:background="#F1F7F8"/>
@@ -184,7 +183,6 @@
                             android:layout_weight="2"
                             android:background="@color/white"
                             android:gravity="center"
-                            android:fontFamily="sans-serif-medium"
                             android:text="Bình luận (10)"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
@@ -207,33 +205,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="#D6D6D6" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:visibility="gone"
-                    android:gravity="center_vertical"
-                    android:id="@+id/lnlNOcmt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:background="@drawable/nocmt"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"/>
-                        <TextView
-                            android:padding="10dp"
-                            android:textSize="18sp"
-                            android:text="Không có bình luận nào."
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"/>
-                    </LinearLayout>
 
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
@@ -279,11 +250,10 @@
             android:textSize="17sp" />
 
         <ImageButton
-            android:scaleType="fitXY"
             android:id="@+id/btnSend"
-            android:layout_width="45dp"
+            android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:background="@drawable/send" />
+            android:background="@drawable/ic_send" />
     </LinearLayout>
 </LinearLayout>
