@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,14 +48,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView txtcmt, tv_name;
+        private final TextView txtcmt, tv_name, txtlikeCmt;
         private ImageView imgAvatar;
+        private ImageButton btnMenuCmt;
+        private CheckBox CbLikeCmt;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtcmt = itemView.findViewById(R.id.txtcmt);
             tv_name = itemView.findViewById(R.id.tv_name);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
+            btnMenuCmt = itemView.findViewById(R.id.btnMenuCmt);
+            CbLikeCmt = itemView.findViewById(R.id.CbLikeCmt);
+            txtlikeCmt = itemView.findViewById(R.id.txtlikeCmt);
         }
 
         @Override

@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,7 @@ public class PostActivity extends AppCompatActivity{
     private RecyclerView rcv_cmt;
     private Button btnCmt;
     private CheckBox CbLike;
+    private LinearLayout lnlNOcmt;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
     String idUser;
@@ -72,7 +74,6 @@ public class PostActivity extends AppCompatActivity{
     String title;
     String content;
     Boolean checkLike = false;
-    LinearLayout layoutCMT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,9 @@ public class PostActivity extends AppCompatActivity{
         btnCmt = findViewById(R.id.btnCmt);
         btnMenu = findViewById(R.id.btnMenu);
         imgView = findViewById(R.id.imgView);
-        imgView.setVisibility(View.GONE); //VISIBLE
+        lnlNOcmt = findViewById(R.id.lnlNOcmt);
+//        imgView.setVisibility(View.GONE); //VISIBLE
+        lnlNOcmt.setVisibility(View.GONE); //VISIBLE
 
         Intent intent = getIntent();
          idUser = intent.getStringExtra("idUser");
@@ -251,6 +254,14 @@ public class PostActivity extends AppCompatActivity{
 
     private void handleResponse1(ArrayList<Comment> comments) {
         try {
+
+            if (comments.size() == 0){
+                lnlNOcmt.setVisibility(View.VISIBLE);
+            }else
+            {
+                lnlNOcmt.setVisibility(View.GONE);
+            }
+
             //init rcv
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostActivity.this,
             LinearLayoutManager.VERTICAL, false);

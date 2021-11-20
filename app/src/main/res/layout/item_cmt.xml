@@ -5,35 +5,102 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="3dp"
     android:padding="5dp">
 
     <ImageView
+        android:layout_gravity="center|top"
         android:id="@+id/imgAvatar"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@drawable/ic_user" />
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             tools:ignore="RtlSymmetry">
-            <TextView
-                android:id="@+id/tv_name"
-                android:text="Ẩn danh"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textColor="@color/black"
-                android:id="@+id/txtcmt"
-                android:layout_marginTop="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp" />
+        <LinearLayout
+            android:weightSum="20"
+            android:backgroundTint="@color/gray"
+            android:orientation="horizontal"
+            android:background="@drawable/botron_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_weight="19"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:text="Ẩn danh"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textColor="@color/black"
+                    android:id="@+id/txtcmt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <CheckBox
+                    android:id="@+id/CbLikeCmt"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:background="@drawable/ic_like"
+                    android:button="@null"
+                    android:checked="false"
+                    android:stateListAnimator="@animator/anim_scale"
+                    app:backgroundTint="@null"
+                    tools:ignore="NestedWeights" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/btnMenuCmt"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/gray"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_menu" />
+            </LinearLayout>
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/txtlikeCmt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="1 lượt thích"
+                android:textSize="13sp" />
+        </LinearLayout>
+        </LinearLayout>
+
 </LinearLayout>
