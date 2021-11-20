@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), "Nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 }else {
 
-                        ShowNotifyUser.showProgressDialog(getContext(), "Đang tải...");
+                        ShowNotifyUser.showProgressDialog(getContext(), "Đang tải, đừng manh động...");
                         loginUser(mail, pass);
 
 
@@ -90,7 +90,7 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getContext(), "Đăng nhập thất bại",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            ShowNotifyUser.dismissProgressDialog();
+//                            ShowNotifyUser.dismissProgressDialog();
                             Toast.makeText(getContext(), "Đăng nhập thành công",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -120,13 +120,14 @@ public class LoginFragment extends Fragment {
     private void handleResponse(Token token) {
         DataToken dataToken = new DataToken(getContext());
         dataToken.saveToken(token.getToken(), token.getRefreshToken());
-
+        ShowNotifyUser.dismissProgressDialog();
         startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
     }
 
 
     private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 

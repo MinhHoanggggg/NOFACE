@@ -125,7 +125,7 @@
                         android:id="@+id/imgView"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:padding="5dp"
+                        android:padding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:background="#F1F7F8"/>

@@ -38,8 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         if(user != null){
             String id = user.getUid();
             Login(id);
-//            finish();
-//           startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         tabLayout =findViewById(R.id.tabLayout);
         viewPager =findViewById(R.id.viewPager);
@@ -87,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
     private void handleResponse(Token token) {
         DataToken dataToken = new DataToken(LoginActivity.this);
         dataToken.saveToken(token.getToken(), token.getRefreshToken());
-
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
