@@ -96,7 +96,6 @@ public class PostActivity extends AppCompatActivity{
         btnMenu = findViewById(R.id.btnMenu);
         imgView = findViewById(R.id.imgView);
         lnlNOcmt = findViewById(R.id.lnlNOcmt);
-//        imgView.setVisibility(View.GONE); //VISIBLE
         lnlNOcmt.setVisibility(View.GONE); //VISIBLE
 
         Intent intent = getIntent();
