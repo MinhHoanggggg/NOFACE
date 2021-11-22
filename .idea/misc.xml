@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.2158974358974359" />
+        <entry key="../../.gradle/caches/transforms-3/21d63d1b730e24af85e2bc61c84f01d0/transformed/jetified-firebase-ui-auth-0.6.0/res/drawable/idp_button_background_facebook.xml" value="0.11197916666666667" />
         <entry key="..\:/NOFACE/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/NOFACE/app/src/main/res/layout/fragment_category.xml" value="0.24909420289855072" />
         <entry key="..\:/NOFACE/app/src/main/res/layout/fragment_home.xml" value="0.24909420289855072" />
@@ -24,7 +25,7 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_login.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_post.xml" value="0.2" />
-        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_profile_user.xml" value="0.264" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_profile_user.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/activity_topic.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_change_pass.xml" value="0.264" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_home.xml" value="0.176" />
@@ -38,7 +39,6 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/layout_register.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable-v24/custom_btn.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable/bg_botron.xml" value="0.2989583333333333" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable/botron_bg.xml" value="0.3026041666666667" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable/custom_bg.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable/ic_like.xml" value="0.2989583333333333" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_category.xml" value="0.24909420289855072" />
@@ -48,11 +48,7 @@
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_post.xml" value="0.36" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/activity_topic.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/fragment_category.xml" value="0.15806159420289856" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/fragment_home.xml" value="0.15942028985507245" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/fragment_nocmt.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/item_category.xml" value="0.24909420289855072" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/item_cmt.xml" value="0.44000000000000006" />
-        <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/layout/item_post.xml" value="0.15942028985507245" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/menu/menu_nav.xml" value="0.2864583333333333" />
         <entry key="app/src/main/res/drawable-v24/custom1.xml" value="0.25" />
         <entry key="app/src/main/res/drawable-v24/custom_btn.xml" value="0.221875" />
@@ -66,16 +62,20 @@
         <entry key="app/src/main/res/drawable/custom_header_bg.xml" value="0.17916666666666667" />
         <entry key="app/src/main/res/drawable/custom_login.xml" value="0.221875" />
         <entry key="app/src/main/res/drawable/custom_table.xml" value="0.5" />
+        <entry key="app/src/main/res/drawable/ic_baseline_phone_android_24.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/drawable/ic_nav.xml" value="0.11354166666666667" />
         <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.39300411522633744" />
         <entry key="app/src/main/res/layout/activity_edit_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_login_by_phone.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_profile_user.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_reset_pass.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_select_ava.xml" value="0.17487373737373738" />
         <entry key="app/src/main/res/layout/activity_selectava.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_start.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.5" />
         <entry key="app/src/main/res/layout/demo.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_change_pass.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_changepass.xml" value="0.1" />

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartActivity"
+    android:background="@drawable/custom_bg"
+
+    >
+    <ImageView
+        android:id="@+id/imgLogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/avanf"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/txtWel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to NOFACE"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnGoogle"
+        app:layout_constraintVertical_bias="0.1"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtWel"/>
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnFacebook"
+        android:layout_margin="5dp"
+        app:layout_constraintLeft_toLeftOf="@id/btnGoogle"
+        app:layout_constraintRight_toRightOf="@id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle"
+         />
+
+    <Button
+        android:layout_margin="5dp"
+        android:id="@+id/btnPhone"
+        app:backgroundTint="@null"
+        android:background="@drawable/botron_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnFacebook"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtOr"
+        android:drawableLeft="@drawable/ic_baseline_phone_android_24"
+        android:text="Bắt đầu bằng số điện thoại"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        app:layout_constraintVertical_bias="0.2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hoặc"
+        android:textSize="25sp"
+        android:textColor="#ffffff"
+        android:id="@+id/txtOr"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFacebook"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+        android:layout_margin="5dp"
+        android:text="Tạo tài khoản"
+        app:layout_constraintLeft_toLeftOf="@id/btnFacebook"
+        app:layout_constraintRight_toRightOf="@id/btnFacebook"
+        app:layout_constraintTop_toBottomOf="@id/txtOr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCreateUser"
+        app:backgroundTint="@null"
+        android:background="@drawable/custom_btn"/>
+    <LinearLayout
+        android:id="@+id/lnLogin"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateUser"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        >
+        <TextView
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã có tài khoản rồi?"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:id="@+id/txtLogin"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:textColor="#03A9F4"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
