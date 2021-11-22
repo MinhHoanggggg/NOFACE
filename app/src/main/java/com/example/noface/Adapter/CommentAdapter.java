@@ -15,6 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.R;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Topic;
+import com.example.noface.model.User;
+import com.example.noface.other.SetAvatar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -27,6 +34,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private final ArrayList<Comment> lstCmt;
     private Context context;
+    String path = "";
 
     @NonNull
     @Override
@@ -38,6 +46,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtcmt.setText(lstCmt.get(position).getContent());
+        String id = lstCmt.get(position).getIDUser();
+        setUserCmt(id.trim(), holder.imgAvatar);
+
     }
 
     @Override
@@ -57,7 +68,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             super(itemView);
             txtcmt = itemView.findViewById(R.id.txtcmt);
             tv_name = itemView.findViewById(R.id.tv_name);
-            imgAvatar = itemView.findViewById(R.id.imgAvatar);
+            imgAvatar = itemView.findViewById(R.id.img_cmt_Avatar);
             btnMenuCmt = itemView.findViewById(R.id.btnMenuCmt);
             CbLikeCmt = itemView.findViewById(R.id.CbLikeCmt);
             txtlikeCmt = itemView.findViewById(R.id.txtlikeCmt);
@@ -68,4 +79,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         }
     }
+    public void setUserCmt(String idUser,ImageView img){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        String refName = idUser;
+        DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User lUser = snapshot.getValue(User.class);
+                SetAvatar.SetAva(img,lUser.getAvaPath());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
 }

@@ -48,6 +48,9 @@ public class SetAvatar {
                 case "ava10":
                     img.setImageResource(R.drawable.ava10);
                     break;
+                case "":
+                    img.setImageResource(R.drawable.ic_user);
+                break;
                 default: break;
             }
         }
