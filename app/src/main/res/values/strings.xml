@@ -6,6 +6,7 @@
     <string name="nav_home">Trang chủ</string>
     <string name="nav_story">Quản lí bài viết</string>
     <string name="nav_category">Chủ đề</string>
+    <string name="nav_chat">Trò chuyện</string>
     <string name="nav_open">Open nav drawer</string>
     <string name="nav_close">Close nav drawer</string>
 
@@ -17,7 +18,7 @@
     <string name="nav_logout">Đăng xuất</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<!--    FB-->
+    <!--    FB-->
     <string name="facebook_app_id">1278795525969008</string>
     <string name="fb_login_protocol_scheme">fb1278795525969008</string>
 

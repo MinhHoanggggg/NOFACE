@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
+import com.example.noface.fragment.MainChatFragment;
 import com.example.noface.fragment.PostByTopicFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int FRAGMENT_TOPIC = 2;
     private static final int FRAGMENT_PASS = 5;
+    private static final int FRAGMENT_CHAT = 3;
     private static final int FRAGMENT_PROFILE = 4;
     private static final int MY_REQUEST_CODE = 10;
 
@@ -139,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_topic:
                 openTopicFragment();
                 break;
+            case R.id.nav_chat:
+                openMainChatFragment();
+                break;
             case R.id.nav_pass:
                 openPassFragment();
                 break;
@@ -147,8 +152,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                finish();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -205,6 +211,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openMainChatFragment() {
+        if (CurrentFragment != FRAGMENT_CHAT) {
+            replaceFragment(new MainChatFragment());
+            CurrentFragment = FRAGMENT_CHAT;
+        }
+    }
+
     private void setTitleToolbar() {
         String title = "";
         switch (CurrentFragment) {
@@ -214,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case FRAGMENT_TOPIC:
                 title = "Chủ đề";
+                break;
+            case FRAGMENT_CHAT:
+                title = "Trò Chuyện";
                 break;
             case FRAGMENT_PROFILE: {
                 title = "Thông tin tài khoản";
@@ -313,5 +329,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Toast.makeText(getApplicationContext(), "Hông có tìm thấy Fragment2 mà đòi truyền", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }

@@ -178,7 +178,7 @@ public class LoginByPhone extends AppCompatActivity {
     public void pushRealtime(@NonNull FirebaseUser fUser){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
-        User lUser = new User(fUser.getUid(),"Ẩn danh","",fUser.getPhoneNumber(),true,"");
+        User lUser = new User(fUser.getUid(),"Ẩn danh","",fUser.getPhoneNumber(),true,"","offline");
         myRef.child(lUser.getIdUser()).setValue(lUser);
     }
     //API

@@ -47,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private ImageView imgAva;
     private Uri photoUri;
     private User lUser;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @Nullable
     @Override
@@ -98,11 +99,13 @@ public class ProfileFragment extends Fragment {
                                     lUser.setPhone(edtPhone.getText().toString());
                                     pushRealtime(lUser);
                                     //
-                                mainActivity.changeHeader(user);
+                                    mainActivity.changeHeader(user);
                                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+                DatabaseReference myRef = firebaseDatabase.getReference();
+                myRef.child("Users/" + user.getUid() + "/name").setValue(username);
             }
         });
         imgAva.setOnClickListener(new View.OnClickListener() {
@@ -167,8 +170,8 @@ public class ProfileFragment extends Fragment {
 //         Uri photoUrl = user.getPhotoUrl();
 //         Glide.with(this.getActivity()).load(photoUrl).error(R.drawable.ic_user).into(imgAva);
      //
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = user.getUid().toString();
+
+        String refName = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

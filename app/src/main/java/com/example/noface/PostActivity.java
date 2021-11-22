@@ -52,6 +52,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -79,6 +80,7 @@ public class PostActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status("online");
         setContentView(R.layout.activity_post);
         tvName = findViewById(R.id.tvName);
         CbLike = findViewById(R.id.CbLike);
@@ -189,6 +191,8 @@ public class PostActivity extends AppCompatActivity{
         });
 
         new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 7000);
+
+
     }
 
 
@@ -475,5 +479,23 @@ public class PostActivity extends AppCompatActivity{
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }

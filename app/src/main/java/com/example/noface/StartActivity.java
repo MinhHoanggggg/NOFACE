@@ -191,7 +191,7 @@ public class StartActivity extends AppCompatActivity {
     public void pushRealtime(@NonNull FirebaseUser fUser){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
-        User lUser = new User(fUser.getUid(),"Ẩn danh",fUser.getEmail(),"",true,"");
+        User lUser = new User(fUser.getUid(),"Ẩn danh",fUser.getEmail(),"",true,"","offline");
         myRef.child(lUser.getIdUser()).setValue(lUser);
     }
     //API
