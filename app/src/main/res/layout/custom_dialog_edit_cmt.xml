@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textSize="25sp"
+        android:text="Chỉnh sửa bình luận"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#D6D6D6" />
+
+
+        <EditText
+            android:id="@+id/edtCmt"
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:textSize="18sp"
+                android:text="Hủy"
+                android:background="@drawable/botron_btn"
+                android:layout_margin="6dp"
+                android:textColor="@color/black"
+                android:id="@+id/btn_huy"
+                android:textAllCaps="false"
+                app:backgroundTint="@null"
+                android:backgroundTint="#6DA0DF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:textSize="18sp"
+                android:text="Lưu thay đổi"
+                android:layout_margin="6dp"
+                android:backgroundTint="#6DA0DF"
+                android:textColor="@color/black"
+                android:id="@+id/btn_save"
+                android:textAllCaps="false"
+                app:backgroundTint="@null"
+                android:background="@drawable/botron_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+</LinearLayout>

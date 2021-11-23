@@ -125,11 +125,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         return lstPost.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView txt_title, tv_name, tvTime, txtCmt, txtlike;
         public CheckBox CbLike;
         public ImageView imgAvatar;
-
 
         public ItemClickListener itemClickListener;
         public ViewHolder(@NonNull View itemView) {
@@ -141,10 +140,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             txtCmt = itemView.findViewById(R.id.txtCmt);
             CbLike = itemView.findViewById(R.id.CbLike);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
-
             itemView.setOnClickListener(this);
-            
-            
         }
         
 

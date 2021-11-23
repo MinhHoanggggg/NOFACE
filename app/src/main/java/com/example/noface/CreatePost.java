@@ -122,9 +122,9 @@ public class CreatePost extends AppCompatActivity {
                     saveIMG();
                 }
                 else {
-                    Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
+                    Posts posts = new Posts(0, idTopic.get((int)spnTopic.getSelectedItemId()),
                             user.getUid(), edtTitle.getText().toString(),
-                            edtContent.getText().toString(), strDate, mUri, null, null);
+                            edtContent.getText().toString(), strDate, mUri, 0, null, null);
                     AddPost(posts);
                 }
 
@@ -297,9 +297,9 @@ public class CreatePost extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString(); //SAve link img
-                    Posts posts = new Posts(idTopic.get((int)spnTopic.getSelectedItemId()),
+                    Posts posts = new Posts(0, idTopic.get((int)spnTopic.getSelectedItemId()),
                             user.getUid(), edtTitle.getText().toString(),
-                            edtContent.getText().toString(), strDate, mUri, null, null);
+                            edtContent.getText().toString(), strDate, mUri, 0, null, null);
                     AddPost(posts);
                     } else {
                         Toast.makeText(CreatePost.this, "Failed!", Toast.LENGTH_SHORT).show();

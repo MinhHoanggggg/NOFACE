@@ -1,15 +1,16 @@
 package com.example.noface.model;
 
-import java.time.DateTimeException;
+import java.util.ArrayList;
 
 public class Comment {
 
-    public Comment(int IDCmt, int IDPost, String IDUser, String content, String time) {
+    public Comment(int IDCmt, int IDPost, String IDUser, String content, String time, ArrayList<LikeComment> likeComment) {
         this.IDCmt = IDCmt;
         this.IDPost = IDPost;
         this.IDUser = IDUser;
         Content = content;
         Time = time;
+        LikeComment = likeComment;
     }
 
     public int getIDCmt() {
@@ -52,9 +53,18 @@ public class Comment {
         Time = time;
     }
 
+    public ArrayList<LikeComment> getLikeComment() {
+        return LikeComment;
+    }
+
+    public void setLikeComment(ArrayList<LikeComment> likeComment) {
+        LikeComment = likeComment;
+    }
+
     private int IDCmt;
     private int IDPost;
     private String IDUser;
     private String Content;
     private String Time;
+    private ArrayList<LikeComment> LikeComment;
 }

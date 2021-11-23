@@ -118,7 +118,7 @@ public class EditPost extends AppCompatActivity {
                 else {
                     Posts lPost = new Posts(idPost, idTopic, user.getUid(), edt_post_Title.getText().toString(),
                             edt_post_Content.getText().toString(), strDate,
-                            mUri, null, null);
+                            mUri, 0, null, null);
                     PostPost(lPost);
                 }
             }
@@ -188,7 +188,7 @@ public class EditPost extends AppCompatActivity {
                         mUri = downloadUri.toString(); //SAve link img
                         Posts lPost = new Posts(idPost, idTopic, user.getUid(), edt_post_Title.getText().toString(),
                                 edt_post_Content.getText().toString(), strDate,
-                                mUri, null, null);
+                                mUri, 0, null, null);
                         PostPost(lPost);
                     } else {
                         Toast.makeText(EditPost.this, "Failed!", Toast.LENGTH_SHORT).show();

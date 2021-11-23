@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +70,7 @@ public class PostActivity extends AppCompatActivity{
     private LinearLayout lnlNOcmt;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
-    String idUser;
+    String idUser, token;
     int idTopic, sumLike, idPost, sumCmt;
     String date;
     String title;
@@ -108,6 +109,10 @@ public class PostActivity extends AppCompatActivity{
          content = intent.getStringExtra("content");
          sumLike = intent.getIntExtra("likes", 0);
          checkLike = intent.getBooleanExtra("checklike",false);
+
+        DataToken dataToken = new DataToken(getApplicationContext());
+        token = dataToken.getToken();
+
         if(!idUs.equals(user.getUid())){
             btnMenu.setVisibility(View.GONE);
         }
@@ -149,7 +154,7 @@ public class PostActivity extends AppCompatActivity{
                 }else if(cmt.length() > 100){
                     Toast.makeText(getApplicationContext(), "Bình luận của bạn quá dài!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Comment comment = new Comment(0, idpost, user.getUid(), cmt, strDate);
+                    Comment comment = new Comment(0, idpost, user.getUid(), cmt, strDate, null);
                     //gọi api gửi cmt
                     SendCmt(comment);
                     edt_cmt.setText("");
@@ -188,7 +193,7 @@ public class PostActivity extends AppCompatActivity{
             }
         });
 
-        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 7000);
+        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
     }
 
 
@@ -206,14 +211,13 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get Topic API=============================
     private void GetAllTopic() {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetAllTopic(dataToken.getToken())
+        new CompositeDisposable().add(requestInterface.GetAllTopic(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -237,14 +241,13 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get Cmt API===================================
     private void GetCmt(int id) {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetCmt(dataToken.getToken(), id)
+        new CompositeDisposable().add(requestInterface.GetCmt(token, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse1, this::handleError)
@@ -280,14 +283,13 @@ public class PostActivity extends AppCompatActivity{
     //=============================post Cmt API===================================
 
     private void SendCmt(Comment comment) {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.SendCmt(dataToken.getToken(), comment)
+        new CompositeDisposable().add(requestInterface.SendCmt(token, comment)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseCMT, this::handleError)
@@ -304,14 +306,13 @@ public class PostActivity extends AppCompatActivity{
 
     //=============================get like API===================================
     private void Like(int idPost, String idUser) {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.Like(dataToken.getToken(), idPost, idUser)
+        new CompositeDisposable().add(requestInterface.Like(token, idPost, idUser)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseLike, this::handleError)
@@ -327,20 +328,15 @@ public class PostActivity extends AppCompatActivity{
     }
     //=============================get like API===================================
 
-    private void handleError(Throwable throwable) {
-        ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
-    }
     ////
     private void GetPost(int id) {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetPost(dataToken.getToken(), id)
+        new CompositeDisposable().add(requestInterface.GetPost(token, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -431,7 +427,6 @@ public class PostActivity extends AppCompatActivity{
                break;
            case R.id.itemDel:
                showAlertDialog(this, "Bạn chắc chắn xóa bài viết này?");
-
                break;
 
            default:
@@ -442,14 +437,13 @@ public class PostActivity extends AppCompatActivity{
    }
 
     private void DeletePost(int id) {
-        DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.DeletePost(dataToken.getToken(), id)
+        new CompositeDisposable().add(requestInterface.DeletePost(token, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -457,10 +451,16 @@ public class PostActivity extends AppCompatActivity{
     }
 
     private void handleResponse(Message message) {
+        ShowNotifyUser.dismissProgressDialog();
         if(message.getStatus() == 1){
             Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this,  MainActivity.class));
         }
+    }
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
+        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
     public void showAlertDialog(Context context, String message){
@@ -469,11 +469,26 @@ public class PostActivity extends AppCompatActivity{
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        ShowNotifyUser.showProgressDialog(context,"Đang xóa bài viết, đừng manh động...");
                         DeletePost(idPost);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == 2){
+            assert data != null;
+            int result = data.getIntExtra("result", 0);
+            if (result == 1){
+                GetCmt(idPost);
+                ShowNotifyUser.dismissProgressDialog();
+            }
+        }
     }
 }

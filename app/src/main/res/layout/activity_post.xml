@@ -192,15 +192,6 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:backgroundTint="@null" />
-
-                        <!--                <ImageButton-->
-                        <!--                    android:paddingLeft="40dp"-->
-                        <!--                    android:background="@color/white"-->
-                        <!--                    android:layout_width="0dp"-->
-                        <!--                    android:layout_height="match_parent"-->
-                        <!--                    android:layout_weight="1"-->
-                        <!--                    android:src="@drawable/ic_share_no"-->
-                        <!--                    app:backgroundTint="@null" />-->
                     </LinearLayout>
 
                     <View
@@ -219,6 +210,7 @@
                     android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:padding="30dp"
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"

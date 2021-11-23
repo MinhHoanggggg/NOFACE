@@ -6,28 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Posts {
-    public Posts(int IDPost, int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<com.example.noface.model.Likes> likes, ArrayList<com.example.noface.model.Comment> comment) {
-        this.IDPost = IDPost;
-        this.IDTopic = IDTopic;
-        this.IDUser = IDUser;
-        Title = title;
-        Content = content;
-        Time = time;
-        ImagePost = imagePost;
-        Likes = likes;
-        Comment = comment;
-    }
-
-    public Posts(int IDTopic, String IDUser, String title, String content, String time, String imagePost, ArrayList<Likes> likes, ArrayList<Comment> comment) {
-        this.IDTopic = IDTopic;
-        this.IDUser = IDUser;
-        Title = title;
-        Content = content;
-        Time = time;
-        ImagePost = imagePost;
-        Likes = likes;
-        Comment = comment;
-    }
 
     public int getIDPost() {
         return IDPost;
@@ -85,6 +63,14 @@ public class Posts {
         ImagePost = imagePost;
     }
 
+    public int getViews() {
+        return Views;
+    }
+
+    public void setViews(int views) {
+        Views = views;
+    }
+
     public ArrayList<Likes> getLikes() {
         return Likes;
     }
@@ -101,6 +87,19 @@ public class Posts {
         Comment = comment;
     }
 
+    public Posts(int IDPost, int IDTopic, String IDUser, String title, String content, String time, String imagePost, int views, ArrayList<Likes> likes, ArrayList<Comment> comment) {
+        this.IDPost = IDPost;
+        this.IDTopic = IDTopic;
+        this.IDUser = IDUser;
+        Title = title;
+        Content = content;
+        Time = time;
+        ImagePost = imagePost;
+        Views = views;
+        Likes = likes;
+        Comment = comment;
+    }
+
     private int IDPost;
     private int IDTopic;
     private String IDUser;
@@ -108,6 +107,7 @@ public class Posts {
     private String Content;
     private String Time;
     private String ImagePost;
+    private int Views;
 
     private ArrayList<Likes> Likes;
 

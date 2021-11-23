@@ -69,4 +69,13 @@ public interface ServiceAPI {
     @DELETE("delete-post/{id}")
     Observable<Message> DeletePost(@Header("Authorization") String token,
                                    @Query("id") int id);
+
+    @POST("like-cmt/{idcmt}/{iduser}")
+    Observable<Message> LikeCmt(@Header("Authorization") String token,
+                                @Query("idcmt") int idcmt,
+                                @Query("iduser") String iduser);
+
+    @DELETE("delete-cmt/{idcmt}")
+    Observable<Message> DeleteCmt(@Header("Authorization") String token,
+                                @Query("idcmt") int idcmt);
 }
