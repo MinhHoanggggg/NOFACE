@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lUser = snapshot.getValue(User.class);
                 if (lUser.getAvaPath() != null) {
                     SetAvatar setAvatar = new SetAvatar();
-                    setAvatar.SetAva(imgNavAva, lUser.getAvaPath(),getApplicationContext());
+                    setAvatar.SetAva(imgNavAva, lUser.getAvaPath());
                 } else
                     imgNavAva.setImageResource(R.drawable.ic_user);
 

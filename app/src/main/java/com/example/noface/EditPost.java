@@ -217,7 +217,7 @@ public class EditPost extends AppCompatActivity {
                User lUser = snapshot.getValue(User.class);
                 tv_post_Name.setText(lUser.getName());
                  if (lUser.getAvaPath() != null) {
-                    SetAvatar.SetAva(img_post_Avatar, lUser.getAvaPath(),getApplicationContext());
+                    SetAvatar.SetAva(img_post_Avatar, lUser.getAvaPath());
                 } else
                     img_post_Avatar.setImageResource(R.drawable.ic_user);
             }

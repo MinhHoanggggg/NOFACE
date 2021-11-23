@@ -54,12 +54,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         Chat chat = lChat.get(i);
         holder.txt_message.setText(chat.getMessage());
-        SetAvatar.SetAva(holder.imgAvatar, imgAvatar,mContext);
+        SetAvatar.SetAva(holder.imgAvatar, imgAvatar);
 
         if (i == lChat.size()-1){
             if (chat.isSeen()){
                 holder.imgAvatar.setVisibility(View.VISIBLE);
-                SetAvatar.SetAva(holder.imgAvatar, imgAvatar,mContext);
+                SetAvatar.SetAva(holder.imgAvatar, imgAvatar);
             } else {
                 holder.txt_seen.setVisibility(View.VISIBLE);
                 holder.txt_seen.setText("Đã gửi");

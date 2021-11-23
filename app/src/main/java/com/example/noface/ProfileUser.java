@@ -118,7 +118,7 @@ public class ProfileUser extends AppCompatActivity {
                     txtNameUser.setText(lUser.getName());
                 }
                 if (lUser.getAvaPath() != null) {
-                    SetAvatar.SetAva(img_user_Ava,lUser.getAvaPath(),getApplicationContext());
+                    SetAvatar.SetAva(img_user_Ava, lUser.getAvaPath());
                 } else
                     img_user_Ava.setImageResource(R.drawable.ic_user);
             }

@@ -45,7 +45,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.squareup.picasso.Picasso;
-//import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,9 +72,6 @@ public class PostActivity extends AppCompatActivity{
     User lUser,pUser;
     String idUser, token;
     int idTopic, sumLike, idPost, sumCmt;
-    String date;
-    String title;
-    String content;
     Boolean checkLike = false;
 
     @Override
@@ -106,9 +102,6 @@ public class PostActivity extends AppCompatActivity{
          String idUs = idUser.trim();
          idTopic = intent.getIntExtra("idTopic", 0);
          idPost = intent.getIntExtra("idPost", 0);
-         date = intent.getStringExtra("date");
-         title = intent.getStringExtra("title");
-         content = intent.getStringExtra("content");
          sumLike = intent.getIntExtra("likes", 0);
          checkLike = intent.getBooleanExtra("checklike",false);
 
@@ -122,9 +115,10 @@ public class PostActivity extends AppCompatActivity{
              CbLike.setChecked(true);
          }
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
-        setUI(idPost);
+
 
         int idpost = idPost;
+        setUI(idPost);
         GetCmt(idpost);
 
         Intent intent1 = new Intent(PostActivity.this, ProfileUser.class);
@@ -322,11 +316,8 @@ public class PostActivity extends AppCompatActivity{
     }
 
     private void handleResponseLike(Message message) {
-        if(message.getStatus() == 1)
-            Toast.makeText(getApplicationContext(), "Thank you <3", Toast.LENGTH_SHORT).show();
-        else{
+        if(message.getStatus() != 1)
             Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
-        }
     }
     //=============================get like API===================================
 
@@ -349,16 +340,14 @@ public class PostActivity extends AppCompatActivity{
         tvDate.setText(posts.getTime());
         tvContent.setText(posts.getContent());
         tvTitle.setText(posts.getTitle());
-        GetAllTopic();
-        String id=  posts.getIDUser().trim();
+        String id = posts.getIDUser().trim();
         setUserPost(id);
         setUser(user);
         txtlike.setText(String.valueOf(sumLike));
-        if (posts.getImagePost().length() > 15){
+        if (posts.getImagePost().length() > 15) {
             imgView.setVisibility(View.VISIBLE);
             Picasso.get().load(posts.getImagePost()).into(imgView);
-        }
-        else {
+        } else {
             imgView.setVisibility(View.GONE);
         }
     }
@@ -380,7 +369,7 @@ public class PostActivity extends AppCompatActivity{
                 }
 
                 if(pUser.getAvaPath()!=null){
-                   SetAvatar.SetAva(imgAvatar,pUser.getAvaPath(),getApplicationContext());
+                   SetAvatar.SetAva(imgAvatar, pUser.getAvaPath());
                 }
             }
 
@@ -389,7 +378,6 @@ public class PostActivity extends AppCompatActivity{
 
             }
         });
-
 }
     private void setUser(FirebaseUser user){
 
@@ -401,7 +389,7 @@ public class PostActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 lUser = snapshot.getValue(User.class);
-                    SetAvatar.SetAva(imgAvatarUser,lUser.getAvaPath(),PostActivity.this);
+                SetAvatar.SetAva(imgAvatarUser, lUser.getAvaPath());
             }
 
             @Override

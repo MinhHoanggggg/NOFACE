@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.noface.Adapter.PostAdapter;
 
 import com.example.noface.R;
@@ -48,7 +49,7 @@ public class PostManagerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_posts_manager, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_posts_manager, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
         img_mng_Ava = view.findViewById(R.id.img_mng_Ava);
@@ -57,7 +58,7 @@ public class PostManagerFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
-        ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
+        ShowNotifyUser.showProgressDialog(getContext(), "Đang tải, đừng manh động...");
 
         //API data
         String userid = user.getUid();
@@ -87,7 +88,7 @@ public class PostManagerFragment extends Fragment {
         try {
             PostAdapter postAdapter = new PostAdapter(posts, getContext());
             rcv_posts.setAdapter(postAdapter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ShowNotifyUser.dismissProgressDialog();
@@ -95,7 +96,7 @@ public class PostManagerFragment extends Fragment {
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+        ShowNotifyUser.showAlertDialog(getContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
 
@@ -110,13 +111,10 @@ public class PostManagerFragment extends Fragment {
                 if (!lUser.getName().isEmpty()) {
                     txtName.setText(lUser.getName());
                 }
-
-                    if (getActivity() == null) {
-                        return;
-                    }
-                    else
-                    SetAvatar.SetAva(img_mng_Ava,lUser.getAvaPath(),getActivity());
-
+                if (getActivity() == null) {
+                    return;
+                } else
+                    SetAvatar.SetAva(img_mng_Ava, lUser.getAvaPath());
             }
 
             @Override

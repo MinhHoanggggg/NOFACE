@@ -44,7 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public PostAdapter(ArrayList<Posts> lstPost, Context context) {
         this.lstPost = lstPost;
@@ -54,7 +54,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final ArrayList<Posts> lstPost;
     private final Context context;
-
 
     @NonNull
     @Override
@@ -75,26 +74,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
         String id = user.getUid();
-        for(Likes likes : alLikes){
+        for (Likes likes : alLikes) {
             holder.CbLike.setChecked(id.equals(likes.getIDUser().trim()));
         }
-
 
         int idTopic = lstPost.get(position).getIDTopic();
         int idPost = lstPost.get(position).getIDPost();
         String idUser = lstPost.get(position).getIDUser();
-        String date = lstPost.get(position).getTime();
-        String title = lstPost.get(position).getTitle();
-        String content = lstPost.get(position).getContent();
-        setUserPost(idUser.trim(),holder.imgAvatar);
+        setUserPost(idUser.trim(), holder.imgAvatar);
 
         holder.CbLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int dem = Integer.parseInt(holder.txtlike.getText().toString());
-                if(!holder.CbLike.isChecked()){
+                if (!holder.CbLike.isChecked()) {
                     dem--;
-                }else{
+                } else {
                     dem++;
                 }
                 holder.txtlike.setText(String.valueOf(dem));
@@ -106,12 +101,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             @Override
             public void onItemClick(View v, int pos) {
                 Intent intent = new Intent(context, PostActivity.class);
-                intent.putExtra("idTopic",idTopic);
-                intent.putExtra("idPost",idPost);
-                intent.putExtra("idUser",idUser);
-                intent.putExtra("date",date);
-                intent.putExtra("title",title);
-                intent.putExtra("content",content);
+                intent.putExtra("idTopic", idTopic);
+                intent.putExtra("idPost", idPost);
+                intent.putExtra("idUser", idUser);
                 intent.putExtra("likes", Integer.valueOf(holder.txtlike.getText().toString()));
                 Boolean checkLike = holder.CbLike.isChecked();
                 intent.putExtra("checklike", checkLike);
@@ -131,6 +123,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         public ImageView imgAvatar;
 
         public ItemClickListener itemClickListener;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_title = itemView.findViewById(R.id.txt_title);
@@ -142,19 +135,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
             itemView.setOnClickListener(this);
         }
-        
+
 
         @Override
         public void onClick(View view) {
             this.itemClickListener.onItemClick(view, getAdapterPosition());
         }
+
         public void setItemClickListener(ItemClickListener ic) {
             this.itemClickListener = ic;
         }
     }
 
 
-    public void setUserPost(String idUser,ImageView img){
+    public void setUserPost(String idUser, ImageView img) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = idUser;
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -162,7 +156,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User lUser = snapshot.getValue(User.class);
-                    SetAvatar.SetAva(img,lUser.getAvaPath(),context);
+                SetAvatar.SetAva(img, lUser.getAvaPath());
             }
 
             @Override
@@ -170,10 +164,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
             }
         });
-
     }
 
-    //=============================get like API===================================
     private void Like(int idPost, String idUser) {
         DataToken dataToken = new DataToken(context.getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -190,13 +182,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     private void handleResponseLike(Message message) {
-        if(message.getStatus() == 1)
-            Toast.makeText(context.getApplicationContext(), "Thank you <3", Toast.LENGTH_SHORT).show();
-        else{
+        if (message.getStatus() != 1)
             Toast.makeText(context.getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
-        }
     }
-    //=============================get like API===================================
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
