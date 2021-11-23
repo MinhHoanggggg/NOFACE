@@ -8,10 +8,11 @@ public class Chat {
 
     public Chat() { }
 
-    public Chat(String from, String to, String message) {
+    public Chat(String from, String to, String message, boolean seen) {
         this.from = from;
         this.to = to;
         this.message = message;
+        this.seen = seen;
     }
 
     public String getFrom() {

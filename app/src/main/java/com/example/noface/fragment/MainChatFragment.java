@@ -60,43 +60,6 @@ public class MainChatFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-
-
-
-
-
-//        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
-//                .child(myID).child(frID);
-//        chatRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (!snapshot.exists()){
-//                    chatRef.child("id").setValue(frID);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-//        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
-//                .child(frID).child(myID);
-//        chatRef1.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (!snapshot.exists()){
-//                    chatRef.child("id").setValue(myID);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
         return view;
     }
 

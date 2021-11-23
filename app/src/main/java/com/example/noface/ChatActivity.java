@@ -77,12 +77,11 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void getData(){
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
+        userID = intent.getStringExtra("userID"); //người nhận
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(userID);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -100,6 +99,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+        seenMessage(user.getUid(), userID); //update trạng thái xem
     }
 
     private void sendMess(String I, String you, String mess){
@@ -108,6 +108,7 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("from", I);
         hashMap.put("to", you);
         hashMap.put("message", mess);
+        hashMap.put("seen", false);
         reference.child("Chat").push().setValue(hashMap);
     }
 
@@ -135,4 +136,26 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+    private void seenMessage(String my, String id) {
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chat");
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getTo().equals(my) && chat.getFrom().equals(id)) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("seen", true);
+                        snapshot.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
