@@ -54,7 +54,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             holder.img_off.setVisibility(View.VISIBLE);
             holder.img_on.setVisibility(View.GONE);
         }
-        SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
+        SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath(),mContext);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override

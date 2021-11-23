@@ -159,7 +159,7 @@ public class CreatePost extends AppCompatActivity {
                     tvName.setText(lUser.getName());
                 }
                 if(lUser.getAvaPath()!=null){
-                    SetAvatar.SetAva(imgAvatar,lUser.getAvaPath(),getApplicationContext());
+                    SetAvatar.SetAva(imgAvatar,lUser.getAvaPath(),CreatePost.this);
                 }
 
             }

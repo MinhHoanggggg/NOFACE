@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
                 User lUser = snapshot.getValue(User.class);
                 txtUserName.setText(lUser.getName());
                 if (lUser.getAvaPath()!=null)
-                    SetAvatar.SetAva(imgAvatarUser, lUser.getAvaPath());
+                    SetAvatar.SetAva(imgAvatarUser, lUser.getAvaPath(),ChatActivity.this);
 
                 readMessage(user.getUid(), userID, lUser.getAvaPath());
             }

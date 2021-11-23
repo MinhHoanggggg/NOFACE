@@ -454,7 +454,7 @@ public class PostActivity extends AppCompatActivity{
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+        ShowNotifyUser.showAlertDialog(PostActivity.this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
 
     public void showAlertDialog(Context context, String message){
