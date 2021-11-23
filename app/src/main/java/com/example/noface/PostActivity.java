@@ -480,6 +480,24 @@ public class PostActivity extends AppCompatActivity{
                 .show();
     }
 
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -492,21 +510,5 @@ public class PostActivity extends AppCompatActivity{
                 ShowNotifyUser.dismissProgressDialog();
             }
         }
-
-
-    private void status(String status) {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference();
-        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        status("online");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        status("offline");
     }
 }

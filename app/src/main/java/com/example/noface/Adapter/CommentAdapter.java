@@ -101,6 +101,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         DataToken dataToken = new DataToken(context.getApplicationContext());
         token = dataToken.getToken();
 
+        String idUserCmt = lstCmt.get(position).getIDUser();
+        setUserCmt(idUserCmt.trim(), holder.imgAvatar);
+
         holder.CbLikeCmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,9 +138,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 popup.show();
             }
         });
-        String id = lstCmt.get(position).getIDUser();
-        setUserCmt(id.trim(), holder.imgAvatar);
-
     }
 
     @Override
