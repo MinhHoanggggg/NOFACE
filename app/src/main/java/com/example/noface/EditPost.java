@@ -77,6 +77,7 @@ public class EditPost extends AppCompatActivity {
     ArrayList<String> lstName = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        status("offline");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
         Intent intent = getIntent();
@@ -332,5 +333,23 @@ public class EditPost extends AppCompatActivity {
             }
         }
         return index;
+    }
+
+
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }

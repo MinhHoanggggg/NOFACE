@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status("online");
         setContentView(R.layout.activity_main);
             if(user == null){
                 finish();
@@ -338,7 +339,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
-
     }
     @Override
     protected void onResume() {
@@ -348,6 +348,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
+        status("offline");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         status("offline");
     }
 }

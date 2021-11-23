@@ -42,7 +42,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProfileUser extends AppCompatActivity {
 
     private RecyclerView rcv_posts_user;
-
+    String idUser="";
     private User lUser;
     private ImageView img_user_Ava;
     private TextView txtNameUser;
@@ -50,6 +50,7 @@ public class ProfileUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status("online");
         setContentView(R.layout.activity_profile_user);
 
         rcv_posts_user = findViewById(R.id.rcv_posts_user);
@@ -59,7 +60,7 @@ public class ProfileUser extends AppCompatActivity {
         txtNameUser =  findViewById(R.id.txtNameUser);
         ///Get ID
         Intent intent = getIntent();
-        String idUser = intent.getStringExtra("idUser");
+        idUser = intent.getStringExtra("idUser");
         //
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv_posts_user.setLayoutManager(linearLayoutManager);
@@ -128,5 +129,21 @@ public class ProfileUser extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + idUser.trim() + "/status").setValue(status);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }

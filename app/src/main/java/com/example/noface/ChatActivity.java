@@ -45,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     List<Chat> lChat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        status("online");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack);
@@ -158,4 +159,19 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
 }

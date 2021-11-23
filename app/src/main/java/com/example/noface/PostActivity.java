@@ -465,16 +465,19 @@ public class PostActivity extends AppCompatActivity{
         DatabaseReference myRef = firebaseDatabase.getReference();
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         status("online");
     }
-
     @Override
     protected void onPause() {
         super.onPause();
+        status("offline");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         status("offline");
     }
 
