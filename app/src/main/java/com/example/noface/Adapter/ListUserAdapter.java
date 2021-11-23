@@ -54,12 +54,14 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             holder.img_off.setVisibility(View.VISIBLE);
             holder.img_on.setVisibility(View.GONE);
         }
-//        setImgs(user.getIdUser(), holder.imgAvatar);
+        SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                mContext.startActivity(new Intent(mContext, ChatActivity.class));
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra("userID", user.getIdUser());
+                mContext.startActivity(intent);
             }
         });
     }
@@ -67,25 +69,6 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public int getItemCount() {
         return lUsers.size();
-    }
-
-    public void setImgs(String idUser, ImageView img){
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String id = idUser;
-        DatabaseReference myRef = firebaseDatabase.getReference("Users").child(id);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User lUser = snapshot.getValue(User.class);
-                if (lUser.getAvaPath()==null)
-                SetAvatar.SetAva(img,lUser.getAvaPath());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

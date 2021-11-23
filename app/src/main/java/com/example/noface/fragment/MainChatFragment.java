@@ -33,11 +33,14 @@ public class MainChatFragment extends Fragment {
     private SearchView searchView;
     ArrayList<User> arrayList;
     ListUserAdapter adapter;
+    String myID = user.getUid(), frID= "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_main_chat, container, false);
         searchView = view.findViewById(R.id.searchView);
-
+        rcv_listChat = view.findViewById(R.id.rcv_listChat);
+        rcv_listChat.setHasFixedSize(true);
+        rcv_listChat.setLayoutManager(new LinearLayoutManager(getContext()));
         arrayList = new ArrayList<>();
         String myID = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users");
@@ -50,20 +53,50 @@ public class MainChatFragment extends Fragment {
                         arrayList.add(users);
                     }
                 }
-                adapter.notifyDataSetChanged();
+                adapter= new ListUserAdapter(getContext(), arrayList);
+                rcv_listChat.setAdapter(adapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
 
-        rcv_listChat = view.findViewById(R.id.rcv_listChat);
-        rcv_listChat.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter= new ListUserAdapter(getContext(), arrayList);
-        rcv_listChat.setAdapter(adapter);
 
 
 
+
+
+//        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                .child(myID).child(frID);
+//        chatRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (!snapshot.exists()){
+//                    chatRef.child("id").setValue(frID);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+//        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                .child(frID).child(myID);
+//        chatRef1.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (!snapshot.exists()){
+//                    chatRef.child("id").setValue(myID);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         return view;
     }
 
