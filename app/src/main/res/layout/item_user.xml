@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_user" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:text="Ẩn Danh"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_on"
+        android:visibility="invisible"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:civ_border_width="10dp"
+        app:civ_border_color="#05df29"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-15dp"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:layout_toEndOf="@id/imgAvatar"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_off"
+        android:visibility="invisible"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:civ_border_width="10dp"
+        app:civ_border_color="#bfbfbf"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-15dp"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:layout_toEndOf="@id/imgAvatar"/>
+
+    <TextView
+        android:id="@+id/tv_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:hint="Tin nhắn mới nhất ở nè"
+        android:maxLines="1"
+        android:textColor="@color/gray" />
+</RelativeLayout>

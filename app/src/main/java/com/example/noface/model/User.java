@@ -9,17 +9,18 @@ public class User {
     private String phone;
     private boolean mailChecked;
     private String avaPath;
+    private String status;
 
-    public User() {
-    }
+    public User() { }
 
-    public User(String idUser, String name, String email, String phone, boolean mailChecked, String avaPath) {
+    public User(String idUser, String name, String email, String phone, boolean mailChecked, String avaPath, String status) {
         this.idUser = idUser;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.mailChecked = mailChecked;
         this.avaPath = avaPath;
+        this.status = status;
     }
 
     public String getIdUser() {
@@ -68,5 +69,13 @@ public class User {
 
     public void setAvaPath(String avaPath) {
         this.avaPath = avaPath;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

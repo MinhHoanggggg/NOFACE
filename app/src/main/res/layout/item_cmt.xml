@@ -10,7 +10,7 @@
 
     <ImageView
         android:layout_gravity="center|top"
-        android:id="@+id/imgAvatar"
+        android:id="@+id/img_cmt_Avatar"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@drawable/ic_user" />

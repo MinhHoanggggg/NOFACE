@@ -26,6 +26,8 @@ import com.example.noface.model.Posts;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ECE5DD"
+    tools:context=".ChatActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="0dp"
+        android:background="#F58365">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
+
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:id="@+id/imgAvatar"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:layout_toRightOf="@id/btnBack"-->
+<!--                android:src="@drawable/ic_user"/>-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/txtName"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_toRightOf="@id/imgAvatar"-->
+<!--                android:text="Ẩn Danh"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold" />-->
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/vew1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtMessage"
+        android:layout_below="@+id/toolbar">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:layout_marginTop="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgAvatarUser"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_user" />
+
+                <TextView
+                    android:id="@+id/txtUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgAvatarUser"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Ẩn Danh"
+                    android:textColor="#F58365"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvChat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/txtMessage"
+                android:layout_below="@id/vew1"
+                android:layout_marginBottom="2dp"
+                android:padding="5dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <EditText
+        android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="55dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/chat_custom"
+        android:hint="Type a message"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnSend"
+        android:layout_width="45dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="-50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@id/txtMessage"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/send"></de.hdodenhof.circleimageview.CircleImageView>
+
+</RelativeLayout>
