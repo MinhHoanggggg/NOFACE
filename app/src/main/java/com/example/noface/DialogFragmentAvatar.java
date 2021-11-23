@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,14 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.AvatarAdapter;
 import com.example.noface.fragment.ProfileFragment;
+import com.example.noface.model.Ava;
 import com.example.noface.model.Avatar;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 
 public class DialogFragmentAvatar extends DialogFragment {
     private RecyclerView rclAva;
-    private ArrayList<Avatar> lstAva = new ArrayList<>();
+    private ArrayList<Ava> lstAva = new ArrayList<>();
     private AvatarAdapter avatarAdapter;
 
 
@@ -31,19 +43,14 @@ public class DialogFragmentAvatar extends DialogFragment {
         View view =inflater.inflate(R.layout.fragment_dialog_avatar, container, false);
         rclAva = view.findViewById(R.id.rclAva);
 
+        ///Ava firebase
+        getListAva();
 
-
-
-        for(int i=1;i<11;i++){
-
-            Avatar avatar = new Avatar(i,"ava"+i);
-            lstAva.add(avatar);
-        }
         avatarAdapter = new AvatarAdapter(getContext(), lstAva, new AvatarAdapter.AvatarAdapterListener() {
             @Override
             public void click(View v, int position) {
 
-                ((ProfileFragment) getParentFragment()).setAva(lstAva.get(position).getAvaPath());
+                ((ProfileFragment) getParentFragment()).setAva(lstAva.get(position).getImgurl());
                 Toast.makeText(getContext(), "Chọn avatar thành công!", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
@@ -56,6 +63,26 @@ public class DialogFragmentAvatar extends DialogFragment {
 //        rclAva.setLayoutManager(linearLayoutManager);
 //        rclAva.setAdapter(avatarAdapter);
         return view;
+    }
+    private void getListAva(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Avatar");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Ava ava = dataSnapshot.getValue(Ava.class);
+                    lstAva.add(ava);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Lỗi gòi sư quynh", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 

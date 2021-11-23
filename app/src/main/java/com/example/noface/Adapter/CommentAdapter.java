@@ -280,7 +280,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User lUser = snapshot.getValue(User.class);
-                SetAvatar.SetAva(img,lUser.getAvaPath());
+                SetAvatar.SetAva(img,lUser.getAvaPath(), context.getApplicationContext());
             }
 
             @Override

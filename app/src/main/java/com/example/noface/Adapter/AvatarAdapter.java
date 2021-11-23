@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.noface.R;
+import com.example.noface.model.Ava;
 import com.example.noface.model.Avatar;
 import com.example.noface.other.ItemClickListener;
 
@@ -19,10 +21,10 @@ import java.util.ArrayList;
 
 public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder> {
    private Context context;
-   private ArrayList<Avatar> lstAva;
+   private ArrayList<Ava> lstAva;
    private AvatarAdapterListener avatarAdapterListener;
 
-    public AvatarAdapter(Context context, ArrayList<Avatar> lstAva, AvatarAdapterListener avatarAdapterListener) {
+    public AvatarAdapter(Context context, ArrayList<Ava> lstAva, AvatarAdapterListener avatarAdapterListener) {
         this.context = context;
         this.lstAva = lstAva;
         this.avatarAdapterListener = avatarAdapterListener;
@@ -38,39 +40,8 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        switch (lstAva.get(position).getAvaPath()){
-            case "ava1":
-                holder.img_itemAva.setImageResource(R.drawable.ava1);
-                break;
-            case "ava2":
-                holder.img_itemAva.setImageResource(R.drawable.ava2);
-                break;
-            case "ava3":
-                holder.img_itemAva.setImageResource(R.drawable.ava3);
-                break;
-            case "ava4":
-                holder.img_itemAva.setImageResource(R.drawable.ava4);
-                break;
-            case "ava5":
-                holder.img_itemAva.setImageResource(R.drawable.ava5);
-                break;
-            case "ava6":
-                holder.img_itemAva.setImageResource(R.drawable.ava6);
-                break;
-            case "ava7":
-                holder.img_itemAva.setImageResource(R.drawable.ava7);
-                break;
-            case "ava8":
-                holder.img_itemAva.setImageResource(R.drawable.ava8);
-                break;
-            case "ava9":
-                holder.img_itemAva.setImageResource(R.drawable.ava9);
-                break;
-            case "ava10":
-                holder.img_itemAva.setImageResource(R.drawable.ava10);
-                break;
-            default: break;
-        }
+        Glide.with(context).load(lstAva.get(position).getImgurl()).into(holder.img_itemAva);
+
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {

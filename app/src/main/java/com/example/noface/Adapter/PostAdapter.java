@@ -162,7 +162,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User lUser = snapshot.getValue(User.class);
-                    SetAvatar.SetAva(img,lUser.getAvaPath());
+                    SetAvatar.SetAva(img,lUser.getAvaPath(),context);
             }
 
             @Override

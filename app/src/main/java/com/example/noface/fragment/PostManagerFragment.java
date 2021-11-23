@@ -110,10 +110,13 @@ public class PostManagerFragment extends Fragment {
                 if (!lUser.getName().isEmpty()) {
                     txtName.setText(lUser.getName());
                 }
-                if (lUser.getAvaPath() != null) {
-                    SetAvatar.SetAva(img_mng_Ava,lUser.getAvaPath());
-                } else
-                    img_mng_Ava.setImageResource(R.drawable.ic_user);
+
+                    if (getActivity() == null) {
+                        return;
+                    }
+                    else
+                    SetAvatar.SetAva(img_mng_Ava,lUser.getAvaPath(),getActivity());
+
             }
 
             @Override

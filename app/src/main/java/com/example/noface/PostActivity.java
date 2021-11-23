@@ -380,10 +380,8 @@ public class PostActivity extends AppCompatActivity{
                 }
 
                 if(pUser.getAvaPath()!=null){
-                   SetAvatar.SetAva(imgAvatar,pUser.getAvaPath());
+                   SetAvatar.SetAva(imgAvatar,pUser.getAvaPath(),getApplicationContext());
                 }
-                else
-                    imgAvatar.setImageResource(R.drawable.ic_user);
             }
 
             @Override
@@ -403,13 +401,7 @@ public class PostActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 lUser = snapshot.getValue(User.class);
-
-                if(lUser.getAvaPath()!=null){
-
-                    SetAvatar.SetAva(imgAvatarUser,lUser.getAvaPath());
-                }
-                else
-                    imgAvatarUser.setImageResource(R.drawable.ic_user);
+                    SetAvatar.SetAva(imgAvatarUser,lUser.getAvaPath(),PostActivity.this);
             }
 
             @Override

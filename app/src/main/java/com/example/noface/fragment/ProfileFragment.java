@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.noface.DialogFragmentAvatar;
 import com.example.noface.MainActivity;
 import com.example.noface.other.ShowNotifyUser;
@@ -210,39 +211,7 @@ public class ProfileFragment extends Fragment {
     public void setAva(String avaPath){
         lUser.setAvaPath(avaPath);
         if(!avaPath.isEmpty()){
-            switch (avaPath){
-                case "ava1":
-                    imgAva.setImageResource(R.drawable.ava1);
-                    break;
-                case "ava2":
-                    imgAva.setImageResource(R.drawable.ava2);
-                    break;
-                case "ava3":
-                    imgAva.setImageResource(R.drawable.ava3);
-                    break;
-                case "ava4":
-                    imgAva.setImageResource(R.drawable.ava4);
-                    break;
-                case "ava5":
-                    imgAva.setImageResource(R.drawable.ava5);
-                    break;
-                case "ava6":
-                    imgAva.setImageResource(R.drawable.ava6);
-                    break;
-                case "ava7":
-                    imgAva.setImageResource(R.drawable.ava7);
-                    break;
-                case "ava8":
-                    imgAva.setImageResource(R.drawable.ava8);
-                    break;
-                case "ava9":
-                    imgAva.setImageResource(R.drawable.ava9);
-                    break;
-                case "ava10":
-                    imgAva.setImageResource(R.drawable.ava10);
-                    break;
-                default: break;
-            }
+            Glide.with(getContext()).load(avaPath).into(imgAva);
         }
 
     }

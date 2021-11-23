@@ -21,8 +21,8 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <ImageView android:id="@+id/imgAvatar"
-                android:background="@drawable/ic_user"
+            <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/imgAvatar"
+
                 android:layout_width="50dp"
                 android:layout_height="50dp"/>
 
