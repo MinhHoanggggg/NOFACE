@@ -42,11 +42,13 @@ public class MainChatFragment extends Fragment {
         rcv_listChat.setHasFixedSize(true);
         rcv_listChat.setLayoutManager(new LinearLayoutManager(getContext()));
         arrayList = new ArrayList<>();
+
         String myID = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     User users = dataSnapshot.getValue(User.class);
                     if (!users.getIdUser().equals(myID)){
@@ -55,12 +57,13 @@ public class MainChatFragment extends Fragment {
                 }
                 adapter= new ListUserAdapter(getContext(), arrayList);
                 rcv_listChat.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
         return view;
     }
-
 }

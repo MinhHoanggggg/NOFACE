@@ -49,9 +49,9 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack);
-        imgAvatarUser = findViewById(R.id.imgAvatarUser);
+        imgAvatarUser = findViewById(R.id.imgAvatar);
         btnSend = findViewById(R.id.btnSend);
-        txtUserName = findViewById(R.id.txtUserName);
+        txtUserName = findViewById(R.id.txtName);
         txtMessage = findViewById(R.id.txtMessage);
         rcvChat = findViewById(R.id.rcvChat);
         rcvChat.setHasFixedSize(true);
