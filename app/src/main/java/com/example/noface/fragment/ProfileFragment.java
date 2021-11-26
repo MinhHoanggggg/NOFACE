@@ -211,7 +211,7 @@ public class ProfileFragment extends Fragment {
     public void setAva(String avaPath){
         lUser.setAvaPath(avaPath);
         if(!avaPath.isEmpty()){
-            Glide.with(getContext()).load(avaPath).into(imgAva);
+            Glide.with(getActivity()).load(avaPath).into(imgAva);
         }
 
     }
