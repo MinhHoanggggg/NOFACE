@@ -352,4 +352,9 @@ public class EditPost extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        status("offline");
+    }
 }

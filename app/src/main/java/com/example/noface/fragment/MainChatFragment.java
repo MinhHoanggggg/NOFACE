@@ -57,7 +57,6 @@ public class MainChatFragment extends Fragment {
                 }
                 adapter= new ListUserAdapter(getContext(), arrayList);
                 rcv_listChat.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

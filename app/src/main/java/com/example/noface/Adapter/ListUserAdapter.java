@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.ChatActivity;
 import com.example.noface.R;
+import com.example.noface.model.Chat;
 import com.example.noface.model.User;
 import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
@@ -30,6 +31,7 @@ import java.util.List;
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder>{
     private final Context mContext;
     private final List<User> lUsers;
+    String textString= "";
 
     public ListUserAdapter(Context mContext, List<User> lUsers) {
         this.mContext = mContext;
@@ -55,6 +57,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             holder.img_on.setVisibility(View.GONE);
         }
         SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
+        newMessage(user.getIdUser(), holder.tv_new);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -69,6 +72,41 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public int getItemCount() {
         return lUsers.size();
+    }
+
+    private void newMessage(String id, TextView tv){
+        textString= "";
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    if ( (chat.getFrom().equals(firebaseUser.getUid()) && chat.getTo().equals(id)) ||
+                            (chat.getFrom().equals(id) && chat.getTo().equals(firebaseUser.getUid()))){
+                        textString = chat.getMessage();
+
+                    }
+                }
+//                if (!chat.isSeen())
+//                    tv.setTextColor(R.color.gray1);
+                switch (textString){
+                    case "":
+                        tv.setText("");
+                        break;
+                    default:
+                        tv.setText(textString);
+                        break;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

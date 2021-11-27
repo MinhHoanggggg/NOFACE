@@ -84,6 +84,7 @@ public class CreatePost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
+        status("offline");
         imgAvatar = findViewById(R.id.imgAvatar);
         tvName = findViewById(R.id.tvName);
         edtTitle = findViewById(R.id.edtTitle);
@@ -315,4 +316,25 @@ public class CreatePost extends AppCompatActivity {
             mUri="";
         }
     } //end.saveIMG
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        status("offline");
+    }
 }

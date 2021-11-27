@@ -46,7 +46,7 @@ public class ProfileUser extends AppCompatActivity {
     private User lUser;
     private ImageView img_user_Ava;
     private TextView txtNameUser;
-    private ImageButton btnUserBack;
+    private ImageButton btnUserBack,btn_chat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class ProfileUser extends AppCompatActivity {
 
         rcv_posts_user = findViewById(R.id.rcv_posts_user);
         btnUserBack = findViewById(R.id.btnUserBack);
-
+        btn_chat = findViewById(R.id.btn_chat);
         img_user_Ava = findViewById(R.id.img_user_Ava);
         txtNameUser =  findViewById(R.id.txtNameUser);
         ///Get ID
@@ -72,6 +72,15 @@ public class ProfileUser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        btn_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileUser.this, ChatActivity.class);
+                intent.putExtra("userID", idUser.trim());
+                startActivity(intent);
             }
         });
     }
@@ -144,6 +153,11 @@ public class ProfileUser extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        status("offline");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         status("offline");
     }
 }
