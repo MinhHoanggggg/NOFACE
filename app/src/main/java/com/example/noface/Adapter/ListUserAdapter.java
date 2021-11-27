@@ -57,7 +57,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             holder.img_on.setVisibility(View.GONE);
         }
         SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
-        newMessage(user.getIdUser(), holder.tv_new);
+//        newMessage(user.getIdUser(), holder.tv_new);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -86,11 +86,9 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                     if ( (chat.getFrom().equals(firebaseUser.getUid()) && chat.getTo().equals(id)) ||
                             (chat.getFrom().equals(id) && chat.getTo().equals(firebaseUser.getUid()))){
                         textString = chat.getMessage();
-
                     }
                 }
-//                if (!chat.isSeen())
-//                    tv.setTextColor(R.color.gray1);
+
                 switch (textString){
                     case "":
                         tv.setText("");

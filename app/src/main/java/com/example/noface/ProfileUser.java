@@ -47,12 +47,12 @@ public class ProfileUser extends AppCompatActivity {
     private ImageView img_user_Ava;
     private TextView txtNameUser;
     private ImageButton btnUserBack,btn_chat;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         status("online");
         setContentView(R.layout.activity_profile_user);
-
         rcv_posts_user = findViewById(R.id.rcv_posts_user);
         btnUserBack = findViewById(R.id.btnUserBack);
         btn_chat = findViewById(R.id.btn_chat);
@@ -143,7 +143,7 @@ public class ProfileUser extends AppCompatActivity {
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
-        myRef.child("Users/" + idUser.trim() + "/status").setValue(status);
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
     @Override
     protected void onResume() {
@@ -153,11 +153,6 @@ public class ProfileUser extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        status("offline");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         status("offline");
     }
 }

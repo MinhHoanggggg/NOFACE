@@ -84,7 +84,7 @@ public class CreatePost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
-        status("offline");
+        status("online");
         imgAvatar = findViewById(R.id.imgAvatar);
         tvName = findViewById(R.id.tvName);
         edtTitle = findViewById(R.id.edtTitle);
@@ -330,11 +330,6 @@ public class CreatePost extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        status("offline");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         status("offline");
     }
 }

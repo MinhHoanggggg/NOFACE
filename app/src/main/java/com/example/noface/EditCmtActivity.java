@@ -43,7 +43,7 @@ public class EditCmtActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_dialog_edit_cmt);
-        status("offline");
+        status("online");
         DataToken dataToken = new DataToken(getApplicationContext());
         token = dataToken.getToken();
 
@@ -133,11 +133,6 @@ public class EditCmtActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        status("offline");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         status("offline");
     }
 }

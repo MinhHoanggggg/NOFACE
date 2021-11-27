@@ -76,8 +76,8 @@ public class PostActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         status("online");
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         tvName = findViewById(R.id.tvName);
         CbLike = findViewById(R.id.CbLike);
@@ -447,6 +447,20 @@ public class PostActivity extends AppCompatActivity{
                 .show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == 2){
+            assert data != null;
+            int result = data.getIntExtra("result", 0);
+            if (result == 1){
+                GetCmt(idPost);
+                ShowNotifyUser.dismissProgressDialog();
+            }
+        }
+    }
+
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
@@ -461,24 +475,5 @@ public class PostActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         status("offline");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        status("offline");
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == 2){
-            assert data != null;
-            int result = data.getIntExtra("result", 0);
-            if (result == 1){
-                GetCmt(idPost);
-                ShowNotifyUser.dismissProgressDialog();
-            }
-        }
     }
 }
