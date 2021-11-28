@@ -98,4 +98,5 @@ public class HomeFragment extends Fragment {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
+
 }

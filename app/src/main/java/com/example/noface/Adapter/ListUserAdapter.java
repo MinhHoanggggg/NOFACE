@@ -3,6 +3,8 @@ package com.example.noface.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +34,12 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     private final Context mContext;
     private final List<User> lUsers;
     String textString= "";
+    private boolean check;
 
-    public ListUserAdapter(Context mContext, List<User> lUsers) {
+    public ListUserAdapter(Context mContext, List<User> lUsers, boolean check) {
         this.mContext = mContext;
         this.lUsers = lUsers;
+        this.check = check;
     }
 
     @NonNull
@@ -57,6 +61,14 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             holder.img_on.setVisibility(View.GONE);
         }
         SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
+
+
+        if (check){
+            newMessage(user.getIdUser(), holder.tv_new);
+        } else {
+            holder.tv_new.setVisibility(View.GONE);
+        }
+
 //        newMessage(user.getIdUser(), holder.tv_new);
 
         holder.setItemClickListener(new ItemClickListener() {
@@ -83,9 +95,16 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Chat chat = dataSnapshot.getValue(Chat.class);
-                    if ( (chat.getFrom().equals(firebaseUser.getUid()) && chat.getTo().equals(id)) ||
-                            (chat.getFrom().equals(id) && chat.getTo().equals(firebaseUser.getUid()))){
+                    //last message
+                    if (chat.getTo().equals(firebaseUser.getUid()) && chat.getFrom().equals(id) ||
+                            chat.getTo().equals(id) && chat.getFrom().equals(firebaseUser.getUid())) {
                         textString = chat.getMessage();
+                    }
+                    //Color
+                    if (!chat.isSeen() && firebaseUser.getUid().equals(chat.getTo())){
+                        tv.setTextColor(Color.parseColor("#F58365"));
+                    }else {
+                        tv.setTextColor(Color.parseColor("#737373"));
                     }
                 }
 
@@ -97,6 +116,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                         tv.setText(textString);
                         break;
                 }
+                textString= "";
             }
 
             @Override

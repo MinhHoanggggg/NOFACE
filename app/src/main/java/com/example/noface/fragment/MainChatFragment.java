@@ -30,14 +30,11 @@ public class MainChatFragment extends Fragment {
     private FirebaseAuth user = FirebaseAuth.getInstance();
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private RecyclerView rcv_listChat;
-    private SearchView searchView;
     ArrayList<User> arrayList;
     ListUserAdapter adapter;
-    String myID = user.getUid(), frID= "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_main_chat, container, false);
-        searchView = view.findViewById(R.id.searchView);
         rcv_listChat = view.findViewById(R.id.rcv_listChat);
         rcv_listChat.setHasFixedSize(true);
         rcv_listChat.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -55,7 +52,7 @@ public class MainChatFragment extends Fragment {
                         arrayList.add(users);
                     }
                 }
-                adapter= new ListUserAdapter(getContext(), arrayList);
+                adapter= new ListUserAdapter(getContext(), arrayList, true);
                 rcv_listChat.setAdapter(adapter);
             }
             @Override

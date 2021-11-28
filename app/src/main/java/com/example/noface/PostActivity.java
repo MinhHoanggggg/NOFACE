@@ -309,7 +309,7 @@ public class PostActivity extends AppCompatActivity{
 
     private void handleResponseLike(Message message) {
         if(message.getStatus() != 1)
-            Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, message.getNotification(), Toast.LENGTH_SHORT).show();
     }
 
     private void GetPost(int id) {
