@@ -36,8 +36,14 @@ import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
 import com.example.noface.inter.FragmentInterface;
+import com.example.noface.model.Achievement;
+import com.example.noface.model.Medals;
+import com.example.noface.model.Message;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
+import com.example.noface.other.ShowNotifyUser;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,8 +52,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.TimerTask;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInterface {
 
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer_layout;
     private NavigationView nav_view;
     private User lUser;
-
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //ánh xạ
         drawer_layout = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
+        //Get token
+        DataToken dataToken = new DataToken(MainActivity.this);
+        token = dataToken.getToken();
 
         //bắt sự kiện click icon home của nav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar,
@@ -124,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_view.setCheckedItem(R.id.nav_home);
         setTitleToolbar();
 
+        ///Lay danh hieu
+//        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
+//        CheckAchie(user.getUid());
 
     }
 
@@ -153,7 +174,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class)
+                finish();
+                startActivity(new Intent(MainActivity.this, StartActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
                 break;
@@ -260,6 +282,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.txtNavName);
         ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
 
+        if (user.getDisplayName() == null) {
+            navUsername.setText("Ẩn danh");
+        } else {
+            navUsername.setText(user.getDisplayName());
+        }
+
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = user.getUid().toString();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -273,10 +301,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else
                     imgNavAva.setImageResource(R.drawable.ic_user);
 
-                if (lUser.getName() == null)
-                    navUsername.setText("Ẩn danh");
-                else
-                    navUsername.setText(lUser.getName());
             }
 
             @Override
@@ -351,5 +375,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         status("offline");
+    }
+    public class NewsletterTask extends TimerTask {
+        @Override
+        public void run() {
+            CheckAchie(user.getUid());
+        }
+    }
+    private void CheckAchie(String id) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.CheckAchie(token,id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+
+
+    private void handleError(Throwable throwable) {
+        Toast.makeText(getApplicationContext(), "Lõi", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleResponse(Message message) {
+        if(message.getStatus() != 0){
+            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());
+
+
+        }
+
     }
 }
