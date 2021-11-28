@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
-//                finish();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
@@ -261,12 +260,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.txtNavName);
         ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
 
-        if (user.getDisplayName() == null) {
-            navUsername.setText("Ẩn danh");
-        } else {
-            navUsername.setText(user.getDisplayName());
-        }
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = user.getUid().toString();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -280,6 +273,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else
                     imgNavAva.setImageResource(R.drawable.ic_user);
 
+                if (lUser.getName() == null)
+                    navUsername.setText("Ẩn danh");
+                else
+                    navUsername.setText(lUser.getName());
             }
 
             @Override

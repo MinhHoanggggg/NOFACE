@@ -6,36 +6,54 @@
         <item
             android:id="@+id/nav_home"
             android:title="@string/nav_home"
-            android:icon="@drawable/ic_nav"/>
+            android:icon="@drawable/nav_home"/>
         <item
             android:id="@+id/nav_topic"
             android:title="@string/nav_category"
-            android:icon="@drawable/ic_nav"/>
+            android:icon="@drawable/nav_topic"/>
         <item
-            android:id="@+id/nav_chat"
-            android:title="@string/nav_chat"
-            android:icon="@drawable/ic_nav"/>
+            android:id="@+id/nav_trend"
+            android:title="Nổi bật"
+            android:icon="@drawable/nav_trend"/>
     </group>
+    <item android:title="Bạn bè">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_chat"
+                    android:title="@string/nav_chat"
+                    android:icon="@drawable/chat"/>
+                <item
+                    android:id="@+id/nav_acc"
+                    android:title="Lời mời kết bạn"
+                    android:icon="@drawable/nav_acc"/>
+                <item
+                    android:id="@+id/nav_fr"
+                    android:title="Bạn bè"
+                    android:icon="@drawable/ic_user"/>
 
+            </group>
+        </menu>
+    </item>
     <item android:title="@string/nav_account">
         <menu>
             <group android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_post_manager"
                 android:title="@string/nav_story"
-                android:icon="@drawable/ic_nav"/>
+                android:icon="@drawable/nav_manager"/>
             <item
                 android:id="@+id/nav_profile"
                 android:title="@string/nav_profile"
-                android:icon="@drawable/ic_nav"/>
+                android:icon="@drawable/nav_profile"/>
             <item
                 android:id="@+id/nav_pass"
                 android:title="@string/nav_pass"
-                android:icon="@drawable/ic_nav"/>
+                android:icon="@drawable/nav_repass"/>
                 <item
                     android:id="@+id/nav_logout"
                     android:title="@string/nav_logout"
-                    android:icon="@drawable/ic_nav"/>
+                    android:icon="@drawable/ic_logout"/>
             </group>
         </menu>
     </item>

@@ -20,12 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 //import com.example.noface.Adapter.HomeAdapter;
 import com.example.noface.Adapter.PostAdapter;
 import com.example.noface.CreatePost;
+import com.example.noface.LoginActivity;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -96,7 +98,11 @@ public class HomeFragment extends Fragment {
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+//        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getContext(), LoginActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
     }
 
 }
