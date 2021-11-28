@@ -13,16 +13,21 @@ import com.example.noface.other.ShowNotifyUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ResetPass extends AppCompatActivity {
     private EditText edtEmail;
 
-    private Button btnResPass,btnBack;
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    ShowNotifyUser showNotifyUser ;
+    private Button btnResPass, btnBack;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    ShowNotifyUser showNotifyUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status("online");
         setContentView(R.layout.activity_reset_pass);
         edtEmail = findViewById(R.id.edtEmail);
         btnResPass = findViewById(R.id.btnResPass);
@@ -37,18 +42,19 @@ public class ResetPass extends AppCompatActivity {
         btnResPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showNotifyUser.showProgressDialog(ResetPass.this,"Đang tải..");
+                showNotifyUser.showProgressDialog(ResetPass.this, "Đang tải..");
                 sendMail();
 
             }
         });
 
     }
-    private void sendMail(){
+
+    private void sendMail() {
         showNotifyUser.dismissProgressDialog();
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        String emailAddress =edtEmail.getText().toString();
-        if(!emailAddress.isEmpty()) {
+        String emailAddress = edtEmail.getText().toString();
+        if (!emailAddress.isEmpty()) {
             auth.sendPasswordResetEmail(emailAddress)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -62,7 +68,26 @@ public class ResetPass extends AppCompatActivity {
                             }
                         }
                     });
-        }else
+        } else
             Toast.makeText(getApplicationContext(), "Vui lòng nhập Email", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    private void status(String status) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference();
+        myRef.child("Users/" + user.getUid() + "/status").setValue(status);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }

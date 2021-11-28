@@ -59,7 +59,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/imgAvatar"
-        android:hint="Tin nhắn mới nhất ở nè"
         android:maxLines="1"
-        android:textColor="@color/gray" />
+        android:textColor="@color/gray1" />
 </RelativeLayout>

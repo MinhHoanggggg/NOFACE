@@ -3,6 +3,7 @@ package com.example.noface.service;
 
 import com.example.noface.model.Acc;
 import com.example.noface.model.Comment;
+import com.example.noface.model.Friend;
 import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
@@ -78,4 +79,21 @@ public interface ServiceAPI {
     @DELETE("delete-cmt/{idcmt}")
     Observable<Message> DeleteCmt(@Header("Authorization") String token,
                                 @Query("idcmt") int idcmt);
+
+    @GET("CheckFriends/{iduser}/{idfriend}")
+    Observable<Message> GetCheckFr(@Header("Authorization") String token,
+                                 @Query("iduser") String uid,
+                                 @Query("idfriend") String fid);
+
+    @POST("Follower")
+    Observable<Message> addFriends(@Header("Authorization") String token,
+                                  @Body Friend friend);
+
+    @POST("DeleteFriend")
+    Observable<Message> DELfriend(@Header("Authorization") String token,
+                                   @Body Friend friend);
+
+    @POST("Accept")
+    Observable<Message> Accept(@Header("Authorization") String token,
+                                  @Body Friend friend);
 }

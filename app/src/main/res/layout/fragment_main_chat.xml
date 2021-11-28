@@ -6,17 +6,6 @@
     android:clipToPadding="false"
     android:orientation="vertical">
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:drawable="@drawable/ic_search"
-        android:gravity="center"
-        android:hint="Search by name"
-        android:padding="2dp"
-        android:singleLine="true"
-        android:textColorHint="#000000"></SearchView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_listChat"
         android:layout_width="match_parent"

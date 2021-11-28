@@ -77,7 +77,7 @@ public class EditPost extends AppCompatActivity {
     ArrayList<String> lstName = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        status("offline");
+        status("online");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
         Intent intent = getIntent();

@@ -3,6 +3,8 @@ package com.example.noface.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.ChatActivity;
 import com.example.noface.R;
+import com.example.noface.model.Chat;
 import com.example.noface.model.User;
 import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
@@ -30,10 +33,13 @@ import java.util.List;
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder>{
     private final Context mContext;
     private final List<User> lUsers;
+    String textString= "";
+    private boolean check;
 
-    public ListUserAdapter(Context mContext, List<User> lUsers) {
+    public ListUserAdapter(Context mContext, List<User> lUsers, boolean check) {
         this.mContext = mContext;
         this.lUsers = lUsers;
+        this.check = check;
     }
 
     @NonNull
@@ -56,6 +62,15 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         }
         SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
 
+
+        if (check){
+            newMessage(user.getIdUser(), holder.tv_new);
+        } else {
+            holder.tv_new.setVisibility(View.GONE);
+        }
+
+//        newMessage(user.getIdUser(), holder.tv_new);
+
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -69,6 +84,47 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public int getItemCount() {
         return lUsers.size();
+    }
+
+    private void newMessage(String id, TextView tv){
+        textString= "";
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    //last message
+                    if (chat.getTo().equals(firebaseUser.getUid()) && chat.getFrom().equals(id) ||
+                            chat.getTo().equals(id) && chat.getFrom().equals(firebaseUser.getUid())) {
+                        textString = chat.getMessage();
+                    }
+                    //Color
+                    if (!chat.isSeen() && firebaseUser.getUid().equals(chat.getTo())){
+                        tv.setTextColor(Color.parseColor("#F58365"));
+                    }else {
+                        tv.setTextColor(Color.parseColor("#737373"));
+                    }
+                }
+
+                switch (textString){
+                    case "":
+                        tv.setText("");
+                        break;
+                    default:
+                        tv.setText(textString);
+                        break;
+                }
+                textString= "";
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

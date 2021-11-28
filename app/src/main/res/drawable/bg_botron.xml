@@ -5,9 +5,9 @@
 
     <!-- Set màu nền-->
     <gradient android:angle="225"
-        android:startColor="#CC698FAF"
-        android:centerColor="#CC2196F3"
-        android:endColor="#CC00BCD4"/>
+        android:startColor="#655AC5"
+        android:centerColor="#A668E0"
+        android:endColor="#EE6BB5"/>
 
     <!-- các thuộc tính căn chỉnh-->
     <padding

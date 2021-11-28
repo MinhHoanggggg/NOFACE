@@ -76,8 +76,8 @@ public class PostActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         status("online");
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         tvName = findViewById(R.id.tvName);
         CbLike = findViewById(R.id.CbLike);
@@ -98,12 +98,12 @@ public class PostActivity extends AppCompatActivity{
         lnlNOcmt.setVisibility(View.GONE); //VISIBLE
 
         Intent intent = getIntent();
-         idUser = intent.getStringExtra("idUser");
-         String idUs = idUser.trim();
-         idTopic = intent.getIntExtra("idTopic", 0);
-         idPost = intent.getIntExtra("idPost", 0);
-         sumLike = intent.getIntExtra("likes", 0);
-         checkLike = intent.getBooleanExtra("checklike",false);
+        idUser = intent.getStringExtra("idUser");
+        String idUs = idUser.trim();
+        idTopic = intent.getIntExtra("idTopic", 0);
+        idPost = intent.getIntExtra("idPost", 0);
+        sumLike = intent.getIntExtra("likes", 0);
+        checkLike = intent.getBooleanExtra("checklike", false);
 
         DataToken dataToken = new DataToken(getApplicationContext());
         token = dataToken.getToken();
@@ -205,7 +205,6 @@ public class PostActivity extends AppCompatActivity{
         GetPost(id);
     }
 
-    //=============================get Topic API=============================
     private void GetAllTopic() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -233,9 +232,7 @@ public class PostActivity extends AppCompatActivity{
         ShowNotifyUser.dismissProgressDialog();
 
     }
-    //=============================end get Topic API=============================
 
-    //=============================get Cmt API===================================
     private void GetCmt(int id) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -274,9 +271,6 @@ public class PostActivity extends AppCompatActivity{
         }
         ShowNotifyUser.dismissProgressDialog();
     }
-    //=============================end get Cmt API===================================
-
-    //=============================post Cmt API===================================
 
     private void SendCmt(Comment comment) {
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -298,9 +292,7 @@ public class PostActivity extends AppCompatActivity{
         btnCmt.setText(sumCmt + " bình luận");
         GetCmt(idPost);
     }
-    //=============================end post Cmt API===================================
 
-    //=============================get like API===================================
     private void Like(int idPost, String idUser) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -317,11 +309,9 @@ public class PostActivity extends AppCompatActivity{
 
     private void handleResponseLike(Message message) {
         if(message.getStatus() != 1)
-            Toast.makeText(getApplicationContext(), message.getNotification(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, message.getNotification(), Toast.LENGTH_SHORT).show();
     }
-    //=============================get like API===================================
 
-    ////
     private void GetPost(int id) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -353,10 +343,6 @@ public class PostActivity extends AppCompatActivity{
     }
 
     private void setUserPost(String idUser){
-
-//         Uri photoUrl = user.getPhotoUrl();
-//         Glide.with(this.getActivity()).load(photoUrl).error(R.drawable.ic_user).into(imgAva);
-        //
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = idUser;
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -399,6 +385,7 @@ public class PostActivity extends AppCompatActivity{
         });
 
     }
+
    ///MENU
    private boolean menuItemClicked(MenuItem item) {
        switch (item.getItemId()) {
@@ -460,6 +447,20 @@ public class PostActivity extends AppCompatActivity{
                 .show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == 2){
+            assert data != null;
+            int result = data.getIntExtra("result", 0);
+            if (result == 1){
+                GetCmt(idPost);
+                ShowNotifyUser.dismissProgressDialog();
+            }
+        }
+    }
+
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
@@ -474,24 +475,5 @@ public class PostActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         status("offline");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        status("offline");
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == 2){
-            assert data != null;
-            int result = data.getIntExtra("result", 0);
-            if (result == 1){
-                GetCmt(idPost);
-                ShowNotifyUser.dismissProgressDialog();
-            }
-        }
     }
 }
