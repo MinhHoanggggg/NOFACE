@@ -249,8 +249,8 @@ public class ProfileFragment extends Fragment {
         );
     }
 
-    private void handleResponseMedal(List<Achievements> achievements) {
-            //oke
+    private void handleResponseMedal(ArrayList<Achievements> achievements) {
+        Toast.makeText(getContext(), "hehe", Toast.LENGTH_SHORT).show();
     }
 
 

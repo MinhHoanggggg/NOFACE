@@ -3,7 +3,7 @@ package com.example.noface.model;
 import java.util.ArrayList;
 
 public class Achievements {
-    public Achievements(int ID_Achievements, String IDUser, int IDMedal, ArrayList<Medals> medals) {
+    public Achievements(int ID_Achievements, String IDUser, int IDMedal, Medals medals) {
         this.ID_Achievements = ID_Achievements;
         this.IDUser = IDUser;
         this.IDMedal = IDMedal;
@@ -34,11 +34,11 @@ public class Achievements {
         this.IDMedal = IDMedal;
     }
 
-    public ArrayList<Medals> getMedals() {
+    public Medals getMedals() {
         return Medals;
     }
 
-    public void setMedals(ArrayList<Medals> medals) {
+    public void setMedals(Medals medals) {
         Medals = medals;
     }
 
@@ -46,5 +46,6 @@ public class Achievements {
     private String IDUser;
     private int IDMedal;
 
-    private ArrayList<Medals> Medals;
+    private Medals Medals;
+
 }

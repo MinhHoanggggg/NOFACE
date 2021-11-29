@@ -87,7 +87,7 @@ public interface ServiceAPI {
                                     @Query("iduser") String iduser);
 
     @GET("DanhHieu/{iduser}")
-    Observable<List<Achievements>>GetMedals (@Header("Authorization") String token,
+    Observable<ArrayList<Achievements>>GetMedals (@Header("Authorization") String token,
                                @Query("iduser") String iduser);
 
     @GET("CheckFriends/{iduser}/{idfriend}")
