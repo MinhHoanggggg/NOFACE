@@ -36,8 +36,6 @@ import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
 import com.example.noface.inter.FragmentInterface;
-import com.example.noface.model.Achievement;
-import com.example.noface.model.Medals;
 import com.example.noface.model.Message;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
@@ -55,7 +53,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -144,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ///Lay danh hieu
 //        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
-//        CheckAchie(user.getUid());
+        CheckAchie(user.getUid());
 
     }
 
@@ -382,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             CheckAchie(user.getUid());
         }
     }
+
     private void CheckAchie(String id) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -396,17 +394,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         );
     }
 
-
-
     private void handleError(Throwable throwable) {
         Toast.makeText(getApplicationContext(), "Lõi", Toast.LENGTH_SHORT).show();
     }
 
     private void handleResponse(Message message) {
+        //0 thì thôi, 1 thì là danh hiệu ma mới, 2 là Kẻ nhiều tâm sự, 3 là Ông hoàng thân thiện, 4 là Phù thủy ngôn từ
         if(message.getStatus() != 0){
-            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());
-
-
+//            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());
         }
 
     }

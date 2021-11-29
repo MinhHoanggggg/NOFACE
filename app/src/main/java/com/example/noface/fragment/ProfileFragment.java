@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.noface.DialogFragmentAvatar;
 import com.example.noface.MainActivity;
-import com.example.noface.model.Achievement;
+import com.example.noface.model.Achievements;
 import com.example.noface.model.Medals;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
@@ -47,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -248,14 +249,13 @@ public class ProfileFragment extends Fragment {
         );
     }
 
-    private void handleResponseMedal(Achievement achievement) {
-        ArrayList<Medals> mds = achievement.getMedals();
-        for(int i =0; i< mds.size();i++){
-            Medals md = mds.get(i);
-        }
+    private void handleResponseMedal(List<Achievements> achievements) {
+            //oke
     }
 
+
     private void handleError(Throwable throwable) {
+        Toast.makeText(getContext(), "hehe", Toast.LENGTH_SHORT).show();
     }
 
 

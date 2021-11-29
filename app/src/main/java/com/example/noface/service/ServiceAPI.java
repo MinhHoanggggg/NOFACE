@@ -2,14 +2,17 @@ package com.example.noface.service;
 
 
 import com.example.noface.model.Acc;
-import com.example.noface.model.Achievement;
+import com.example.noface.model.Achievements;
 import com.example.noface.model.Comment;
+import com.example.noface.model.Friend;
+import com.example.noface.model.Medals;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -84,6 +87,23 @@ public interface ServiceAPI {
                                     @Query("iduser") String iduser);
 
     @GET("DanhHieu/{iduser}")
-    Observable<Achievement>GetMedals (@Header("Authorization") String token,
-                                      @Query("iduser") String iduser);
+    Observable<List<Achievements>>GetMedals (@Header("Authorization") String token,
+                               @Query("iduser") String iduser);
+
+    @GET("CheckFriends/{iduser}/{idfriend}")
+    Observable<Message> GetCheckFr(@Header("Authorization") String token,
+                                   @Query("iduser") String uid,
+                                   @Query("idfriend") String fid);
+
+    @POST("Follower")
+    Observable<Message> addFriends(@Header("Authorization") String token,
+                                   @Body Friend friend);
+    @POST("DeleteFriend")
+    Observable<Message> DELfriend(@Header("Authorization") String token,
+                                  @Body Friend friend);
+
+    @POST("Accept")
+    Observable<Message> Accept(@Header("Authorization") String token,
+                               @Body Friend friend);
+
 }

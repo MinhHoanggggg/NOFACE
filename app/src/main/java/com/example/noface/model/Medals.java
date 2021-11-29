@@ -1,11 +1,6 @@
 package com.example.noface.model;
 
 public class Medals {
-    private int IDMedal;
-    private String MedalName;
-    private String ImgMedal;
-    private String Description;
-
     public Medals(int IDMedal, String medalName, String imgMedal, String description) {
         this.IDMedal = IDMedal;
         MedalName = medalName;
@@ -44,4 +39,9 @@ public class Medals {
     public void setDescription(String description) {
         Description = description;
     }
+
+    private int IDMedal;
+    private String MedalName;
+    private String ImgMedal;
+    private String Description;
 }

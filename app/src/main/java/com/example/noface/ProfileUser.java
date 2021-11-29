@@ -268,7 +268,7 @@ public class ProfileUser extends AppCompatActivity {
             setColor(false, "Đã gửi kết bạn");
         }
     }
-    
+
     private void DELfriend(Friend f) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
