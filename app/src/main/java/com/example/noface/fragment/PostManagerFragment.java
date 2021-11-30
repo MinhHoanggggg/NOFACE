@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noface.Adapter.PostAdapter;
 
 import com.example.noface.R;
+import com.example.noface.model.Achievements;
+import com.example.noface.model.Medals;
 import com.example.noface.model.Posts;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
@@ -33,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -41,11 +44,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostManagerFragment extends Fragment {
+    private ImageView imgMedal;
     private RecyclerView rcv_posts;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private User lUser;
     private ImageView img_mng_Ava;
     private TextView txtName;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class PostManagerFragment extends Fragment {
         rcv_posts = view.findViewById(R.id.rcv_posts);
         img_mng_Ava = view.findViewById(R.id.img_mng_Ava);
         txtName = view.findViewById(R.id.txtName);
+        imgMedal = view.findViewById(R.id.imgMedal);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
@@ -65,6 +71,15 @@ public class PostManagerFragment extends Fragment {
         Wall(userid);
         setUI(user); //Set UI
         rcv_posts.setHasFixedSize(true); //cuộn nuột hơn
+        //Xem Medal
+        imgMedal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragmentMedal dialogFragment = new DialogFragmentMedal();
+                dialogFragment.id = user.getUid();
+                dialogFragment.show(getChildFragmentManager(),"DialogFragmentMedal");
+            }
+        });
         return view;
     }
 
@@ -102,7 +117,7 @@ public class PostManagerFragment extends Fragment {
 
     private void setUI(FirebaseUser user) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = user.getUid().toString();
+        String refName = user.getUid();
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -123,4 +138,5 @@ public class PostManagerFragment extends Fragment {
             }
         });
     }
+
 }

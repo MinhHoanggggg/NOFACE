@@ -2,8 +2,6 @@ package com.example.noface.fragment;
 
 
 
-import static com.example.noface.service.ServiceAPI.BASE_Service;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,15 +23,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.noface.DialogFragmentAvatar;
 import com.example.noface.MainActivity;
-import com.example.noface.model.Achievements;
-import com.example.noface.model.Medals;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.example.noface.model.User;
-import com.example.noface.service.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,16 +38,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileFragment extends Fragment {
     private static final int MY_REQUEST_CODE = 10;
@@ -61,7 +45,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private EditText edtName,edtPhone,edtEmail;
     private Button  btnUpdate;
-    private ImageView imgAva;
+    private ImageView imgAva,imgMedal;
     private Uri photoUri;
     private User lUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -76,11 +60,12 @@ public class ProfileFragment extends Fragment {
         edtName = view.findViewById(R.id.edtName);
         btnUpdate = view.findViewById(R.id.btnUpdate);
         imgAva = view.findViewById(R.id.imgAva);
+        imgMedal = view.findViewById(R.id.imgMedal);
         //Get token
         DataToken dataToken = new DataToken(getContext());
         token = dataToken.getToken();
         mainActivity = (MainActivity) getActivity();
-        GetMedals(user.getUid());
+
         setUI(user);
 
 //
@@ -134,6 +119,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                // onClickRequestPermission();
                 DialogFragmentAvatar dialogFragment = new DialogFragmentAvatar();
+
                 dialogFragment.show(getChildFragmentManager(),"DialogFragmentAvatar");
             }
         });
@@ -229,34 +215,19 @@ public class ProfileFragment extends Fragment {
         myRef.setValue(lUser);
     }
     public void setAva(String avaPath){
+        if (getActivity() == null) {
+            return;
+        }
         lUser.setAvaPath(avaPath);
         if(!avaPath.isEmpty()){
             Glide.with(getActivity()).load(avaPath).into(imgAva);
         }
 
     }
-    private void GetMedals(String id) {
-        ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE_Service)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ServiceAPI.class);
-
-        new CompositeDisposable().add(requestInterface.GetMedals(token,id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseMedal, this::handleError)
-        );
-    }
-
-    private void handleResponseMedal(ArrayList<Achievements> achievements) {
-        Toast.makeText(getContext(), "hehe", Toast.LENGTH_SHORT).show();
-    }
 
 
-    private void handleError(Throwable throwable) {
-        Toast.makeText(getContext(), "hehe", Toast.LENGTH_SHORT).show();
-    }
+
+
 
 
 }

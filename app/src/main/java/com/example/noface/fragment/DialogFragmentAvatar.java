@@ -1,4 +1,4 @@
-package com.example.noface;
+package com.example.noface.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.AvatarAdapter;
+import com.example.noface.R;
 import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.model.Ava;
 import com.example.noface.model.Avatar;

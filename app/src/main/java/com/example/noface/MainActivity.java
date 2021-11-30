@@ -53,6 +53,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -140,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitleToolbar();
 
         ///Lay danh hieu
-//        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
-        CheckAchie(user.getUid());
+        new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
+
 
     }
 
@@ -401,7 +402,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void handleResponse(Message message) {
         //0 thì thôi, 1 thì là danh hiệu ma mới, 2 là Kẻ nhiều tâm sự, 3 là Ông hoàng thân thiện, 4 là Phù thủy ngôn từ
         if(message.getStatus() != 0){
-//            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());            ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification());
+            switch (message.getStatus()){
+                case 1: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" MA MỚI");
+                break;
+                case 2: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Kẻ nhiều tâm sự");
+                    break;
+                case 3: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Ông hoàng thân thiện");
+                    break;
+                case 4: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Phù thủy ngôn từ");
+                    break;
+                default:
+                    break;
+            }
+
         }
 
     }

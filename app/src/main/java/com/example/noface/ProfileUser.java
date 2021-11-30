@@ -4,6 +4,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noface.Adapter.PostAdapter;
+import com.example.noface.fragment.DialogFragmentMedal;
 import com.example.noface.model.Friend;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
@@ -51,9 +53,10 @@ public class ProfileUser extends AppCompatActivity {
     private RecyclerView rcv_posts_user;
     String idUser="", token="";
     private User lUser;
-    private ImageView img_user_Ava;
+    private ImageView img_user_Ava,imgUserMedal;
     private TextView txtNameUser, btnFr;
     private ImageButton btnUserBack,btn_chat;
+    FragmentManager fm = getSupportFragmentManager();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class ProfileUser extends AppCompatActivity {
         btn_chat = findViewById(R.id.btn_chat);
         img_user_Ava = findViewById(R.id.img_user_Ava);
         txtNameUser =  findViewById(R.id.txtNameUser);
+        imgUserMedal =  findViewById(R.id.imgUserMedal);
         btnFr =  findViewById(R.id.btnFr);
         ///Get ID
         Intent intent = getIntent();
@@ -118,6 +122,14 @@ public class ProfileUser extends AppCompatActivity {
                         break;
                 }
 
+            }
+        });
+        imgUserMedal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragmentMedal dialogFragment = new DialogFragmentMedal();
+                dialogFragment.id = idUser.trim();
+                dialogFragment.show(fm,"DialogFragmentMedal");
             }
         });
     }
