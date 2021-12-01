@@ -23,7 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ServiceAPI {
-    String BASE_Service = "http://apinoface.somee.com/";
+    String BASE_Service = "http://noface.somee.com/";
 
     @POST("get-token/{idUser}")
     Observable<Token> GetToken(@Query("idUser") String idUser);
