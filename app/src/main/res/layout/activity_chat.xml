@@ -4,20 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="0dp"
-        android:background="#F58365">
+        android:layout_height="?attr/actionBarSize">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
             android:gravity="center_vertical">
 
             <ImageButton
@@ -25,43 +21,52 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:background="@null"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_baseline_arrow_back_24" />
+                android:background="@color/white"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="#F58365" />
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/imgAvatar"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/btnBack"
-                            android:src="@drawable/ic_user"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/btnBack"
+                android:src="@drawable/ic_user" />
 
-
-                        <TextView
-                            android:id="@+id/txtName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_toRightOf="@id/imgAvatar"
-                            android:text="Ẩn Danh"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/imgAvatar"
+                android:text="Ẩn Danh"
+                android:textColor="#F58365"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/v2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#F58365"></View>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvChat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/txtMessage"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/v2"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="2dp"
         android:padding="5dp" />
-
 
 
     <EditText
@@ -75,7 +80,6 @@
         android:background="@drawable/chat_custom"
         android:hint="Type a message"
         android:paddingLeft="20dp"
-        android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -89,5 +93,4 @@
         android:layout_toRightOf="@id/txtMessage"
         android:backgroundTint="@color/white"
         android:src="@drawable/send"></de.hdodenhof.circleimageview.CircleImageView>
-
 </RelativeLayout>

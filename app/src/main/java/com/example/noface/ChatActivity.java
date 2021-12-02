@@ -78,6 +78,22 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        txtUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ProfileUser.class);
+                intent.putExtra("idUser", userID);
+                startActivity(intent);
+            }
+        });
+        imgAvatarUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ProfileUser.class);
+                intent.putExtra("idUser", userID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getData(){

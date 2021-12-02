@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#F3F3F3</color>
     <color name="gray1">#737373</color>
+
+    <color name="dark1">#202225</color>
+    <color name="dark2">#292b2f</color>
+    <color name="dark3">#2f3136</color>
+    <color name="dark4">#36393f</color>
+    <color name="salmon">#F58365</color>
 </resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_user"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/imgAvatar"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:text="Ẩn Danh"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_on"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="-15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/imgAvatar"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="invisible"
+        app:civ_border_color="#05df29"
+        app:civ_border_width="10dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_off"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="-15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/imgAvatar"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="invisible"
+        app:civ_border_color="#bfbfbf"
+        app:civ_border_width="10dp" />
+
+    <TextView
+        android:id="@+id/tv_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:background="@color/salmon"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Chấp nhận"
+        android:textColor="#FFFFFFFF"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tv_ok"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Hủy"
+        android:textColor="@color/salmon"
+        android:textSize="17sp" />
+</RelativeLayout>

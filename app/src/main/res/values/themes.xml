@@ -16,5 +16,8 @@
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/trans_anim</item>
         <item name="android:windowExitTransition">@transition/trans_anim</item>
+
+        <item name="background_color">@color/white</item>
+        <item name="text_color">@color/black</item>
     </style>
 </resources>

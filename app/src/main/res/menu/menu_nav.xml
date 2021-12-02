@@ -24,7 +24,7 @@
                     android:title="@string/nav_chat"
                     android:icon="@drawable/chat"/>
                 <item
-                    android:id="@+id/nav_acc"
+                    android:id="@+id/nav_request"
                     android:title="Lời mời kết bạn"
                     android:icon="@drawable/nav_acc"/>
                 <item

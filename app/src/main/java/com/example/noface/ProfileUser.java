@@ -249,9 +249,9 @@ public class ProfileUser extends AppCompatActivity {
                                 AddFriend(friend);
                                 break;
                             case 1: //huy gui yeu cau ket bạn
-                                setColor(true, "Người lạ");
-
-//                                Friend del = new Friend(user.getUid(), idUser.trim(), 3);
+//                                Toast.makeText(ProfileUser.this, "Update đê", Toast.LENGTH_SHORT).show();
+//                                setColor(true, "Người lạ");
+//                                Friend del = new Friend(0, user.getUid(), idUser.trim(), 1);
 //                                DELfriend(del);
                                 break;
                         }
@@ -278,6 +278,7 @@ public class ProfileUser extends AppCompatActivity {
     private void handleResponseAddfr(Message message) {
         if (message.getStatus() == 1 ){
             setColor(false, "Đã gửi kết bạn");
+            flag = 1;
         }
     }
 
@@ -298,6 +299,7 @@ public class ProfileUser extends AppCompatActivity {
     private void handleResponseDEL(Message message) {
         if (message.getStatus() == 1){
             setColor(true, "Người lạ");
+            flag = 0;
         }
     }
 
@@ -318,6 +320,7 @@ public class ProfileUser extends AppCompatActivity {
     private void handleResponseAcc(Message message) {
         if (message.getStatus() == 1){
             setColor(true, "Bạn bè");
+            flag = 3;
         }
     }
 

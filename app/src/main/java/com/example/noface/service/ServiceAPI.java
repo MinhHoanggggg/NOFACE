@@ -5,14 +5,13 @@ import com.example.noface.model.Acc;
 import com.example.noface.model.Achievements;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Friend;
-import com.example.noface.model.Medals;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
+import com.example.noface.model.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -36,6 +35,9 @@ public interface ServiceAPI {
 
     @GET("post-trending")
     Observable<ArrayList<Posts>> PostTrending(@Header("Authorization") String token);
+
+    @GET("new-post")
+    Observable<ArrayList<Posts>> home(@Header("Authorization") String token);
 
     @GET("get-all-post-by-id/{id}")
     Observable<ArrayList<Posts>> PostByTopic(@Header("Authorization") String token,
@@ -80,15 +82,15 @@ public interface ServiceAPI {
 
     @DELETE("delete-cmt/{idcmt}")
     Observable<Message> DeleteCmt(@Header("Authorization") String token,
-                                @Query("idcmt") int idcmt);
+                                  @Query("idcmt") int idcmt);
 
     @POST("Check-Achievements/{iduser}")
-    Observable<Message> CheckAchie (@Header("Authorization") String token,
-                                    @Query("iduser") String iduser);
+    Observable<Message> CheckAchie(@Header("Authorization") String token,
+                                   @Query("iduser") String iduser);
 
     @GET("DanhHieu/{iduser}")
-    Observable<ArrayList<Achievements>>GetMedals (@Header("Authorization") String token,
-                               @Query("iduser") String iduser);
+    Observable<ArrayList<Achievements>> GetMedals(@Header("Authorization") String token,
+                                                  @Query("iduser") String iduser);
 
     @GET("CheckFriends/{iduser}/{idfriend}")
     Observable<Message> GetCheckFr(@Header("Authorization") String token,
@@ -98,6 +100,7 @@ public interface ServiceAPI {
     @POST("Follower")
     Observable<Message> addFriends(@Header("Authorization") String token,
                                    @Body Friend friend);
+
     @POST("DeleteFriend")
     Observable<Message> DELfriend(@Header("Authorization") String token,
                                   @Body Friend friend);
@@ -106,4 +109,15 @@ public interface ServiceAPI {
     Observable<Message> Accept(@Header("Authorization") String token,
                                @Body Friend friend);
 
+    @POST("List-Friend")
+    Observable<ArrayList<Friend>> listFriend(@Header("Authorization") String token,
+                                             @Query("idUser") String id);
+
+    @POST("List-Follower")
+    Observable<ArrayList<Friend>> FriendsRequest(@Header("Authorization") String token,
+                                                 @Query("idUser") String id);
+
+    @GET("get-user-by-id/{id}")
+    Observable<User> getUser(@Header("Authorization") String token,
+                             @Query("id") String id);
 }
