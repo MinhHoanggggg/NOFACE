@@ -99,8 +99,8 @@ public class ListRequestAdapter extends RecyclerView.Adapter<ListRequestAdapter.
                 holder.img_on.setVisibility(View.GONE);
                 holder.img_off.setVisibility(View.GONE);
 
-//                Friend del = new Friend(0, lUsers.get(position).getIdUser(),  fuser.getUid(), 1);
-//                DELfriend(del);
+                Friend del = new Friend(0, lUsers.get(position).getIdUser(),  fuser.getUid(), 1);
+                DELfriend(del);
             }
         });
 

@@ -249,10 +249,8 @@ public class ProfileUser extends AppCompatActivity {
                                 AddFriend(friend);
                                 break;
                             case 1: //huy gui yeu cau ket bạn
-//                                Toast.makeText(ProfileUser.this, "Update đê", Toast.LENGTH_SHORT).show();
-//                                setColor(true, "Người lạ");
-//                                Friend del = new Friend(0, user.getUid(), idUser.trim(), 1);
-//                                DELfriend(del);
+                                Friend del = new Friend(0, user.getUid(), idUser.trim(), 1);
+                                DELfriend(del);
                                 break;
                         }
                     }
