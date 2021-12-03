@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openMainChatFragment();
                 break;
             case R.id.nav_pass:
-                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.salmon));
                 openPassFragment();
                 break;
             case R.id.nav_profile:

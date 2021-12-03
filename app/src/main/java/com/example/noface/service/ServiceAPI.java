@@ -9,7 +9,6 @@ import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
-import com.example.noface.model.User;
 
 import java.util.ArrayList;
 
@@ -117,7 +116,4 @@ public interface ServiceAPI {
     Observable<ArrayList<Friend>> FriendsRequest(@Header("Authorization") String token,
                                                  @Query("idUser") String id);
 
-    @GET("get-user-by-id/{id}")
-    Observable<User> getUser(@Header("Authorization") String token,
-                             @Query("id") String id);
 }

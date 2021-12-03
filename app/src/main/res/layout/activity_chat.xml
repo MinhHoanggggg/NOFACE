@@ -23,7 +23,7 @@
                 android:layout_centerVertical="true"
                 android:background="@color/white"
                 android:src="@drawable/ic_baseline_arrow_back_24"
-                app:tint="#F58365" />
+                app:tint="@color/salmon" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
@@ -42,7 +42,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imgAvatar"
                 android:text="Ẩn Danh"
-                android:textColor="#F58365"
+                android:textColor="@color/salmon"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>

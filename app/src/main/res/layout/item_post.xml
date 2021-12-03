@@ -128,14 +128,6 @@
                 android:layout_weight="4"
                 android:textColor="@color/black"
                 android:gravity="center"/>
-            <Button
-                android:layout_marginTop="7dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                app:backgroundTint="@null"
-                android:layout_marginBottom="7dp"
-                android:background="@drawable/ic_share_no"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

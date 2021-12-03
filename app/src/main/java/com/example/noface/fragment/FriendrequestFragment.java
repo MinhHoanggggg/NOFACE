@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noface.Adapter.ListRequestAdapter;
-import com.example.noface.Adapter.ListUserAdapter;
 import com.example.noface.R;
 import com.example.noface.model.Friend;
 import com.example.noface.model.User;
@@ -40,12 +40,15 @@ public class FriendrequestFragment extends Fragment {
     private FirebaseAuth user = FirebaseAuth.getInstance();
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private RecyclerView rcv_listChat;
+    private ImageView noface;
     ArrayList<User> arrayList;
     ListRequestAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_main_chat, container, false);
         rcv_listChat = view.findViewById(R.id.rcv_listChat);
+        noface = view.findViewById(R.id.noface);
         rcv_listChat.setHasFixedSize(true);
         rcv_listChat.setLayoutManager(new LinearLayoutManager(getContext()));
         arrayList = new ArrayList<>();
@@ -84,25 +87,29 @@ public class FriendrequestFragment extends Fragment {
         ShowNotifyUser.dismissProgressDialog();
     }
 
-    public void getUser(ArrayList<Friend> friend){
+    public void getUser(ArrayList<Friend> friend) {
         DatabaseReference myRef = firebaseDatabase.getReference("Users");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User users = dataSnapshot.getValue(User.class);
-                    for (int i =0 ; i<  friend.size() ; i++){
-                        if (users.getIdUser().equals(friend.get(i).getIDUser().trim())){
+                    for (int i = 0; i < friend.size(); i++) {
+                        if (users.getIdUser().equals(friend.get(i).getIDUser().trim())) {
                             arrayList.add(users);
                             break;
                         }
                     }
                 }
 
-                adapter= new ListRequestAdapter(getContext(), arrayList);
+                adapter = new ListRequestAdapter(getContext(), arrayList);
                 rcv_listChat.setAdapter(adapter);
+
+                if (arrayList.size() == 0) noface.setVisibility(View.VISIBLE);
+                else noface.setVisibility(View.GONE);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
