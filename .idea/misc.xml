@@ -23,7 +23,12 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/background_left.xml" value="0.18958333333333333" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/background_right.xml" value="0.18958333333333333" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/bg_botron.xml" value="0.2703125" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/botron_bg.xml" value="0.15885416666666666" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/botron_btn.xml" value="0.2703125" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/circle.xml" value="0.15885416666666666" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/circle_w.xml" value="0.15885416666666666" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/custom_header_bg.xml" value="0.18072916666666666" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/custom_table.xml" value="0.15885416666666666" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/ic_btn_likes.xml" value="0.2703125" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/ic_friend.xml" value="0.13177083333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/drawable/ic_like.xml" value="0.2703125" />
@@ -48,10 +53,10 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_posts_manager.xml" value="0.25416666666666665" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_profile.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/fragment_topic.xml" value="0.25416666666666665" />
-        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/header_left_nav.xml" value="0.2" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/header_left_nav.xml" value="0.264" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_ava.xml" value="0.25416666666666665" />
-        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_chat_left.xml" value="0.536" />
-        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_chat_right.xml" value="0.536" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_chat_left.xml" value="0.4" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_chat_right.xml" value="0.4" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_cmt.xml" value="0.264" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_post.xml" value="0.4" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_topic.xml" value="0.13020833333333334" />
@@ -59,6 +64,7 @@
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/item_user_request.xml" value="0.4" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/layout_login.xml" value="0.13020833333333334" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/layout_register.xml" value="0.13020833333333334" />
+        <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/layout/notification_badge.xml" value="0.72" />
         <entry key="..\:/TT_Web/DOAN_CN/APP/app/src/main/res/menu/menu_nav.xml" value="0.1734375" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable-v24/custom_btn.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/Admin/OneDrive/Desktop/NOFACE/app/src/main/res/drawable/bg_botron.xml" value="0.2989583333333333" />

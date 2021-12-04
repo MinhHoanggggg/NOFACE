@@ -19,6 +19,7 @@ import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         Chat chat = lChat.get(i);
-        holder.txt_message.setText(chat.getMessage());
+
         SetAvatar.SetAva(holder.imgAvatar, imgAvatar);
 
         if (i == lChat.size()-1){
@@ -68,6 +69,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.imgAvatar.setVisibility(View.GONE);
             holder.txt_seen.setVisibility(View.GONE);
         }
+
+        if (chat.isImg() == true){
+            Picasso.get().load(chat.getMessage()).into(holder.img_message);
+            holder.img_message.setVisibility(View.VISIBLE);
+            holder.txt_message.setVisibility(View.GONE);
+        } else {
+            holder.img_message.setVisibility(View.GONE);
+            holder.txt_message.setVisibility(View.VISIBLE);
+            holder.txt_message.setText(chat.getMessage());
+        }
     }
 
     @Override
@@ -78,11 +89,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView txt_message, txt_seen;
         public CircleImageView imgAvatar;
+        public ImageView img_message;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_message = itemView.findViewById(R.id.txt_message);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
             txt_seen = itemView.findViewById(R.id.txt_seen);
+            img_message = itemView.findViewById(R.id.img_message);
         }
     }
 

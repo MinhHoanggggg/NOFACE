@@ -20,12 +20,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
 import com.example.noface.fragment.TrendingFragment;
 import com.example.noface.inter.FragmentInterface;
+import com.example.noface.model.Chat;
 import com.example.noface.model.Message;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
@@ -67,7 +71,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInterface {
-
+    private FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+    private int dem = 0;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int FRAGMENT_TOPIC = 2;
@@ -151,6 +156,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ///Lay danh hieu
         new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
+
+        getMessage();
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -164,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openHomeFragment();
                 break;
             case R.id.nav_post_manager:
-                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.purple_200));
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openPostManagerFragment();
                 break;
             case R.id.nav_topic:
@@ -476,5 +484,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
+    }
+
+    private void getMessage() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dem = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    //last message
+                    if (chat.getTo().equals(fuser.getUid()) && chat.isSeen() == false) {
+                        dem++;
+                    }
+                }
+                RelativeLayout customLayout = (RelativeLayout) LayoutInflater.from(MainActivity.this).inflate(R.layout.notification_badge, null);
+                TextView badge = (customLayout.findViewById(R.id.counter));
+                if (dem == 0)
+                    badge.setVisibility(View.GONE);
+                else {
+                    badge.setVisibility(View.VISIBLE);
+                    badge.setText(dem+"");
+                }
+                nav_view.getMenu().findItem(R.id.nav_chat).setActionView(customLayout);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

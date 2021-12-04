@@ -5,14 +5,16 @@ public class Chat {
     private String to;
     private String message;
     private boolean seen;
+    private boolean img;
 
     public Chat() { }
 
-    public Chat(String from, String to, String message, boolean seen) {
+    public Chat(String from, String to, String message, boolean seen, boolean img) {
         this.from = from;
         this.to = to;
         this.message = message;
         this.seen = seen;
+        this.img = img;
     }
 
     public String getFrom() {
@@ -45,5 +47,13 @@ public class Chat {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public boolean isImg() {
+        return img;
+    }
+
+    public void setImg(boolean img) {
+        this.img = img;
     }
 }
