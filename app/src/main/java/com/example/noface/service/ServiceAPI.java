@@ -11,6 +11,7 @@ import com.example.noface.model.Notification;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
+import com.example.noface.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,4 +116,19 @@ public interface ServiceAPI {
     @POST("view-noti/{idNoti}")
     Observable<Message> SeenNoti(@Header("Authorization") String token,
                                               @Query("idNoti") int idNoti);
+    @GET("get-user-by-id/{id}")
+    Observable<User> getUser(@Header("Authorization") String token,
+                             @Query("id") String id);
+    @GET("new-post")
+    Observable<ArrayList<Posts>> home(@Header("Authorization") String token);
+
+    @POST("List-Friend")
+    Observable<ArrayList<Friend>> listFriend(@Header("Authorization") String token,
+                                             @Query("idUser") String id);
+
+    @POST("List-Follower")
+    Observable<ArrayList<Friend>> FriendsRequest(@Header("Authorization") String token,
+                                                 @Query("idUser") String id);
+
+
 }
