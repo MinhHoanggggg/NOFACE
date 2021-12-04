@@ -7,6 +7,7 @@ import com.example.noface.model.Comment;
 import com.example.noface.model.Friend;
 import com.example.noface.model.Medals;
 import com.example.noface.model.Message;
+import com.example.noface.model.Notification;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Token;
 import com.example.noface.model.Topic;
@@ -106,4 +107,12 @@ public interface ServiceAPI {
     Observable<Message> Accept(@Header("Authorization") String token,
                                @Body Friend friend);
 
+    @POST("notification/{iduser}")
+    Observable<ArrayList<Notification>> GetNoti(@Header("Authorization") String token,
+                                               @Query("iduser") String iduser);
+
+  //
+    @POST("view-noti/{idNoti}")
+    Observable<Message> SeenNoti(@Header("Authorization") String token,
+                                              @Query("idNoti") int idNoti);
 }

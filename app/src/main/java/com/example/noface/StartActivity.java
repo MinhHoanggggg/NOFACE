@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.example.noface.model.Acc;
 import com.example.noface.model.Message;
+import com.example.noface.model.Token;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
+import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -175,7 +178,7 @@ public class StartActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Thành công rồi nha đại ca!", Toast.LENGTH_SHORT).show();
 
                             pushRealtime(user);
-                            Create(new Acc(user.getUid(),"Ẩn Danh"));
+                            Create(new Acc(user.getUid(),"Ẩn Danh",0,1));
                             
 
                         } else {
@@ -214,9 +217,9 @@ public class StartActivity extends AppCompatActivity {
 
     private void handleResponse(Message message) {
         if (message.getStatus() == 1) {
-            Toast.makeText(getApplicationContext(), "Đăng ký thành công nè", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Thành công nè", Toast.LENGTH_LONG).show();
+            Login(mAuth.getUid());
 
-           // startActivity(new Intent(StartActivity.this, MainActivity.class));
         }
         if (message.getStatus() == 0)
             Toast.makeText(getApplicationContext(),  "Ủa ??", Toast.LENGTH_LONG).show();
@@ -237,6 +240,28 @@ public class StartActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void Login(String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetToken(idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Token token) {
+        DataToken dataToken = new DataToken(StartActivity.this);
+        dataToken.saveToken(token.getToken(), token.getRefreshToken());
+        startActivity(new Intent(StartActivity.this, MainActivity.class));
+        finish();
+    }
+
 
 
 

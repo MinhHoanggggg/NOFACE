@@ -71,7 +71,8 @@ public class PostActivity extends AppCompatActivity{
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     User lUser,pUser;
     String idUser, token;
-    int idTopic, sumLike, idPost, sumCmt;
+    int idTopic, sumLike,  sumCmt;
+    public int idPost;
     Boolean checkLike = false;
 
     @Override

@@ -15,7 +15,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/avanf"
+        android:src="@drawable/ic_logoreal"
         android:layout_margin="5dp"/>
 
     <TextView

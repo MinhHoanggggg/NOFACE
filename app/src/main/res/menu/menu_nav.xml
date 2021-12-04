@@ -31,7 +31,10 @@
                     android:id="@+id/nav_fr"
                     android:title="Bạn bè"
                     android:icon="@drawable/ic_user"/>
-
+                <item
+                    android:id="@+id/nav_noti"
+                    android:title="Thông báo"
+                    android:icon="@drawable/ic_baseline_notifications_24"/>
             </group>
         </menu>
     </item>

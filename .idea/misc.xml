@@ -98,6 +98,7 @@
         <entry key="app/src/main/res/layout/fragment_dialog_avatar.xml" value="0.12545289855072464" />
         <entry key="app/src/main/res/layout/fragment_dialog_medal.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.10914855072463768" />
+        <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.1431159420289855" />
         <entry key="app/src/main/res/layout/fragment_post_by_topic.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_posts_manager.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3925438596491228" />
@@ -107,6 +108,7 @@
         <entry key="app/src/main/res/layout/item_cmt.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_medal.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_noti.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_spinner.xml" value="0.10914855072463768" />
         <entry key="app/src/main/res/layout/item_topic.xml" value="0.12545289855072464" />

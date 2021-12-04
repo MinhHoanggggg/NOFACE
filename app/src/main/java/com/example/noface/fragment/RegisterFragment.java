@@ -132,7 +132,7 @@ public class RegisterFragment extends Fragment {
 
 //                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             id = mAuth.getCurrentUser().getUid();
-                            Acc acc = new Acc(id,"Ẩn Danh");
+                            Acc acc = new Acc(id,"Ẩn Danh",0,1);
                             Create(acc);
 
                         } else {

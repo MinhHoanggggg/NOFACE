@@ -11,7 +11,7 @@
         android:id="@+id/imgLogo"
         android:layout_width="149dp"
         android:layout_height="148dp"
-        android:src="@drawable/avanf"
+        android:src="@drawable/ic_logoreal"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

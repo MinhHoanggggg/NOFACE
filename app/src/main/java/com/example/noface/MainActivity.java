@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.noface.fragment.ChangePass;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.MainChatFragment;
+import com.example.noface.fragment.NotificationFragment;
 import com.example.noface.fragment.PostByTopicFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_CHAT = 3;
     private static final int FRAGMENT_PROFILE = 4;
+    private static final int FRAGMENT_NOTIFY = 6;
     private static final int MY_REQUEST_CODE = 10;
 
     private final ProfileFragment profileFragment = new ProfileFragment();
@@ -170,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_profile:
                 openProfileFragment();
                 break;
+            case R.id.nav_noti:
+                openNotificationFragment();
+                break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
                 finish();
@@ -235,6 +240,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (CurrentFragment != FRAGMENT_CHAT) {
             replaceFragment(new MainChatFragment());
             CurrentFragment = FRAGMENT_CHAT;
+        }
+    }
+    private void openNotificationFragment() {
+        if (CurrentFragment != FRAGMENT_NOTIFY) {
+            replaceFragment(new NotificationFragment());
+            CurrentFragment = FRAGMENT_NOTIFY;
         }
     }
 

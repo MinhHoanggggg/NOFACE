@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import android.widget.Toast;
 import com.example.noface.fragment.RegisterFragment;
 import com.example.noface.model.Acc;
 import com.example.noface.model.Message;
+import com.example.noface.model.Token;
 import com.example.noface.model.User;
+import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -138,7 +141,7 @@ public class LoginByPhone extends AppCompatActivity {
                             String id = user.getUid();
                             pushRealtime(user);
                             Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_SHORT).show();
-                            Create(new Acc(user.getUid(),"Ẩn danh"));
+                            Create(new Acc(user.getUid(),"Ẩn danh",0,1));
                         } else {
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -195,16 +198,39 @@ public class LoginByPhone extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
-    private void handleError(Throwable throwable) {
-    }
 
     private void handleResponse(Message message) {
         if (message.getStatus() == 1) {
-            Toast.makeText(getApplicationContext(), "Đăng ký thành công nè", Toast.LENGTH_LONG).show();
-
-            // startActivity(new Intent(StartActivity.this, MainActivity.class));
+            Toast.makeText(getApplicationContext(), "Thành công nè", Toast.LENGTH_LONG).show();
+            Login(mAuth.getUid());
         }
         if (message.getStatus() == 0)
             Toast.makeText(getApplicationContext(),  "Ủa ??", Toast.LENGTH_LONG).show();
+    }
+    private void Login(String idUser) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetToken(idUser)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(Token token) {
+        DataToken dataToken = new DataToken(LoginByPhone.this);
+        dataToken.saveToken(token.getToken(), token.getRefreshToken());
+        startActivity(new Intent(LoginByPhone.this, MainActivity.class));
+        finish();
+    }
+
+
+
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.showAlertDialog(LoginByPhone.this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra nè");
     }
 }
