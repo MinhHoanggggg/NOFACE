@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="dark_theme">
+        <attr name="background_color" format="color"></attr>
+        <attr name="text_color" format="color"></attr>
+
+
+        <attr name="_white" format="color"></attr>
+        <attr name="_white1" format="color"></attr>
+        <attr name="_black" format="color"></attr>
+
+        <attr name="_repass" format="color"></attr>
+        <attr name="bg_repass" format="color"></attr>
+
+    </declare-styleable>
+</resources>

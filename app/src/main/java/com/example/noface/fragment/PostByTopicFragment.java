@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -36,19 +37,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostByTopicFragment extends Fragment {
     private RecyclerView rcv_posts;
     public int idTopic;
-
+    ImageView noface;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_post_by_topic, container, false);
 
         rcv_posts = view.findViewById(R.id.rcv_posts);
+        noface = view.findViewById(R.id.noface);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
+            noface.setVisibility(View.GONE);
             PostByTopic(bundle.getInt("id"));
+        } else {
+            noface.setVisibility(View.VISIBLE);
         }
         ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng mang động...");
         //API data postrending

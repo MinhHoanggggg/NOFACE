@@ -59,15 +59,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditPost extends AppCompatActivity {
-    private EditText edt_post_Title,edt_post_Content;
+    private EditText edt_post_Title, edt_post_Content;
     private Spinner spn_post_Cate;
-    private TextView tv_post_Name,tv_post_Date;
+    private TextView tv_post_Name, tv_post_Date;
     private ImageView img_post_Avatar, imgView;
     private ImageButton btn_post_Back, btnOpenfile, btnCancel;
     private Button btn_post_Save;
     private int idPost, idTopic;
     private Uri imageUri;
-    String mUri="", strDate="";
+    String mUri = "", strDate = "";
     private StorageReference storageReference;
     private StorageTask uploadTask;
     Boolean oFile = false;
@@ -75,6 +75,7 @@ public class EditPost extends AppCompatActivity {
     ConstraintLayout constraintLayout;
     private ArrayList<Integer> idTopics = new ArrayList<>();
     ArrayList<String> lstName = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         status("online");
@@ -84,7 +85,7 @@ public class EditPost extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         strDate = sdf.format(c.getTime());
-        idPost = intent.getIntExtra("idPost",0);
+        idPost = intent.getIntExtra("idPost", 0);
         edt_post_Content = findViewById(R.id.edt_post_Content);
         edt_post_Title = findViewById(R.id.edt_post_Title);
         spn_post_Cate = findViewById(R.id.spn_post_Cate);
@@ -98,7 +99,7 @@ public class EditPost extends AppCompatActivity {
         constraintLayout = findViewById(R.id._layout);
         btnCancel = findViewById(R.id.btnCancel);
         //SetUI
-        ShowNotifyUser.showProgressDialog(this,"Đang tải đợi xíu!!!");
+        ShowNotifyUser.showProgressDialog(this, "Đang tải đợi xíu!!!");
         setUser(user);
         GetAllTopic();
         ///
@@ -109,14 +110,12 @@ public class EditPost extends AppCompatActivity {
                 ShowNotifyUser.showProgressDialog(EditPost.this, "Đang lưu bài viết...");
                 int index = getIndex(spn_post_Cate, spn_post_Cate.getSelectedItem().toString());
                 idTopic = idTopics.get(index);
-                if (edt_post_Title.getText().length()==0 || edt_post_Content.getText().length()==0)
-                {
+                if (edt_post_Title.getText().length() == 0 || edt_post_Content.getText().length() == 0) {
                     ShowNotifyUser.dismissProgressDialog();
                     Toast.makeText(EditPost.this, "Vui lòng nhập đầy đủ bài viết!", Toast.LENGTH_SHORT).show();
-                } else if (oFile == true){
+                } else if (oFile == true) {
                     saveIMG();
-                }
-                else {
+                } else {
                     Posts lPost = new Posts(idPost, idTopic, user.getUid(), edt_post_Title.getText().toString(),
                             edt_post_Content.getText().toString(), strDate,
                             mUri, 0, null, null);
@@ -128,7 +127,8 @@ public class EditPost extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                oFile = false; mUri = "";
+                oFile = false;
+                mUri = "";
                 constraintLayout.setVisibility(View.GONE);
             }
         });
@@ -148,26 +148,28 @@ public class EditPost extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 1);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             imgView.setImageURI(imageUri);
             constraintLayout.setVisibility(View.VISIBLE);
             oFile = true;
-        } else{
+        } else {
             oFile = false;
             constraintLayout.setVisibility(View.GONE);
         }
     } //end.openFile
 
-    private String getFileExtention (Uri uri){
+    private String getFileExtention(Uri uri) {
         ContentResolver contentResolver = this.getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
-    private void saveIMG () {
+
+    private void saveIMG() {
         if (imageUri != null) {
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtention(imageUri));
@@ -202,7 +204,7 @@ public class EditPost extends AppCompatActivity {
                 }
             });
         } else {
-            mUri="";
+            mUri = "";
             ShowNotifyUser.dismissProgressDialog();
         }
     } //end.saveIMG
@@ -215,9 +217,9 @@ public class EditPost extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-               User lUser = snapshot.getValue(User.class);
+                User lUser = snapshot.getValue(User.class);
                 tv_post_Name.setText(lUser.getName());
-                 if (lUser.getAvaPath() != null) {
+                if (lUser.getAvaPath() != null) {
                     SetAvatar.SetAva(img_post_Avatar, lUser.getAvaPath());
                 } else
                     img_post_Avatar.setImageResource(R.drawable.ic_user);
@@ -245,10 +247,11 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
     private void handleResponse(ArrayList<Topic> topics) {
-        for (int i =0; i<topics.size();i++){
+        for (int i = 0; i < topics.size(); i++) {
             Topic topic = topics.get(i);
-            if(topic !=null) {
+            if (topic != null) {
                 lstName.add(topic.getTopicName());
                 idTopics.add(topic.getIDTopic());
             }
@@ -256,13 +259,15 @@ public class EditPost extends AppCompatActivity {
         changeSpn(lstName);
         GetPost(idPost);
     }
-    public  void changeSpn(ArrayList<String> arraySpinner ){
+
+    public void changeSpn(ArrayList<String> arraySpinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_post_Cate.setAdapter(adapter);
 
     }
+
     private void GetPost(int id) {
         DataToken dataToken = new DataToken(getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -277,19 +282,20 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
     private void handleResponse(Posts posts) {
         edt_post_Content.setText(posts.getContent());
         edt_post_Title.setText(posts.getTitle());
         tv_post_Date.setText(posts.getTime());
         int pos = 0;
-        for (int i=0; i<idTopics.size(); i++){
+        for (int i = 0; i < idTopics.size(); i++) {
             int id = idTopics.get(i);
-            if(id == posts.getIDTopic()){
+            if (id == posts.getIDTopic()) {
                 pos = i;
             }
         }
         spn_post_Cate.setSelection(pos);
-        if (posts.getImagePost().length() >15){
+        if (posts.getImagePost().length() > 15) {
             constraintLayout.setVisibility(View.VISIBLE);
             Picasso.get().load(posts.getImagePost()).into(imgView);
         }
@@ -311,11 +317,12 @@ public class EditPost extends AppCompatActivity {
                 .subscribe(this::handleResponse, this::handleError)
         );
     }
+
     private void handleResponse(Message message) {
         ShowNotifyUser.dismissProgressDialog();
-        if(message.getStatus() == 0){
+        if (message.getStatus() == 0) {
             Toast.makeText(EditPost.this, "Không ổn rồi đại vương ơi! Đã có lỗi xảy ra", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             startActivity(new Intent(EditPost.this, MainActivity.class));
         }
     }
@@ -325,10 +332,10 @@ public class EditPost extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Không ổn gòi đại vương ơi !!!", Toast.LENGTH_SHORT).show();
     }
 
-    private int getIndex(Spinner spinner, String myString){
+    private int getIndex(Spinner spinner, String myString) {
         int index = 0;
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).equals(myString)) {
                 index = i;
             }
         }
@@ -336,17 +343,18 @@ public class EditPost extends AppCompatActivity {
     }
 
 
-
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         status("online");
     }
+
     @Override
     protected void onPause() {
         super.onPause();

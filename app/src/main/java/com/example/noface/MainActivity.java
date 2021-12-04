@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -19,16 +20,21 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noface.fragment.ChangePass;
+import com.example.noface.fragment.FriendFragment;
+import com.example.noface.fragment.FriendrequestFragment;
 import com.example.noface.fragment.HomeFragment;
 import com.example.noface.fragment.MainChatFragment;
 import com.example.noface.fragment.NotificationFragment;
@@ -36,7 +42,9 @@ import com.example.noface.fragment.PostByTopicFragment;
 import com.example.noface.fragment.PostManagerFragment;
 import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
+import com.example.noface.fragment.TrendingFragment;
 import com.example.noface.inter.FragmentInterface;
+import com.example.noface.model.Chat;
 import com.example.noface.model.Message;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
@@ -64,7 +72,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInterface {
-
+    private FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+    private int dem = 0;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int FRAGMENT_TOPIC = 2;
@@ -73,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PROFILE = 4;
     private static final int FRAGMENT_NOTIFY = 6;
     private static final int MY_REQUEST_CODE = 10;
-
+    private static final int FRAGMENT_TREND = 6;
+    private static final int FRAGMENT_FRIEND = 7;
+    private static final int FRAGMENT_REQUEST = 8;
     private final ProfileFragment profileFragment = new ProfileFragment();
     private final ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -105,22 +116,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView nav_view;
     private User lUser;
     private String token;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         status("online");
         setContentView(R.layout.activity_main);
-            if(user == null){
-                finish();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            }
-        //set toolbar thay actionbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        //ánh xạ
         drawer_layout = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
+
+        if (user == null) {
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+
+        //set toolbar thay actionbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //Get token
         DataToken dataToken = new DataToken(MainActivity.this);
         token = dataToken.getToken();
@@ -145,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ///Lay danh hieu
         new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
 
+        getMessage();
 
     }
 
@@ -155,21 +170,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //set fragment cho từng item
         switch (idItem) {
             case R.id.nav_home:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openHomeFragment();
                 break;
             case R.id.nav_post_manager:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openPostManagerFragment();
                 break;
             case R.id.nav_topic:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.purple_700));
                 openTopicFragment();
                 break;
             case R.id.nav_chat:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openMainChatFragment();
                 break;
             case R.id.nav_pass:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.salmon));
                 openPassFragment();
                 break;
             case R.id.nav_profile:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openProfileFragment();
                 break;
             case R.id.nav_noti:
@@ -181,6 +202,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(MainActivity.this, StartActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 Toast.makeText(getApplicationContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_trend:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
+                openPostTrending();
+                break;
+            case R.id.nav_fr:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
+                openFriendFragment();
+                break;
+            case R.id.nav_request:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.salmon));
+                openRequestFragment();
                 break;
             default:
                 break;
@@ -198,6 +231,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void openRequestFragment() {
+        if (CurrentFragment != FRAGMENT_REQUEST) {
+            replaceFragment(new FriendrequestFragment());
+            CurrentFragment = FRAGMENT_REQUEST;
+        }
+    }
+
+    private void openFriendFragment() {
+        if (CurrentFragment != FRAGMENT_FRIEND) {
+            replaceFragment(new FriendFragment());
+            CurrentFragment = FRAGMENT_FRIEND;
+        }
+    }
+
+    private void openPostTrending() {
+        if (CurrentFragment != FRAGMENT_TREND) {
+            replaceFragment(new TrendingFragment());
+            CurrentFragment = FRAGMENT_TREND;
         }
     }
 
@@ -259,6 +313,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case FRAGMENT_TOPIC:
                 title = "Chủ đề";
                 break;
+            case FRAGMENT_TREND:
+                title = "Nổi bật";
+                break;
+            case FRAGMENT_FRIEND: {
+                title = "Bạn bè";
+                break;
+            }
+            case FRAGMENT_REQUEST: {
+                title = "Lời mời kết bạn";
+                break;
+            }
             case FRAGMENT_CHAT:
                 title = "Trò Chuyện";
                 break;
@@ -309,7 +374,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     setAvatar.SetAva(imgNavAva, lUser.getAvaPath());
                 } else
                     imgNavAva.setImageResource(R.drawable.ic_user);
-
             }
 
             @Override
@@ -317,12 +381,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
-
-//        Uri photoUrl = user.getPhotoUrl();
-//        Glide.with(this).load(photoUrl).error(R.drawable.ic_user).into(imgNavAva);
-
     }
+
+
 
     ///xin cap quyen
     @Override
@@ -363,28 +424,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference();
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         status("online");
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         status("offline");
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         status("offline");
     }
+
     public class NewsletterTask extends TimerTask {
         @Override
         public void run() {
@@ -399,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.CheckAchie(token,id)
+        new CompositeDisposable().add(requestInterface.CheckAchie(token, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError)
@@ -407,20 +470,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleError(Throwable throwable) {
-        Toast.makeText(getApplicationContext(), "Lõi", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Lỗi mạng", Toast.LENGTH_SHORT).show();
     }
 
     private void handleResponse(Message message) {
         //0 thì thôi, 1 thì là danh hiệu ma mới, 2 là Kẻ nhiều tâm sự, 3 là Ông hoàng thân thiện, 4 là Phù thủy ngôn từ
-        if(message.getStatus() != 0){
-            switch (message.getStatus()){
-                case 1: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" MA MỚI");
-                break;
-                case 2: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Kẻ nhiều tâm sự");
+        if (message.getStatus() != 0) {
+            switch (message.getStatus()) {
+                case 1:
+                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " MA MỚI");
                     break;
-                case 3: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Ông hoàng thân thiện");
+                case 2:
+                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Kẻ nhiều tâm sự");
                     break;
-                case 4: ShowNotifyUser.showAlertDialog(MainActivity.this,message.getNotification()+" Phù thủy ngôn từ");
+                case 3:
+                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Ông hoàng thân thiện");
+                    break;
+                case 4:
+                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Phù thủy ngôn từ");
                     break;
                 default:
                     break;
@@ -428,5 +495,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
+    }
+
+    private void getMessage() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dem = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    //last message
+                    if (chat.getTo().equals(fuser.getUid()) && chat.isSeen() == false) {
+                        dem++;
+                    }
+                }
+                RelativeLayout customLayout = (RelativeLayout) LayoutInflater.from(MainActivity.this).inflate(R.layout.notification_badge, null);
+                TextView badge = (customLayout.findViewById(R.id.counter));
+                if (dem == 0)
+                    badge.setVisibility(View.GONE);
+                else {
+                    badge.setVisibility(View.VISIBLE);
+                    badge.setText(dem+"");
+                }
+                nav_view.getMenu().findItem(R.id.nav_chat).setActionView(customLayout);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

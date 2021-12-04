@@ -2,9 +2,7 @@ package com.example.noface.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder>{
+public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
     private final Context mContext;
     private final List<User> lUsers;
-    String textString= "";
+    String textString = "", flag = "seen";
     private boolean check;
 
     public ListUserAdapter(Context mContext, List<User> lUsers, boolean check) {
@@ -53,7 +51,8 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         User user = lUsers.get(i);
         holder.tv_name.setText(user.getName());
-        if (user.getStatus().equals("online")){
+
+        if (user.getStatus().equals("online")) {
             holder.img_on.setVisibility(View.VISIBLE);
             holder.img_off.setVisibility(View.GONE);
         } else {
@@ -63,13 +62,11 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         SetAvatar.SetAva(holder.imgAvatar, user.getAvaPath());
 
 
-        if (check){
+        if (check) {
             newMessage(user.getIdUser(), holder.tv_new);
         } else {
             holder.tv_new.setVisibility(View.GONE);
         }
-
-//        newMessage(user.getIdUser(), holder.tv_new);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -86,29 +83,34 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         return lUsers.size();
     }
 
-    private void newMessage(String id, TextView tv){
-        textString= "";
+    private void newMessage(String id, TextView tv) {
+        textString = "";
+        flag = "seen";
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     //last message
                     if (chat.getTo().equals(firebaseUser.getUid()) && chat.getFrom().equals(id) ||
                             chat.getTo().equals(id) && chat.getFrom().equals(firebaseUser.getUid())) {
-                        textString = chat.getMessage();
+
+                        if (chat.isImg() == true)
+                            textString = "Đã gửi kèm hình ảnh...";
+                        else
+                            textString = chat.getMessage();
                     }
-                    //Color
-                    if (!chat.isSeen() && firebaseUser.getUid().equals(chat.getTo())){
-                        tv.setTextColor(Color.parseColor("#F58365"));
-                    }else {
-                        tv.setTextColor(Color.parseColor("#737373"));
+
+                    //Color - chưa xem
+                    if (chat.isSeen() == false && chat.getTo().equals(firebaseUser.getUid()) && chat.getFrom().equals(id)) {
+                        flag = "no";
+
                     }
                 }
 
-                switch (textString){
+                switch (textString) {
                     case "":
                         tv.setText("");
                         break;
@@ -116,7 +118,16 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                         tv.setText(textString);
                         break;
                 }
-                textString= "";
+                switch (flag) {
+                    case "no":
+                        tv.setTextColor(Color.parseColor("#F58365"));
+                        break;
+                    default:
+                        tv.setTextColor(Color.parseColor("#737373"));
+                        break;
+                }
+                textString = "";
+                flag = "seen";
             }
 
             @Override
@@ -131,6 +142,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         public TextView tv_name, tv_new;
         public ImageView imgAvatar, img_on, img_off;
         public ItemClickListener itemClickListener;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -140,10 +152,12 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             img_off = itemView.findViewById(R.id.img_off);
             tv_new = itemView.findViewById(R.id.tv_new);
         }
+
         @Override
         public void onClick(View view) {
             this.itemClickListener.onItemClick(view, getAdapterPosition());
         }
+
         public void setItemClickListener(ItemClickListener ic) {
             this.itemClickListener = ic;
         }

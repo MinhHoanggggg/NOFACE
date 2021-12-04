@@ -11,10 +11,17 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
 
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/trans_anim</item>
         <item name="android:windowExitTransition">@transition/trans_anim</item>
+        <!-- Customize your theme here. -->
+        <item name="background_color">@color/white</item>
+        <item name="text_color">@color/black</item>
+
+        <item name="_repass">#F58365</item>
+        <item name="bg_repass">@color/white</item>
+        <item name="_white1">#ffff</item>
     </style>
 </resources>

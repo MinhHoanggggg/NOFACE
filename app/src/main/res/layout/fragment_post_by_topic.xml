@@ -20,6 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             app:cardCornerRadius="10dp" />
+
+        <ImageView
+            android:id="@+id/noface"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            android:background="@drawable/noface">
+        </ImageView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.core.widget.NestedScrollView>

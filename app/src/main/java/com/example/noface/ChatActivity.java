@@ -1,15 +1,20 @@
 package com.example.noface;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +22,14 @@ import android.widget.Toast;
 import com.example.noface.Adapter.ListUserAdapter;
 import com.example.noface.Adapter.MessageAdapter;
 import com.example.noface.model.Chat;
+import com.example.noface.model.Posts;
 import com.example.noface.model.User;
 import com.example.noface.other.SetAvatar;
+import com.example.noface.other.ShowNotifyUser;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +37,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,10 +53,15 @@ public class ChatActivity extends AppCompatActivity {
     private TextView txtUserName;
     private EditText txtMessage;
     private RecyclerView rcvChat;
+    private ImageView imgView, btnopen;
+    private Uri imageUri;
+    Boolean oFile = false;
     MessageAdapter adapter;
+    private StorageTask uploadTask;
+    private StorageReference storageReference;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    String userID;
+    String userID, mUri="";
     List<Chat> lChat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +74,8 @@ public class ChatActivity extends AppCompatActivity {
         txtUserName = findViewById(R.id.txtName);
         txtMessage = findViewById(R.id.txtMessage);
         rcvChat = findViewById(R.id.rcvChat);
+        btnopen = findViewById(R.id.btnopen);
+        imgView = findViewById(R.id.imgView);
         rcvChat.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true); //hiển thị phần tử cuối cùng
@@ -67,17 +89,56 @@ public class ChatActivity extends AppCompatActivity {
 
         getData();
 
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String mess = txtMessage.getText().toString();
-                if (!mess.equals("")){
-                    sendMess(user.getUid(), userID, txtMessage.getText().toString());
+                if (oFile == false && !mess.equals("")){
+                    sendMess(false, user.getUid(), userID, txtMessage.getText().toString());
                     txtMessage.setText("");
+                } else {
+                    saveIMG ();
+
                 }
+
+                //done
+                imgView.setVisibility(View.GONE);
+                oFile = false;
             }
         });
 
+        txtUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ProfileUser.class);
+                intent.putExtra("idUser", userID);
+                startActivity(intent);
+            }
+        });
+        imgAvatarUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ProfileUser.class);
+                intent.putExtra("idUser", userID);
+                startActivity(intent);
+            }
+        });
+
+        btnopen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFile();
+            }
+        });
+
+        imgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgView.setVisibility(View.GONE);
+                oFile = false;  mUri = ""; imageUri = null;
+            }
+        });
     }
 
     private void getData(){
@@ -103,13 +164,14 @@ public class ChatActivity extends AppCompatActivity {
         seenMessage(user.getUid(), userID); //update trạng thái xem
     }
 
-    private void sendMess(String I, String you, String mess){
+    private void sendMess(Boolean fimg, String I, String you, String mess){
         DatabaseReference reference = firebaseDatabase.getReference();
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("from", I);
         hashMap.put("to", you);
         hashMap.put("message", mess);
         hashMap.put("seen", false);
+        hashMap.put("img", fimg);
         reference.child("Chat").push().setValue(hashMap);
     }
 
@@ -158,6 +220,72 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+    //openFile
+    private void openFile() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!= null){
+            imageUri = data.getData();
+            imgView.setImageURI(imageUri);
+            imgView.setVisibility(View.VISIBLE);
+            oFile = true;
+        } else{
+            oFile = false;
+            imgView.setVisibility(View.GONE);
+        }
+    } //end.openFile
+
+    private void saveIMG () {
+        if (imageUri != null) {
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
+                    + "." + getFileExtention(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        mUri = downloadUri.toString(); //save link img
+
+                        String mess = txtMessage.getText().toString();
+                        if (!mess.equals(""))
+                            sendMess(false, user.getUid(), userID, txtMessage.getText().toString());
+                        sendMess(true, user.getUid(), userID, mUri);
+
+                        txtMessage.setText(""); mUri="";
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        } else {
+            ShowNotifyUser.dismissProgressDialog();
+            mUri="";
+        }
+    }
+    private String getFileExtention (Uri uri){
+        ContentResolver contentResolver = this.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    } //end.saveIMG
+
 
     private void status(String status) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
