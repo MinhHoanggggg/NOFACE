@@ -36,7 +36,7 @@
                 tools:ignore="RtlSymmetry">
                 <TextView
                     android:id="@+id/tv_name"
-                    android:hint="Ẩn danh"
+                    android:text="Ẩn danh"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"

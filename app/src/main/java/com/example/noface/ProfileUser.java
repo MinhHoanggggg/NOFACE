@@ -51,7 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProfileUser extends AppCompatActivity {
     private int flag=-1;
     private RecyclerView rcv_posts_user;
-    String idUser="", token="";
+    String idUser="", token="", name ="";
     private User lUser;
     private ImageView img_user_Ava,imgUserMedal;
     private TextView txtNameUser, btnFr;
@@ -79,9 +79,12 @@ public class ProfileUser extends AppCompatActivity {
         //Set UI
         DataToken dataToken = new DataToken(ProfileUser.this);
         token = dataToken.getToken();
-        Check(user.getUid(), idUser.trim());
         Wall(idUser.trim());
         setUI(idUser.trim());
+        if (user.getUid().equals(idUser.trim())){
+            txtNameUser.setText(name);
+        } else
+            Check(user.getUid(), idUser.trim());
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
         btnUserBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +151,8 @@ public class ProfileUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lUser = snapshot.getValue(User.class);
                 if (!lUser.getName().isEmpty()) {
-                    txtNameUser.setText(lUser.getName());
+//                    txtNameUser.setText(lUser.getName());
+                    name = lUser.getName();
                 }
                 if (lUser.getAvaPath() != null) {
                     SetAvatar.SetAva(img_user_Ava, lUser.getAvaPath());
@@ -162,6 +166,7 @@ public class ProfileUser extends AppCompatActivity {
             }
         });
     }
+
 
     private void Wall(String userid) {
         ServiceAPI requestInterface = new Retrofit.Builder()
@@ -187,6 +192,7 @@ public class ProfileUser extends AppCompatActivity {
         ShowNotifyUser.dismissProgressDialog();
     }
 
+
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(this,"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
@@ -211,18 +217,23 @@ public class ProfileUser extends AppCompatActivity {
         flag = message.getStatus();
         switch (message.getStatus()){
             case 3:
+                txtNameUser.setText(name);
                 setColor(true, "Bạn bè");
                 break;
             case 2:
+                txtNameUser.setText(name);
                 setColor(false, "Chấp nhận kết bạn?");
                 break;
             case 0:
+                txtNameUser.setText("Ẩn Danh");
                 setColor(true, "Người lạ");
                 break;
             case 1:
+                txtNameUser.setText("Ẩn Danh");
                 setColor(false, "Đã gửi kết bạn");
                 break;
             default:
+                txtNameUser.setText("Ẩn Danh");
                 btnFr.setVisibility(View.GONE);
                 break;
         }

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_PASS = 5;
     private static final int FRAGMENT_CHAT = 3;
     private static final int FRAGMENT_PROFILE = 4;
-    private static final int FRAGMENT_NOTIFY = 6;
+    private static final int FRAGMENT_NOTIFY = 9;
     private static final int MY_REQUEST_CODE = 10;
     private static final int FRAGMENT_TREND = 6;
     private static final int FRAGMENT_FRIEND = 7;
@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openProfileFragment();
                 break;
             case R.id.nav_noti:
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openNotificationFragment();
                 break;
             case R.id.nav_logout:
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openFriendFragment();
                 break;
             case R.id.nav_request:
-                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.salmon));
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openRequestFragment();
                 break;
             default:
@@ -337,6 +338,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case FRAGMENT_PASS: {
                 title = "Đổi mật khẩu";
+                break;
+            }
+            case FRAGMENT_NOTIFY: {
+                title = "Thông báo";
                 break;
             }
         }

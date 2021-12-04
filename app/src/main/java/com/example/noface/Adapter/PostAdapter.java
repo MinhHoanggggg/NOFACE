@@ -67,9 +67,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.CbLike.setChecked(false);
         holder.txt_title.setText(lstPost.get(position).getTitle());
-        holder.tvTime.setText(lstPost.get(position).getTime());
+        String t = lstPost.get(position).getTime();
+        String tt = t.substring(8, 10) + "/" + t.substring(5, 7) + "/" + t.substring(0, 4) + " " + t.substring(11, 13) + ":" + t.substring(14, 16);
+        holder.tvTime.setText(tt);
 
-        holder.txtCmt.setText(lstPost.get(position).getComment().size() + " bình luận");
+        holder.txtCmt.setText("Bình luận (" + lstPost.get(position).getComment().size() + ")");
         holder.txtlike.setText(String.valueOf(lstPost.get(position).getLikes().size()));
 
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();

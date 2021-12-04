@@ -60,7 +60,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostActivity extends AppCompatActivity{
-    private TextView tvName, tvDate, tvTitle, tvContent, tvCate, txtlike;
+    private TextView tvName, tvDate, tvTitle, tvContent, tvCate, txtlike, tvFr;
     private ImageView imgAvatar, imgAvatarUser, imgView;
     private EditText edt_cmt;
     private ImageButton btnSend, btnMenu;
@@ -74,13 +74,14 @@ public class PostActivity extends AppCompatActivity{
     int idTopic, sumLike,  sumCmt;
     public int idPost;
     Boolean checkLike = false;
-
+    private String name="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         status("online");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         tvName = findViewById(R.id.tvName);
+        tvFr = findViewById(R.id.tvFr);
         CbLike = findViewById(R.id.CbLike);
         tvCate = findViewById(R.id.tvCate);
         tvDate = findViewById(R.id.tvDate);
@@ -116,6 +117,8 @@ public class PostActivity extends AppCompatActivity{
              CbLike.setChecked(true);
          }
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
+
+        setUserPost(idUser);
 
 
         int idpost = idPost;
@@ -191,8 +194,8 @@ public class PostActivity extends AppCompatActivity{
         });
 
         new Timer().scheduleAtFixedRate(new NewsletterTask(), 0, 10000);
-    }
 
+    }
 
     public class NewsletterTask extends TimerTask {
         @Override
@@ -204,6 +207,33 @@ public class PostActivity extends AppCompatActivity{
     public void setUI(int id) {
         GetAllTopic();
         GetPost(id);
+        Check(idUser, user.getUid());
+    }
+
+    private void Check(String uid, String fid) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetCheckFr(token, uid, fid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseCheck, this::handleError)
+        );
+    }
+
+    private void handleResponseCheck(Message message) {
+        if (message.getStatus() != 3){
+            tvName.setText("Ẩn Danh");
+            tvFr.setVisibility(View.GONE);
+        }
+        else{
+            tvName.setText(name);
+            tvFr.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void GetAllTopic() {
@@ -328,11 +358,11 @@ public class PostActivity extends AppCompatActivity{
     }
 
     private void handleResponse(Posts posts) {
-        tvDate.setText(posts.getTime());
+        String t = posts.getTime();
+        String tt = t.substring(8, 10) + "/" + t.substring(5, 7) + "/" + t.substring(0, 4) + " " + t.substring(11, 13) + ":" + t.substring(14, 16);
+        tvDate.setText(tt);
         tvContent.setText(posts.getContent());
         tvTitle.setText(posts.getTitle());
-        String id = posts.getIDUser().trim();
-        setUserPost(id);
         setUser(user);
         txtlike.setText(String.valueOf(sumLike));
         if (posts.getImagePost().length() > 15) {
@@ -352,7 +382,8 @@ public class PostActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pUser = snapshot.getValue(User.class);
                 if (!pUser.getName().isEmpty()){
-                    tvName.setText(pUser.getName());
+//                    tvName.setText(pUser.getName());
+                    name = pUser.getName();
                 }
 
                 if(pUser.getAvaPath()!=null){
@@ -365,6 +396,10 @@ public class PostActivity extends AppCompatActivity{
 
             }
         });
+        if (idUser.equals(user.getUid()))
+            tvName.setText(name);
+        else
+            tvName.setText("Ẩn Danh");
 }
     private void setUser(FirebaseUser user){
 

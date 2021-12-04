@@ -47,14 +47,28 @@
                             android:orientation="vertical"
                             tools:ignore="RtlSymmetry">
 
-                            <TextView
-                                android:id="@+id/tvName"
+                            <LinearLayout
+                                android:orientation="horizontal"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:hint="Full name"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/tvName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Full name"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/tvFr"
+                                    android:visibility="gone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_fr"
+                                    android:backgroundTint="@color/black"
+                                    android:layout_marginTop="-5dp"
+                                    android:layout_marginLeft="3dp"/>
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/tvDate"
