@@ -11,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.noface.MainActivity;
 import com.example.noface.PostActivity;
 import com.example.noface.R;
@@ -50,9 +52,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Topic lsttopic = lstTopic.get(position);
 
-        holder.txt_title.setText(lsttopic.getTopicName());
-        Picasso.get().load(lsttopic.getImg())
-                .fit().centerCrop().error(R.drawable.ic_logo).into(holder.img);
+        holder.topic_txt.setText(lsttopic.getTopicName());
+        Glide.with(context).load(lsttopic.getImg()).into(holder.topic_img);
+//        Picasso.get().load(lsttopic.getImg())
+//                .fit().centerCrop().error(R.drawable.ic_logo).into(holder.topic_img);
 
         holder.setItemClickListener(new ItemClickListener(){
             @Override
@@ -71,13 +74,15 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ItemClickListener itemClickListener;
 
-        private final TextView txt_title;
+        private TextView topic_txt;
+        private ImageView topic_img;
         ImageView img;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_title = itemView.findViewById(R.id.txt_title);
-            img = itemView.findViewById(R.id.img);
+            topic_txt = itemView.findViewById(R.id.topic_txt);
+            topic_img = itemView.findViewById(R.id.topic_img);
+
             itemView.setOnClickListener(this);
         }
 

@@ -4,52 +4,48 @@
     android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginBottom="40dp"
-    card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="20dp"
-    card_view:cardElevation="8dp"
-    card_view:cardMaxElevation="10dp">
-
+    android:layout_gravity="center_horizontal"
+    card_view:cardCornerRadius="30dp"
+    android:layout_margin="5dp"
+    >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bg_Constrain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
         <ImageView
-            android:layout_width="wrap_content"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="-22dp"
-            android:background="@drawable/coupon_border" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@color/gray" />
-
-                <TextView
-                    android:id="@+id/txt_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img"
-                    android:layout_marginTop="-20dp"
-                    android:background="@color/white"
+            android:src="@drawable/biker"
+            android:adjustViewBounds="true"
+            android:alpha="0.65"
+            android:scaleType="fitCenter"
+            android:id="@+id/topic_img"
+            />
+        <LinearLayout
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintRight_toRightOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
                     android:gravity="center"
-                    android:text="Gia Đình"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="20sp"></TextView>
-        </RelativeLayout>
+                    android:orientation="vertical"
+                android:background="@drawable/custom_topic"
+                    >
+                <TextView
+                    android:textStyle="bold"
+                    android:id="@+id/topic_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#00BCD4"
+                    android:textSize="20sp"/>
+                </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
