@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.noface.inter.FragmentInterface;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.other.ItemClickListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -49,16 +51,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
         Topic lsttopic = lstTopic.get(position);
 
         holder.txt_title.setText(lsttopic.getTopicName());
-//        holder.txtcontent.setText(new StringBuilder(lstTopic.get(position).title.substring(0,20).append("...").toString()));
-
-//        holder.txt_title.setOnClickListener(new View.OnClickListener() {
-
-//            @Override
-//            public void onClick(View view) {
-////                iClickListener.sendData(lsttopic.getIDTopic());
-//                Toast.makeText(view.getContext(), "bạng đã chọn "+ lsttopic.getIDTopic(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        Picasso.get().load(lsttopic.getImg())
+                .fit().centerCrop().error(R.drawable.ic_logo).into(holder.img);
 
         holder.setItemClickListener(new ItemClickListener(){
             @Override
@@ -78,10 +72,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder>{
         private ItemClickListener itemClickListener;
 
         private final TextView txt_title;
+        ImageView img;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_title = itemView.findViewById(R.id.txt_title);
+            img = itemView.findViewById(R.id.img);
             itemView.setOnClickListener(this);
         }
 

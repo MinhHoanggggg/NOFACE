@@ -100,8 +100,8 @@ public class PostActivity extends AppCompatActivity{
         lnlNOcmt.setVisibility(View.GONE); //VISIBLE
 
         Intent intent = getIntent();
-        idUser = intent.getStringExtra("idUser");
-        String idUs = idUser.trim();
+        String idUs  = intent.getStringExtra("idUser");
+        idUser = idUs.trim();
         idTopic = intent.getIntExtra("idTopic", 0);
         idPost = intent.getIntExtra("idPost", 0);
         sumLike = intent.getIntExtra("likes", 0);
@@ -110,7 +110,7 @@ public class PostActivity extends AppCompatActivity{
         DataToken dataToken = new DataToken(getApplicationContext());
         token = dataToken.getToken();
 
-        if(!idUs.equals(user.getUid())){
+        if(!idUser.equals(user.getUid())){
             btnMenu.setVisibility(View.GONE);
         }
          if(checkLike){
@@ -375,13 +375,12 @@ public class PostActivity extends AppCompatActivity{
 
     private void setUserPost(String idUser){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String refName = idUser;
-        DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
+        DatabaseReference myRef = firebaseDatabase.getReference("Users").child(idUser);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pUser = snapshot.getValue(User.class);
-                if (!pUser.getName().isEmpty()){
+                if (pUser.getName().length() != 0  ){
 //                    tvName.setText(pUser.getName());
                     name = pUser.getName();
                 }

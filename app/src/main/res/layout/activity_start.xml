@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity"
     android:background="@drawable/custom_bg"
-
+    android:padding="20dp"
     >
     <ImageView
         android:id="@+id/imgLogo"
@@ -44,6 +44,7 @@
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnFacebook"
         android:layout_margin="5dp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="@id/btnGoogle"
         app:layout_constraintRight_toRightOf="@id/btnGoogle"
         android:layout_width="match_parent"

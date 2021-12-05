@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openPostManagerFragment();
                 break;
             case R.id.nav_topic:
-                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.purple_700));
+                toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.black));
                 openTopicFragment();
                 break;
             case R.id.nav_chat:

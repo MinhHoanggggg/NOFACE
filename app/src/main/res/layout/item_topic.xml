@@ -7,9 +7,9 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:layout_marginLeft="20dp"
-    android:layout_marginTop="33dp"
+    android:layout_marginTop="10dp"
     android:layout_marginRight="20dp"
-
+    android:layout_marginBottom="40dp"
     card_view:cardBackgroundColor="#fff"
     card_view:cardCornerRadius="20dp"
     card_view:cardElevation="8dp"
@@ -49,6 +49,7 @@
                     android:text="Gia Đình"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
                     android:textSize="20sp"></TextView>
         </RelativeLayout>
 </androidx.cardview.widget.CardView>
