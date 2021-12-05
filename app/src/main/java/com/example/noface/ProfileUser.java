@@ -79,12 +79,10 @@ public class ProfileUser extends AppCompatActivity {
         //Set UI
         DataToken dataToken = new DataToken(ProfileUser.this);
         token = dataToken.getToken();
-        Wall(idUser.trim());
         setUI(idUser.trim());
-        if (user.getUid().equals(idUser.trim())){
-            txtNameUser.setText(name);
-        } else
-            Check(user.getUid(), idUser.trim());
+        Wall(idUser.trim());
+
+
         ShowNotifyUser.showProgressDialog(this,"Đang tải, đừng manh động...");
         btnUserBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,10 +137,6 @@ public class ProfileUser extends AppCompatActivity {
 
     //    get data từ API
     private void setUI(String idUser) {
-        if (user.getUid().equals(idUser)){
-            btn_chat.setVisibility(View.GONE);
-            btnFr.setVisibility(View.GONE);
-        }
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String refName = idUser;
         DatabaseReference myRef = firebaseDatabase.getReference("Users").child(refName);
@@ -165,6 +159,7 @@ public class ProfileUser extends AppCompatActivity {
 
             }
         });
+
     }
 
 
@@ -190,6 +185,12 @@ public class ProfileUser extends AppCompatActivity {
             e.printStackTrace();
         }
         ShowNotifyUser.dismissProgressDialog();
+        if (user.getUid().equals(idUser.trim())){
+            txtNameUser.setText(name);
+            btn_chat.setVisibility(View.GONE);
+            btnFr.setVisibility(View.GONE);
+        } else
+            Check(user.getUid(), idUser.trim());
     }
 
 

@@ -94,12 +94,16 @@ public class MainChatFragment extends Fragment {
                     User user = dataSnapshot.getValue(User.class);
                     for (String i : list)
                         if (user.getIdUser().equals(i))
-                            if (lUser.size() != 0) {
-                                for (User a : lUser)
-                                    if (!user.getIdUser().equals(a.getIdUser()))
-                                        lUser.add(user);
-                            } else {
-                                lUser.add(user);
+                            try {
+                                if (lUser.size() != 0) {
+                                    for (User a : lUser)
+                                        if (!user.getIdUser().equals(a.getIdUser()))
+                                            lUser.add(user);
+                                } else {
+                                    lUser.add(user);
+                                }
+                            }catch (Throwable e){
+
                             }
                 }
 
