@@ -62,7 +62,7 @@ public class MainChatFragment extends Fragment {
                 } //lấy id để get data user
 
                 ShowNotifyUser.dismissProgressDialog();
-                readChatUser();
+                RemoveDuplicate(arrayList);
             }
 
             @Override
@@ -73,8 +73,17 @@ public class MainChatFragment extends Fragment {
         return view;
     }
 
+    private void  RemoveDuplicate(ArrayList<String> arrayList) {
+        ArrayList<String> arr = new ArrayList<>();
+        for (String element : arrayList) {
+            if (!arr.contains(element)) {
+                arr.add(element);
+            }
+        }
+        readChatUser(arr);
+    }
 
-    private void readChatUser() {
+    private void readChatUser(ArrayList<String> list) {
         lUser = new ArrayList<>();
         DatabaseReference myRef = firebaseDatabase.getReference("Users");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -83,7 +92,7 @@ public class MainChatFragment extends Fragment {
                 lUser.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
-                    for (String i : arrayList)
+                    for (String i : list)
                         if (user.getIdUser().equals(i))
                             if (lUser.size() != 0) {
                                 for (User a : lUser)
