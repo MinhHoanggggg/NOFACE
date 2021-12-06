@@ -4,6 +4,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeFragment extends Fragment {
     private RecyclerView rcv_posts;
     private ImageButton btn_create;
+    String token;
+    Parcelable state;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,14 +55,15 @@ public class HomeFragment extends Fragment {
         rcv_posts = view.findViewById(R.id.rcv_posts);
         btn_create = view.findViewById(R.id.btn_create);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rcv_posts.setLayoutManager(linearLayoutManager);
+        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcv_posts.setLayoutManager(mLayoutManager);
+        mLayoutManager.onRestoreInstanceState(state);
 
         ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
         //token
         DataToken dataToken = new DataToken(getContext());
-        String token = dataToken.getToken();
-        PostTrending(token);
+        token = dataToken.getToken();
+        PostTrending();
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +75,27 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        state = mLayoutManager.onSaveInstanceState();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == 2){
+            assert data != null;
+            int result = data.getIntExtra("result", 0);
+            if (result == 1){
+                PostTrending();
+            }
+        }
+    }
+
     //    get data từ API
-    private void PostTrending(String token) {
+    private void PostTrending() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -87,8 +111,10 @@ public class HomeFragment extends Fragment {
 
     private void handleResponse(ArrayList<Posts> posts) {
         try {
+
             PostAdapter postAdapter = new PostAdapter(posts, getContext());
             rcv_posts.setAdapter(postAdapter);
+            mLayoutManager.onRestoreInstanceState(state);
 
         }catch (Exception e){
             e.printStackTrace();

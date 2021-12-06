@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -296,6 +297,7 @@ public class PostActivity extends AppCompatActivity{
             CommentAdapter cmtAdapter = new CommentAdapter(comments, PostActivity.this);
             sumCmt = comments.size();
             btnCmt.setText(sumCmt + " bình luận");
+            cmtAdapter.setHasStableIds(true);
             rcv_cmt.setAdapter(cmtAdapter);
         }catch (Exception e){
             e.printStackTrace();
@@ -510,5 +512,13 @@ public class PostActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         status("offline");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("result", 1);
+        setResult(2, intent);
+        finish();
     }
 }

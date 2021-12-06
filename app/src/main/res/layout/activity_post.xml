@@ -138,14 +138,15 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/imgView"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:padding="5dp"
-                        android:visibility="gone"
+                        android:scaleType="fitCenter"
+                        android:layout_margin="10dp"
+                        android:padding="0dp"
+                        android:adjustViewBounds="true"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="#F1F7F8"/>
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"/>
 
                     <View
                         android:layout_width="match_parent"

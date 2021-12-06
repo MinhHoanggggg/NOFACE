@@ -24,7 +24,7 @@
             tools:ignore="RtlSymmetry">
         <LinearLayout
             android:weightSum="20"
-            android:backgroundTint="@color/gray"
+            android:backgroundTint="#F3F3F3"
             android:orientation="horizontal"
             android:background="@drawable/botron_bg"
             android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                     android:id="@+id/btnMenuCmt"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="#F3F3F3"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_menu" />
             </LinearLayout>

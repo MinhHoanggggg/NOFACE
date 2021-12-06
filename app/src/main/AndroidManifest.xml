@@ -44,6 +44,9 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity
+            android:name=".EditCmtActivity"
+            android:exported="true" />
+        <activity
             android:name=".WelcomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
