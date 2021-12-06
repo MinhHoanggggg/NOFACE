@@ -8,15 +8,20 @@
     android:background="@drawable/custom_bg"
     android:padding="20dp"
     >
+
     <ImageView
         android:id="@+id/imgLogo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/ic_logoreal"
-        android:layout_margin="5dp"/>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.02"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtWel"
@@ -31,16 +36,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgLogo"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.091" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btnGoogle"
         app:layout_constraintVertical_bias="0.1"
-
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/txtWel"/>
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnFacebook"
         android:layout_margin="5dp"
@@ -60,7 +66,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btnFacebook"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/btnGoogle"
+        app:layout_constraintRight_toRightOf="@id/btnGoogle"
         app:layout_constraintBottom_toTopOf="@id/txtOr"
         android:drawableLeft="@drawable/ic_baseline_phone_android_24"
         android:text="Bắt đầu bằng số điện thoại"
@@ -68,6 +75,7 @@
         />
 
     <TextView
+        android:layout_margin="10dp"
         app:layout_constraintVertical_bias="0.2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +99,7 @@
         app:backgroundTint="@null"
         android:background="@drawable/custom_btn"/>
     <LinearLayout
+        android:gravity="center"
         android:id="@+id/lnLogin"
         app:layout_constraintTop_toBottomOf="@id/btnCreateUser"
         app:layout_constraintBottom_toBottomOf="parent"

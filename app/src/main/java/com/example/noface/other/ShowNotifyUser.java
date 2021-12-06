@@ -14,6 +14,7 @@ public class ShowNotifyUser {
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }
+
     public static void dismissProgressDialog() { mProgressDialog.dismiss(); }
     public  static void showAlertDialog(Context context, String message){
         new AlertDialog.Builder(context)

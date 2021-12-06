@@ -61,7 +61,7 @@ public class StartActivity extends AppCompatActivity {
     private TextView txtLogin;
     private static final String TAG = "GoogleActivity";
     private static final String TAG1 = "FacebookAuthentication";
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private static final int RC_SIGN_IN = 123;
 
 
@@ -72,6 +72,13 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //đã login vào luôn
+        if(user != null){
+            String id = user.getUid();
+            Login(id);
+        }
+
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_start);
