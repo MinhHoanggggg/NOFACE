@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 public class ShowNotifyUser {
     private static ProgressDialog mProgressDialog;
@@ -27,6 +30,22 @@ public class ShowNotifyUser {
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+    public  static void showImgAlertDialog(Context context, String message,String imgPath){
+        ImageView image = new ImageView(context);
+        Glide.with(context).load(imgPath).into(image);
+        new AlertDialog.Builder(context)
+                .setTitle("Thông báo")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setView(image)
                 .show();
     }
 

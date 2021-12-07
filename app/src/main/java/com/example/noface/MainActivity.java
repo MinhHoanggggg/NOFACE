@@ -45,7 +45,9 @@ import com.example.noface.fragment.ProfileFragment;
 import com.example.noface.fragment.TopicFragment;
 import com.example.noface.fragment.TrendingFragment;
 import com.example.noface.inter.FragmentInterface;
+import com.example.noface.model.Achievements;
 import com.example.noface.model.Chat;
+import com.example.noface.model.Medals;
 import com.example.noface.model.Message;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
@@ -63,6 +65,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,6 +78,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInterface {
     private FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
     private int dem = 0;
+    private int MessId=0;
+    private String MessCon="";
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_POST_MANAGER = 1;
     private static final int FRAGMENT_TOPIC = 2;
@@ -362,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.txtNavName);
         ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
 
-        if (user.getDisplayName() == null) {
+        if (user.getDisplayName().isEmpty()) {
             navUsername.setText("Ẩn danh");
         } else {
             navUsername.setText(user.getDisplayName());
@@ -436,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
 
-    @Override
+      @Override
     protected void onResume() {
         super.onResume();
         status("online");
@@ -482,25 +487,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void handleResponse(Message message) {
         //0 thì thôi, 1 thì là danh hiệu ma mới, 2 là Kẻ nhiều tâm sự, 3 là Ông hoàng thân thiện, 4 là Phù thủy ngôn từ
         if (message.getStatus() != 0) {
-            switch (message.getStatus()) {
-                case 1:
-                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " MA MỚI");
-                    break;
-                case 2:
-                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Kẻ nhiều tâm sự");
-                    break;
-                case 3:
-                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Ông hoàng thân thiện");
-                    break;
-                case 4:
-                    ShowNotifyUser.showAlertDialog(MainActivity.this, message.getNotification() + " Phù thủy ngôn từ");
-                    break;
-                default:
-                    break;
-            }
-
+            MessId = message.getStatus();
+            MessCon = message.getNotification();
+            GetMedals(user.getUid());
         }
 
+    }
+    public void GetMedals(String id) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetMedals(token,id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseMedal, this::handleError)
+        );
+    }
+
+    private void handleResponseMedal(ArrayList<Achievements> achievements) {
+        for(int i=0;i<achievements.size();i++){
+            Medals md = achievements.get(i).getMedals();
+            if(md.getIDMedal()==MessId){
+                ShowNotifyUser.showImgAlertDialog(MainActivity.this,MessCon+" "+md.getMedalName(),md.getImgMedal().trim());
+            }
+        }
     }
 
     private void getMessage() {
