@@ -63,6 +63,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
         <TextView
+            android:textColor="#03A9F4"
             android:id="@+id/txt_category"
             android:text="Category"
             android:textSize="15sp"

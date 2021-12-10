@@ -25,6 +25,7 @@ import com.example.noface.R;
 import com.example.noface.model.Likes;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ItemClickListener;
@@ -50,13 +51,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    public PostAdapter(ArrayList<Posts> lstPost, Context context) {
+    public PostAdapter(ArrayList<Posts> lstPost, ArrayList<Topic> lstTopic, Context context) {
         this.lstPost = lstPost;
+        this.lstTopic = lstTopic;
         this.context = context;
     }
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final ArrayList<Posts> lstPost;
+    private final ArrayList<Topic> lstTopic;
+
     private final Context context;
 
     @NonNull
@@ -84,7 +88,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.CbLike.setChecked(id.equals(likes.getIDUser().trim()));
         }
 
+
+
         int idTopic = lstPost.get(position).getIDTopic();
+        for (Topic topic : lstTopic) {
+            if(idTopic == topic.getIDTopic()){
+                holder.txt_category.setText("#"+topic.getTopicName());
+            }
+        }
         int idPost = lstPost.get(position).getIDPost();
         String idUser = lstPost.get(position).getIDUser();
         setUserPost(idUser.trim(), holder.imgAvatar);
@@ -124,7 +135,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView txt_title, tv_name, tvTime, txtCmt, txtlike;
+        public TextView txt_title, tv_name, tvTime, txtCmt, txtlike,txt_category;
         public CheckBox CbLike;
         public ImageView imgAvatar;
 
@@ -139,6 +150,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             txtCmt = itemView.findViewById(R.id.txtCmt);
             CbLike = itemView.findViewById(R.id.CbLike);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
+            txt_category = itemView.findViewById(R.id.txt_category);
+
             itemView.setOnClickListener(this);
         }
 
@@ -196,5 +209,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(context.getApplicationContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
+
 
 }

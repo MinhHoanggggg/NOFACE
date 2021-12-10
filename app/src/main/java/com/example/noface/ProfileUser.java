@@ -26,6 +26,7 @@ import com.example.noface.fragment.DialogFragmentMedal;
 import com.example.noface.model.Friend;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
@@ -58,6 +59,7 @@ public class ProfileUser extends AppCompatActivity {
     private ImageButton btnUserBack,btn_chat;
     FragmentManager fm = getSupportFragmentManager();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public ArrayList<Topic> lstTopic = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,7 @@ public class ProfileUser extends AppCompatActivity {
         //Set UI
         DataToken dataToken = new DataToken(ProfileUser.this);
         token = dataToken.getToken();
+        GetAllTopic();
         setUI(idUser.trim());
         Wall(idUser.trim());
 
@@ -173,13 +176,14 @@ public class ProfileUser extends AppCompatActivity {
         new CompositeDisposable().add(requestInterface.Wall(token, userid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                .subscribe(this::handleResponse1, this::handleError)
         );
     }
 
-    private void handleResponse(ArrayList<Posts> posts) {
+    private void handleResponse1(ArrayList<Posts> posts) {
         try {
-            PostAdapter postAdapter = new PostAdapter(posts, ProfileUser.this);
+            GetAllTopic();
+            PostAdapter postAdapter = new PostAdapter(posts,lstTopic, ProfileUser.this);
             rcv_posts_user.setAdapter(postAdapter);
         }catch (Exception e){
             e.printStackTrace();
@@ -360,4 +364,26 @@ public class ProfileUser extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
+    private void GetAllTopic() {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetAllTopic(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ArrayList<Topic> topics) {
+        for(int i =0; i<topics.size();i++ ){
+            lstTopic.add(topics.get(i));
+        }
+    }
+
+
+
 }

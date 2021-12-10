@@ -20,6 +20,7 @@ import com.example.noface.R;
 import com.example.noface.model.Achievements;
 import com.example.noface.model.Medals;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Topic;
 import com.example.noface.model.User;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.SetAvatar;
@@ -50,6 +51,8 @@ public class PostManagerFragment extends Fragment {
     private User lUser;
     private ImageView img_mng_Ava;
     private TextView txtName;
+    String token;
+    public ArrayList<Topic> lstTopic = new ArrayList<>();
 
 
     @Override
@@ -65,12 +68,15 @@ public class PostManagerFragment extends Fragment {
         rcv_posts.setLayoutManager(linearLayoutManager);
 
         ShowNotifyUser.showProgressDialog(getContext(), "Đang tải, đừng manh động...");
-
+        //token
+        DataToken dataToken = new DataToken(getContext());
+        token = dataToken.getToken();
         //API data
         String userid = user.getUid();
         Wall(userid);
         setUI(user); //Set UI
         rcv_posts.setHasFixedSize(true); //cuộn nuột hơn
+        GetAllTopic();
         //Xem Medal
         imgMedal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,13 +101,14 @@ public class PostManagerFragment extends Fragment {
         new CompositeDisposable().add(requestInterface.Wall(dataToken.getToken(), userid)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                .subscribe(this::handleResponse1, this::handleError)
         );
     }
 
-    private void handleResponse(ArrayList<Posts> posts) {
+    private void handleResponse1(ArrayList<Posts> posts) {
         try {
-            PostAdapter postAdapter = new PostAdapter(posts, getContext());
+            GetAllTopic();
+            PostAdapter postAdapter = new PostAdapter(posts,lstTopic, getContext());
             rcv_posts.setAdapter(postAdapter);
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +144,25 @@ public class PostManagerFragment extends Fragment {
 
             }
         });
+    }
+    private void GetAllTopic() {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetAllTopic(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ArrayList<Topic> topics) {
+        for(int i =0; i<topics.size();i++ ){
+            lstTopic.add(topics.get(i));
+        }
     }
 
 }

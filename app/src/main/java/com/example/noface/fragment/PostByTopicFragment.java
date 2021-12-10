@@ -37,6 +37,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostByTopicFragment extends Fragment {
     private RecyclerView rcv_posts;
     public int idTopic;
+    String token;
+    public ArrayList<Topic> lstTopic = new ArrayList<>();
     ImageView noface;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class PostByTopicFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
-
+        GetAllTopic();
         Bundle bundle = getArguments();
         if (bundle != null) {
             noface.setVisibility(View.GONE);
@@ -74,14 +76,14 @@ public class PostByTopicFragment extends Fragment {
         new CompositeDisposable().add(requestInterface.PostByTopic(dataToken.getToken(), id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                .subscribe(this::handleResponse1, this::handleError)
         );
     }
 
-    private void handleResponse(ArrayList<Posts> posts) {
+    private void handleResponse1(ArrayList<Posts> posts) {
         try {
-
-            PostAdapter postAdapter = new PostAdapter(posts, getContext());
+            GetAllTopic();
+            PostAdapter postAdapter = new PostAdapter(posts,lstTopic, getContext());
             rcv_posts.setAdapter(postAdapter);
 
         } catch (Exception e) {
@@ -93,6 +95,25 @@ public class PostByTopicFragment extends Fragment {
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
+    }
+    private void GetAllTopic() {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetAllTopic(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ArrayList<Topic> topics) {
+        for(int i =0; i<topics.size();i++ ){
+            lstTopic.add(topics.get(i));
+        }
     }
 
 }

@@ -25,6 +25,7 @@ import com.example.noface.LoginActivity;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
 import com.example.noface.model.Posts;
+import com.example.noface.model.Topic;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
@@ -45,8 +46,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView rcv_posts;
     private ImageButton btn_create;
     String token;
+    public ArrayList<Topic> lstTopic = new ArrayList<>();
     Parcelable state;
     private LinearLayoutManager mLayoutManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class HomeFragment extends Fragment {
         DataToken dataToken = new DataToken(getContext());
         token = dataToken.getToken();
         PostTrending();
-
+        GetAllTopic();
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,14 +108,15 @@ public class HomeFragment extends Fragment {
         new CompositeDisposable().add(requestInterface.home(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                .subscribe(this::handleResponse1, this::handleError)
         );
     }
 
-    private void handleResponse(ArrayList<Posts> posts) {
+    private void handleResponse1(ArrayList<Posts> posts) {
         try {
 
-            PostAdapter postAdapter = new PostAdapter(posts, getContext());
+
+            PostAdapter postAdapter = new PostAdapter(posts,lstTopic,getContext());
             rcv_posts.setAdapter(postAdapter);
             mLayoutManager.onRestoreInstanceState(state);
 
@@ -130,5 +134,27 @@ public class HomeFragment extends Fragment {
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
     }
+    private void GetAllTopic() {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.GetAllTopic(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleResponse(ArrayList<Topic> topics) {
+        for(int i =0; i<topics.size();i++ ){
+            lstTopic.add(topics.get(i));
+            }
+    }
+
 
 }
+
+
