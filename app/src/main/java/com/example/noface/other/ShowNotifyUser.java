@@ -32,9 +32,7 @@ public class ShowNotifyUser {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-    public  static void showImgAlertDialog(Context context, String message,String imgPath){
-        ImageView image = new ImageView(context);
-        Glide.with(context).load(imgPath).into(image);
+    public  static void showImgAlertDialog(Context context, String message,int icId){
         new AlertDialog.Builder(context)
                 .setTitle("Thông báo")
                 .setMessage(message)
@@ -44,8 +42,7 @@ public class ShowNotifyUser {
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setView(image)
+                .setIcon(icId)
                 .show();
     }
 

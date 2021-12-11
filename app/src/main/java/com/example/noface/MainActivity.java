@@ -487,34 +487,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void handleResponse(Message message) {
         //0 thì thôi, 1 thì là danh hiệu ma mới, 2 là Kẻ nhiều tâm sự, 3 là Ông hoàng thân thiện, 4 là Phù thủy ngôn từ
         if (message.getStatus() != 0) {
-            MessId = message.getStatus();
-            MessCon = message.getNotification();
-            GetMedals(user.getUid());
+           switch (message.getStatus()){
+               case 1 : ShowNotifyUser.showImgAlertDialog(MainActivity.this,message.getNotification()+" Ma mới",R.drawable.medal1);
+                break;
+               case 2 : ShowNotifyUser.showImgAlertDialog(MainActivity.this,message.getNotification()+" Kẻ nhiều tâm sự",R.drawable.medal2);
+                   break;
+               case 3 : ShowNotifyUser.showImgAlertDialog(MainActivity.this,message.getNotification()+" Ông hoàng thân thiện",R.drawable.medal3);
+                   break;
+               case 4 : ShowNotifyUser.showImgAlertDialog(MainActivity.this,message.getNotification()+" Phù thủy ngôn từ",R.drawable.medal4);
+                   break;
+           }
         }
 
     }
-    public void GetMedals(String id) {
-        ServiceAPI requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE_Service)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.GetMedals(token,id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseMedal, this::handleError)
-        );
-    }
-
-    private void handleResponseMedal(ArrayList<Achievements> achievements) {
-        for(int i=0;i<achievements.size();i++){
-            Medals md = achievements.get(i).getMedals();
-            if(md.getIDMedal()==MessId){
-                ShowNotifyUser.showImgAlertDialog(MainActivity.this,MessCon+" "+md.getMedalName(),md.getImgMedal().trim());
-            }
-        }
-    }
 
     private void getMessage() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
