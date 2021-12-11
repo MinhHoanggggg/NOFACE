@@ -185,7 +185,8 @@ public class StartActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Thành công rồi nha đại ca!", Toast.LENGTH_SHORT).show();
 
                             pushRealtime(user);
-                            Create(new Acc(user.getUid(),"Ẩn Danh",0,1));
+                            String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
+                            Create(new Acc(user.getUid(),"Ẩn Danh",ava,0,1));
                             
 
                         } else {

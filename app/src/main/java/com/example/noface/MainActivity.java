@@ -367,10 +367,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.txtNavName);
         ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
 
-        if (user.getDisplayName().isEmpty()) {
-            navUsername.setText("Ẩn danh");
-        } else {
+        if (user.getDisplayName() != null) {
             navUsername.setText(user.getDisplayName());
+        } else {
+            navUsername.setText("Ẩn danh");
         }
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

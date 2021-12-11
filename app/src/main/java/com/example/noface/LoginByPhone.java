@@ -141,7 +141,8 @@ public class LoginByPhone extends AppCompatActivity {
                             String id = user.getUid();
                             pushRealtime(user);
                             Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_SHORT).show();
-                            Create(new Acc(user.getUid(),"Ẩn danh",0,1));
+                            String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
+                            Create(new Acc(user.getUid(),"Ẩn danh",ava,0,1));
                         } else {
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
