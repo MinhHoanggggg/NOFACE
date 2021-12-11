@@ -36,54 +36,57 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostByTopicFragment extends Fragment {
     private RecyclerView rcv_posts;
-    public int idTopic;
+    public int idTopic =0 ;
     String token;
     public ArrayList<Topic> lstTopic = new ArrayList<>();
     ImageView noface;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_post_by_topic, container, false);
-
+        DataToken dataToken = new DataToken(getContext());
+        token = dataToken.getToken();
         rcv_posts = view.findViewById(R.id.rcv_posts);
         noface = view.findViewById(R.id.noface);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_posts.setLayoutManager(linearLayoutManager);
         GetAllTopic();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
+
+        if (idTopic !=  0) {
             noface.setVisibility(View.GONE);
-            PostByTopic(bundle.getInt("id"));
+            PostByTopic(idTopic);
         } else {
             noface.setVisibility(View.VISIBLE);
         }
         ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng mang động...");
-        //API data postrending
-        PostByTopic(idTopic);
 
         return view;
     }
 
     //    get data từ API
     private void PostByTopic(int id) {
-        DataToken dataToken = new DataToken(getContext());
+
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.PostByTopic(dataToken.getToken(), id)
+        new CompositeDisposable().add(requestInterface.PostByTopic(token, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse1, this::handleError)
         );
     }
 
+    private void handleError(Throwable throwable) {
+        ShowNotifyUser.dismissProgressDialog();
+    }
+
     private void handleResponse1(ArrayList<Posts> posts) {
         try {
-            GetAllTopic();
-            PostAdapter postAdapter = new PostAdapter(posts,lstTopic, getContext());
+
+            PostAdapter postAdapter = new PostAdapter(posts, lstTopic, getContext());
             rcv_posts.setAdapter(postAdapter);
 
         } catch (Exception e) {
@@ -92,10 +95,6 @@ public class PostByTopicFragment extends Fragment {
         ShowNotifyUser.dismissProgressDialog();
     }
 
-    private void handleError(Throwable throwable) {
-        ShowNotifyUser.dismissProgressDialog();
-        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
-    }
     private void GetAllTopic() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
@@ -114,6 +113,10 @@ public class PostByTopicFragment extends Fragment {
         for(int i =0; i<topics.size();i++ ){
             lstTopic.add(topics.get(i));
         }
+        ShowNotifyUser.dismissProgressDialog();
     }
 
+    public void showID(int id){
+        idTopic = id;
+    }
 }

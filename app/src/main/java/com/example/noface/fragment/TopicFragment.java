@@ -42,7 +42,8 @@ public class TopicFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainActivity) this.iClickListener = (FragmentInterface) context;
+        if (context instanceof MainActivity)
+            this.iClickListener = (FragmentInterface) context;
         else
             throw new RuntimeException(context.toString() + "must implement onViewSelected!");
     }
@@ -89,7 +90,7 @@ public class TopicFragment extends Fragment {
             TopicAdapter topicAdapter = new TopicAdapter(topics, getContext(), new TopicAdapter.TopicAdapterListener() {
                 @Override
                 public void click(View view, int position) {
-                  int topicId =  topics.get(position).getIDTopic();
+                    int topicId =  topics.get(position).getIDTopic();
                     iClickListener.sendData(topicId);
                 }
             });

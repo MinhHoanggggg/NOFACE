@@ -97,10 +97,18 @@ public class FriendFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User users = dataSnapshot.getValue(User.class);
                     for (int i = 0; i < friend.size(); i++) {
-                        if (users.getIdUser().equals(friend.get(i).getIDUser().trim())) {
-                            arrayList.add(users);
-                            break;
+                        if (friend.get(i).getIDUser().trim().equals(user.getUid())){
+                            if (users.getIdUser().equals(friend.get(i).getIDFriends().trim())) {
+                                arrayList.add(users);
+                                break;
+                            }
+                        } else {
+                            if (users.getIdUser().equals(friend.get(i).getIDUser().trim())) {
+                                arrayList.add(users);
+                                break;
+                            }
                         }
+
                     }
                 }
 

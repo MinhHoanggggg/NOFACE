@@ -111,7 +111,6 @@ public interface ServiceAPI {
     @POST("notification/{iduser}")
     Observable<ArrayList<Notification>> GetNoti(@Header("Authorization") String token,
                                                @Query("iduser") String iduser);
-
   //
     @POST("view-noti/{idNoti}")
     Observable<Message> SeenNoti(@Header("Authorization") String token,
@@ -130,5 +129,7 @@ public interface ServiceAPI {
     Observable<ArrayList<Friend>> FriendsRequest(@Header("Authorization") String token,
                                                  @Query("idUser") String id);
 
-
+    @POST("view-post/{idpost}")
+    Observable<Message> ViewPost(@Header("Authorization") String token,
+                                 @Query("idpost") int idPost);
 }

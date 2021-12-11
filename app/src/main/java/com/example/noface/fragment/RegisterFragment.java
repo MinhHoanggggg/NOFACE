@@ -132,7 +132,8 @@ public class RegisterFragment extends Fragment {
 
 //                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             id = mAuth.getCurrentUser().getUid();
-                            Acc acc = new Acc(id,"Ẩn Danh",0,1);
+                            String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
+                            Acc acc = new Acc(id,"Ẩn Danh",ava,0,1);
                             Create(acc);
 
                         } else {

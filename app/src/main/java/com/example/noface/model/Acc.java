@@ -1,15 +1,10 @@
 package com.example.noface.model;
 
 public class Acc {
-    private String IDUser;
-    private String Name;
-    private int Warning;
-    private int Activated;
-
-
-    public Acc(String IDUser, String name, int warning, int activated) {
+    public Acc(String IDUser, String name, String avt, int warning, int activated) {
         this.IDUser = IDUser;
         Name = name;
+        Avt = avt;
         Warning = warning;
         Activated = activated;
     }
@@ -30,6 +25,14 @@ public class Acc {
         Name = name;
     }
 
+    public String getAvt() {
+        return Avt;
+    }
+
+    public void setAvt(String avt) {
+        Avt = avt;
+    }
+
     public int getWarning() {
         return Warning;
     }
@@ -45,4 +48,10 @@ public class Acc {
     public void setActivated(int activated) {
         Activated = activated;
     }
+
+    private String IDUser;
+    private String Name;
+    private String Avt;
+    private int Warning;
+    private int Activated;
 }

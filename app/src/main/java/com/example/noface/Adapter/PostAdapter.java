@@ -60,7 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final ArrayList<Posts> lstPost;
     private final ArrayList<Topic> lstTopic;
-
+    private String token;
     private final Context context;
 
     @NonNull
@@ -78,17 +78,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         String t = lstPost.get(position).getTime();
         String tt = t.substring(8, 10) + "/" + t.substring(5, 7) + "/" + t.substring(0, 4) + " " + t.substring(11, 13) + ":" + t.substring(14, 16);
         holder.tvTime.setText(tt);
-
         holder.txtCmt.setText("Bình luận (" + lstPost.get(position).getComment().size() + ")");
+        holder.txtview.setText(lstPost.get(position).getViews() + " lượt xem");
         holder.txtlike.setText(String.valueOf(lstPost.get(position).getLikes().size()));
+
+        DataToken dataToken = new DataToken(context.getApplicationContext());
+        token = dataToken.getToken();
 
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
         String id = user.getUid();
         for (Likes likes : alLikes) {
             holder.CbLike.setChecked(id.equals(likes.getIDUser().trim()));
         }
-
-
 
         int idTopic = lstPost.get(position).getIDTopic();
         for (Topic topic : lstTopic) {
@@ -117,6 +118,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
+                ViewPostAPI(idPost);
                 Intent intent = new Intent(context, PostActivity.class);
                 intent.putExtra("idTopic", idTopic);
                 intent.putExtra("idPost", idPost);
@@ -135,7 +137,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView txt_title, tv_name, tvTime, txtCmt, txtlike,txt_category;
+        public TextView txt_title, tv_name, tvTime, txtCmt, txtlike,txt_category , txtview;
         public CheckBox CbLike;
         public ImageView imgAvatar;
 
@@ -151,6 +153,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             CbLike = itemView.findViewById(R.id.CbLike);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
             txt_category = itemView.findViewById(R.id.txt_category);
+            txtview = itemView.findViewById(R.id.txtview);
 
             itemView.setOnClickListener(this);
         }
@@ -186,18 +189,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     private void Like(int idPost, String idUser) {
-        DataToken dataToken = new DataToken(context.getApplicationContext());
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServiceAPI.class);
 
-        new CompositeDisposable().add(requestInterface.Like(dataToken.getToken(), idPost, idUser)
+        new CompositeDisposable().add(requestInterface.Like(token, idPost, idUser)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseLike, this::handleError)
         );
+    }
+
+    private void ViewPostAPI(int idPost) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
+
+        new CompositeDisposable().add(requestInterface.ViewPost(token, idPost)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseView, this::handleError)
+        );
+    }
+
+    private void handleResponseView(Message message) {
+        //
     }
 
     private void handleResponseLike(Message message) {
