@@ -53,8 +53,9 @@ public class TrendingFragment extends Fragment {
         ShowNotifyUser.showProgressDialog(getContext(),"Đang tải, đừng manh động...");
         //token
         DataToken dataToken = new DataToken(getContext());
-        String token = dataToken.getToken();
-        PostTrending(token);
+        token = dataToken.getToken();
+        GetAllTopic();
+        PostTrending();
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +68,7 @@ public class TrendingFragment extends Fragment {
     }
 
     //    get data từ API
-    private void PostTrending(String token) {
+    private void PostTrending() {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -83,7 +84,6 @@ public class TrendingFragment extends Fragment {
 
     private void handleResponse1(ArrayList<Posts> posts) {
         try {
-            GetAllTopic();
             PostAdapter postAdapter = new PostAdapter(posts,lstTopic, getContext());
             rcv_posts.setAdapter(postAdapter);
 

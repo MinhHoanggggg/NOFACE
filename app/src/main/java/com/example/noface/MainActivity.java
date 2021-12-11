@@ -428,7 +428,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.content_frame, fragment);
         fragmentTransaction.commit();
         if (fragment != null) {
-            fragment.idTopic = id;
+//            fragment.idTopic = id;
+            fragment.showID(id);
         } else {
             Toast.makeText(getApplicationContext(), "Hông có tìm thấy Fragment2 mà đòi truyền", Toast.LENGTH_LONG).show();
         }
@@ -441,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myRef.child("Users/" + user.getUid() + "/status").setValue(status);
     }
 
-      @Override
+    @Override
     protected void onResume() {
         super.onResume();
         status("online");
