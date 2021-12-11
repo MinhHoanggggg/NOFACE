@@ -24,6 +24,7 @@ import com.example.noface.CreatePost;
 import com.example.noface.LoginActivity;
 import com.example.noface.MainActivity;
 import com.example.noface.R;
+import com.example.noface.StartActivity;
 import com.example.noface.model.Posts;
 import com.example.noface.model.Topic;
 import com.example.noface.other.DataToken;
@@ -130,7 +131,7 @@ public class HomeFragment extends Fragment {
         ShowNotifyUser.dismissProgressDialog();
 //        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getContext(), LoginActivity.class)
+        startActivity(new Intent(getContext(), StartActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
     }

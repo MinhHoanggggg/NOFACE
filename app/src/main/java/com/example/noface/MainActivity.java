@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.txtNavName);
         ImageView imgNavAva = headerView.findViewById(R.id.imgNavAva);
 
-        if (user.getDisplayName().isEmpty()) {
+        if (user.getDisplayName()== null) {
             navUsername.setText("Ẩn danh");
         } else {
             navUsername.setText(user.getDisplayName());

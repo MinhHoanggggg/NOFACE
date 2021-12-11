@@ -54,6 +54,8 @@ public class TrendingFragment extends Fragment {
         //token
         DataToken dataToken = new DataToken(getContext());
         String token = dataToken.getToken();
+        //Api
+        GetAllTopic(token);
         PostTrending(token);
 
         btn_create.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +85,7 @@ public class TrendingFragment extends Fragment {
 
     private void handleResponse1(ArrayList<Posts> posts) {
         try {
-            GetAllTopic();
+
             PostAdapter postAdapter = new PostAdapter(posts,lstTopic, getContext());
             rcv_posts.setAdapter(postAdapter);
 
@@ -95,14 +97,15 @@ public class TrendingFragment extends Fragment {
 
     private void handleError(Throwable throwable) {
         ShowNotifyUser.dismissProgressDialog();
-//        ShowNotifyUser.showAlertDialog(getContext(),"Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getContext(), LoginActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+        ShowNotifyUser.showAlertDialog(getContext(), throwable.getMessage());
+//        FirebaseAuth.getInstance().signOut();
+//        startActivity(new Intent(getContext(), LoginActivity.class)
+//                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//        Toast.makeText(getContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show();
+
     }
 
-    private void GetAllTopic() {
+    private void GetAllTopic(String token) {
         ServiceAPI requestInterface = new Retrofit.Builder()
                 .baseUrl(BASE_Service)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
