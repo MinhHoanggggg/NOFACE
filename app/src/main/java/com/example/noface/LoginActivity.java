@@ -35,19 +35,28 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Bundle b = new Bundle();
+        b = getIntent().getExtras();
+        int check = b.getInt("idDk");
         if(user != null){
             String id = user.getUid();
             Login(id);
         }
         tabLayout =findViewById(R.id.tabLayout);
         viewPager =findViewById(R.id.viewPager);
+
         FragmentManager fm = getSupportFragmentManager();
         adapter = new ViewPagerAdapter(fm, getLifecycle());
         viewPager.setAdapter(adapter);
+        if(check==1){
+            viewPager.setCurrentItem(1);
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                int pos =tab.getPosition();
+                viewPager.setCurrentItem(pos);
             }
 
             @Override

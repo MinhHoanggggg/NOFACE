@@ -47,6 +47,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -124,10 +127,14 @@ public class StartActivity extends AppCompatActivity {
            signIn();
        });
        btnCreateUser.setOnClickListener(view ->{
-           startActivity(new Intent(StartActivity.this,LoginActivity.class));
+           Intent intent=new Intent(StartActivity.this,LoginActivity.class);
+           intent.putExtra("idDk", 1);
+           startActivity(intent);
        });
        txtLogin.setOnClickListener(view ->{
-           startActivity(new Intent(StartActivity.this,LoginActivity.class));
+           Intent intent=new Intent(StartActivity.this,LoginActivity.class);
+           intent.putExtra("idDk", 0);
+           startActivity(intent);
        });
        btnPhone.setOnClickListener(view ->{
            startActivity(new Intent(StartActivity.this,LoginByPhone.class));
@@ -186,7 +193,10 @@ public class StartActivity extends AppCompatActivity {
 
                             pushRealtime(user);
                             String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
-                            Create(new Acc(user.getUid(),"Ẩn Danh",ava,0,1));
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String strDate = sdf.format(c.getTime());
+                            Create(new Acc(user.getUid(),"Ẩn Danh",ava,0,1,strDate));
                             
 
                         } else {

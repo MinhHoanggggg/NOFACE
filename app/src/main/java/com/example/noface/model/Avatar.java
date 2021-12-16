@@ -1,27 +1,37 @@
 package com.example.noface.model;
 
 public class Avatar {
-    private int avaId;
-    private String avaPath;
+    private String IDUser;
+    private String URL;
+    private String NameUser;
 
-    public Avatar(int avaId, String avaPath) {
-        this.avaId = avaId;
-        this.avaPath = avaPath;
+    public Avatar(String IDUser, String URL, String nameUser) {
+        this.IDUser = IDUser;
+        this.URL = URL;
+        NameUser = nameUser;
     }
 
-    public int getAvaId() {
-        return avaId;
+    public String getIDUser() {
+        return IDUser;
     }
 
-    public void setAvaId(int avaId) {
-        this.avaId = avaId;
+    public void setIDUser(String IDUser) {
+        this.IDUser = IDUser;
     }
 
-    public String getAvaPath() {
-        return avaPath;
+    public String getURL() {
+        return URL;
     }
 
-    public void setAvaPath(String avaPath) {
-        this.avaPath = avaPath;
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getNameUser() {
+        return NameUser;
+    }
+
+    public void setNameUser(String nameUser) {
+        NameUser = nameUser;
     }
 }

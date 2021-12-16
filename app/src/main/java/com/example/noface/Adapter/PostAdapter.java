@@ -5,7 +5,9 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,6 +34,8 @@ import com.example.noface.other.ItemClickListener;
 import com.example.noface.other.SetAvatar;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -118,15 +122,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                ViewPostAPI(idPost);
-                Intent intent = new Intent(context, PostActivity.class);
-                intent.putExtra("idTopic", idTopic);
-                intent.putExtra("idPost", idPost);
-                intent.putExtra("idUser", idUser);
-                intent.putExtra("likes", Integer.valueOf(holder.txtlike.getText().toString()));
-                Boolean checkLike = holder.CbLike.isChecked();
-                intent.putExtra("checklike", checkLike);
-                ((Activity) context).startActivityForResult(intent, 1);
+                if(user.isEmailVerified())
+                {
+                    ViewPostAPI(idPost);
+                    Intent intent = new Intent(context, PostActivity.class);
+                    intent.putExtra("idTopic", idTopic);
+                    intent.putExtra("idPost", idPost);
+                    intent.putExtra("idUser", idUser);
+                    intent.putExtra("likes", Integer.valueOf(holder.txtlike.getText().toString()));
+                    Boolean checkLike = holder.CbLike.isChecked();
+                    intent.putExtra("checklike", checkLike);
+                    ((Activity) context).startActivityForResult(intent, 1);
+                }
+                else
+                    showDialog();
+
             }
         });
     }
@@ -229,6 +239,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(context.getApplicationContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
-
+    private void showDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Xác thực Email");
+        builder.setMessage("Email của bạn chưa được xác thưc, vui lòng kiểm tra");
+        builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(context, "Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        AlertDialog al = builder.create();
+        al.show();
+    }
 
 }

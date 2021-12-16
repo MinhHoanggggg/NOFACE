@@ -2,6 +2,8 @@ package com.example.noface.fragment;
 
 
 
+import static com.example.noface.service.ServiceAPI.BASE_Service;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,10 +26,13 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.noface.MainActivity;
+import com.example.noface.model.Avatar;
+import com.example.noface.model.Message;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.R;
 import com.example.noface.model.User;
+import com.example.noface.service.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +43,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileFragment extends Fragment {
     private static final int MY_REQUEST_CODE = 10;
@@ -92,6 +104,7 @@ public class ProfileFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     ShowNotifyUser.dismissProgressDialog();
                                     ///cap nhat thong tin realtime
+                                    mainActivity.changeHeader(user);
                                     if(user.isEmailVerified()){
                                         lUser.setMailChecked(true);
                                     }
@@ -104,8 +117,9 @@ public class ProfileFragment extends Fragment {
                                     lUser.setName(username);
                                     lUser.setPhone(edtPhone.getText().toString());
                                     pushRealtime(lUser);
-                                    //
-                                    mainActivity.changeHeader(user);
+                                    //Add Ava
+                                    Avatar ava = new Avatar(lUser.getIdUser(), lUser.getAvaPath(),username);
+                                    addAva(ava);
                                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -224,10 +238,27 @@ public class ProfileFragment extends Fragment {
         }
 
     }
+    private void addAva( Avatar avatar) {
+        ServiceAPI requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE_Service)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(ServiceAPI.class);
 
+        new CompositeDisposable().add(requestInterface.AddAva(token,avatar)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse1, this::handleError)
+        );
+    }
 
-
-
-
+    private void handleResponse1(Message message) {
+        if(message.getStatus()!=1){
+            message.getStatus();
+        }
+    }
+    private void handleError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Lỗi ", Toast.LENGTH_SHORT).show();
+    }
 
 }

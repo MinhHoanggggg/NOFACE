@@ -3,6 +3,7 @@ package com.example.noface.service;
 
 import com.example.noface.model.Acc;
 import com.example.noface.model.Achievements;
+import com.example.noface.model.Avatar;
 import com.example.noface.model.Comment;
 import com.example.noface.model.Friend;
 import com.example.noface.model.Medals;
@@ -132,4 +133,8 @@ public interface ServiceAPI {
     @POST("view-post/{idpost}")
     Observable<Message> ViewPost(@Header("Authorization") String token,
                                  @Query("idpost") int idPost);
+    @POST("Avata")
+    Observable<Message> AddAva(@Header("Authorization") String token,
+                                 @Body Avatar avatar);
+
 }

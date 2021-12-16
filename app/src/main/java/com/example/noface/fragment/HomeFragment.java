@@ -2,6 +2,8 @@ package com.example.noface.fragment;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -30,7 +32,10 @@ import com.example.noface.model.Topic;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
 import com.example.noface.service.ServiceAPI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -50,6 +55,7 @@ public class HomeFragment extends Fragment {
     public ArrayList<Topic> lstTopic = new ArrayList<>();
     Parcelable state;
     private LinearLayoutManager mLayoutManager;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
     @Override
@@ -72,7 +78,11 @@ public class HomeFragment extends Fragment {
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(user.isEmailVerified())
                 startActivity(new Intent(getContext(), CreatePost.class));
+                else
+                    showDialog();
+
             }
         });
 
@@ -96,6 +106,27 @@ public class HomeFragment extends Fragment {
                 PostTrending();
             }
         }
+    }
+    private void showDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xác thực Email");
+        builder.setMessage("Vui lòng xác thực Email để thực hiện tác vụ này");
+        builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        AlertDialog al = builder.create();
+        al.show();
     }
 
     //    get data từ API

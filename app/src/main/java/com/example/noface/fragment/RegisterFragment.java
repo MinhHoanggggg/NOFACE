@@ -39,6 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -133,7 +135,10 @@ public class RegisterFragment extends Fragment {
 //                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             id = mAuth.getCurrentUser().getUid();
                             String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
-                            Acc acc = new Acc(id,"Ẩn Danh",ava,0,1);
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String strDate = sdf.format(c.getTime());
+                            Acc acc = new Acc(id,"Ẩn Danh",ava,0,1,strDate);
                             Create(acc);
 
                         } else {
