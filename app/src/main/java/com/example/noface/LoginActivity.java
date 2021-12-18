@@ -30,15 +30,19 @@ public class LoginActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager;
     ViewPagerAdapter adapter;
+    int check = 0;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Bundle b = new Bundle();
-        b = getIntent().getExtras();
-        int check = b.getInt("idDk");
+        try{
+            Bundle b = new Bundle();
+            b = getIntent().getExtras();
+            check = b.getInt("idDk");
+        } catch (Throwable e){}
+
         if(user != null){
             String id = user.getUid();
             Login(id);
