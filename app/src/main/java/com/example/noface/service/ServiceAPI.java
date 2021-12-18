@@ -133,7 +133,7 @@ public interface ServiceAPI {
     @POST("view-post/{idpost}")
     Observable<Message> ViewPost(@Header("Authorization") String token,
                                  @Query("idpost") int idPost);
-    @POST("Avata")
+    @POST("Avatar")
     Observable<Message> AddAva(@Header("Authorization") String token,
                                  @Body Avatar avatar);
 

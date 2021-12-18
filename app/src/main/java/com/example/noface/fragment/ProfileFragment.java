@@ -7,6 +7,7 @@ import static com.example.noface.service.ServiceAPI.BASE_Service;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.noface.MainActivity;
+import com.example.noface.StartActivity;
 import com.example.noface.model.Avatar;
 import com.example.noface.model.Message;
 import com.example.noface.other.DataToken;
@@ -156,27 +158,7 @@ public class ProfileFragment extends Fragment {
 
 
 
- private void showDialog(){
-     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-     builder.setTitle("Xác thực Email");
-     builder.setMessage("Email của bạn chưa được xác thưc, vui lòng kiểm tra");
-     builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
-         @Override
-         public void onClick(DialogInterface dialogInterface, int i) {
-             user.sendEmailVerification()
-                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                         @Override
-                         public void onComplete(@NonNull Task<Void> task) {
-                             if (task.isSuccessful()) {
-                                 Toast.makeText(getContext(), "Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn", Toast.LENGTH_SHORT).show();
-                             }
-                         }
-                     });
-         }
-     });
-     AlertDialog al = builder.create();
-     al.show();
- }
+
  public void setBitMapImgView(Bitmap bitmap){
         imgAva.setImageBitmap(bitmap);
  }
@@ -205,9 +187,7 @@ public class ProfileFragment extends Fragment {
                     edtPhone.setText(lUser.getPhone());
                 }
                 edtEmail.setText(lUser.getEmail());
-                if (!lUser.isMailChecked()){
-                    showDialog();
-                }
+
                 if(lUser.getAvaPath()!=null){
                     setAva(lUser.getAvaPath());
                 }
@@ -258,7 +238,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     private void handleError(Throwable throwable) {
-        Toast.makeText(getActivity(), "Lỗi ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/txtTb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Thông Báo:"
@@ -21,6 +22,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rclNoti"/>
+        <ImageView
+            android:id="@+id/noface"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            android:background="@drawable/noface">
+        </ImageView>
     </LinearLayout>
     <!-- TODO: Update blank fragment layout -->
 

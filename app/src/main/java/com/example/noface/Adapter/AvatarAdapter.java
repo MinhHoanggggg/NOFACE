@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder> {
    private Context context;
-   private ArrayList<Ava> lstAva;
+   private ArrayList<String> lstAva;
    private AvatarAdapterListener avatarAdapterListener;
 
-    public AvatarAdapter(Context context, ArrayList<Ava> lstAva, AvatarAdapterListener avatarAdapterListener) {
+    public AvatarAdapter(Context context, ArrayList<String> lstAva, AvatarAdapterListener avatarAdapterListener) {
         this.context = context;
         this.lstAva = lstAva;
         this.avatarAdapterListener = avatarAdapterListener;
@@ -40,7 +40,7 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(lstAva.get(position).getImgurl()).into(holder.img_itemAva);
+        Glide.with(context).load(lstAva.get(position).trim()).into(holder.img_itemAva);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override

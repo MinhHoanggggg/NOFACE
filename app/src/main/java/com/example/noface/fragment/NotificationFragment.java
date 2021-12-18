@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noface.Adapter.NotificationAdapter;
@@ -42,6 +44,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationFragment extends Fragment {
     private NotificationAdapter notificationAdapter;
     private RecyclerView rclNoti;
+    private ImageView noface;
+    private TextView txtTb;
     private String token;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     @Override
@@ -49,9 +53,9 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_notification, container, false);
-
+        txtTb =view.findViewById(R.id.txtTb);
         rclNoti = view.findViewById(R.id.rclNoti);
-
+        noface = view.findViewById(R.id.noface);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rclNoti.setLayoutManager(linearLayoutManager);
         //token
@@ -85,12 +89,20 @@ public class NotificationFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void handleResponse(ArrayList<Notification> notifications) {
         //sort
-        notifications.sort(((o1, o2)
-                  -> Integer.compare(o2.getID_Notification(), o1.getID_Notification())));
+        if(notifications.size()>0) {
+            noface.setVisibility(View.GONE);
+            notifications.sort(((o1, o2)
+                    -> Integer.compare(o2.getID_Notification(), o1.getID_Notification())));
 
-        notificationAdapter = new NotificationAdapter(getActivity(), notifications);
-        ShowNotifyUser.dismissProgressDialog();
-        rclNoti.setAdapter(notificationAdapter);
+            notificationAdapter = new NotificationAdapter(getActivity(), notifications);
+            ShowNotifyUser.dismissProgressDialog();
+            rclNoti.setAdapter(notificationAdapter);
+        }else {
+            txtTb.setText("Bạn chưa có thông báo nào, hãy tương tác nhiều hơn nhé!!");
+            rclNoti.setVisibility(getView().INVISIBLE);
+            ShowNotifyUser.dismissProgressDialog();
+
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.noface.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 
 public class DialogFragmentAvatar extends DialogFragment {
     private RecyclerView rclAva;
-    private ArrayList<Ava> lstAva = new ArrayList<>();
+    private ArrayList<String> lstAva = new ArrayList<>();
     private AvatarAdapter avatarAdapter;
 
 
@@ -51,38 +52,60 @@ public class DialogFragmentAvatar extends DialogFragment {
             @Override
             public void click(View v, int position) {
 
-                ((ProfileFragment) getParentFragment()).setAva(lstAva.get(position).getImgurl());
+                ((ProfileFragment) getParentFragment()).setAva(lstAva.get(position).trim());
                 Toast.makeText(getContext(), "Chọn avatar thành công!", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2,GridLayoutManager.HORIZONTAL,false);
         rclAva.setLayoutManager(gridLayoutManager);
-        rclAva.setAdapter(avatarAdapter);
+
+        StorageReference listRef = FirebaseStorage.getInstance().getReference().child("avatars");
+        listRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference file:listResult.getItems()){
+                    file.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            lstAva.add(uri.toString());
+
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            rclAva.setAdapter(avatarAdapter);
+                        }
+                    });
+                }
+            }
+        });
 //        LinearLayoutManager linearLayoutManager =
 //                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 //        rclAva.setLayoutManager(linearLayoutManager);
 //        rclAva.setAdapter(avatarAdapter);
         return view;
     }
+
     private void getListAva(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Avatar");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("Avatar");
+//
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+//                    Ava ava = dataSnapshot.getValue(Ava.class);
+//                    lstAva.add(ava);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getContext(), "Lỗi gòi sư quynh", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Ava ava = dataSnapshot.getValue(Ava.class);
-                    lstAva.add(ava);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Lỗi gòi sư quynh", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 

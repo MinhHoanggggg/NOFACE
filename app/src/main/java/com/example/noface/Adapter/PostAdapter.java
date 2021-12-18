@@ -122,8 +122,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                if(user.isEmailVerified())
-                {
+
+
                     ViewPostAPI(idPost);
                     Intent intent = new Intent(context, PostActivity.class);
                     intent.putExtra("idTopic", idTopic);
@@ -133,9 +133,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     Boolean checkLike = holder.CbLike.isChecked();
                     intent.putExtra("checklike", checkLike);
                     ((Activity) context).startActivityForResult(intent, 1);
-                }
-                else
-                    showDialog();
+
+
 
             }
         });
@@ -239,26 +238,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ShowNotifyUser.dismissProgressDialog();
         ShowNotifyUser.showAlertDialog(context.getApplicationContext(), "Không ổn rồi đại vương ơi! đã có lỗi xảy ra");
     }
-    private void showDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Xác thực Email");
-        builder.setMessage("Email của bạn chưa được xác thưc, vui lòng kiểm tra");
-        builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                user.sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(context, "Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
-        AlertDialog al = builder.create();
-        al.show();
-    }
+
 
 }

@@ -43,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
             check = b.getInt("idDk");
         } catch (Throwable e){}
 
-        if(user != null){
-            String id = user.getUid();
-            Login(id);
-        }
+//        if(user != null){
+//            String id = user.getUid();
+//            Login(id);
+//        }
         tabLayout =findViewById(R.id.tabLayout);
         viewPager =findViewById(R.id.viewPager);
 

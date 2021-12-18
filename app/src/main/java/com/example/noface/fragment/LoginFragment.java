@@ -2,6 +2,8 @@ package com.example.noface.fragment;
 
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.noface.MainActivity;
+import com.example.noface.StartActivity;
 import com.example.noface.model.Token;
 import com.example.noface.other.DataToken;
 import com.example.noface.other.ShowNotifyUser;
@@ -91,16 +94,44 @@ public class LoginFragment extends Fragment {
                                     Toast.LENGTH_SHORT).show();
                         } else {
 //                            ShowNotifyUser.dismissProgressDialog();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if(user.isEmailVerified()){
                             Toast.makeText(getContext(), "Đăng nhập thành công",
                                     Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                             assert user != null;
                             String id = user.getUid();
                             Login(id);
+                            }else
+                                showDialog(user);
+
                         }
                     }
                 });
 
+    }
+    private void showDialog(FirebaseUser user){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xác thực Email");
+        builder.setMessage("Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn");
+        builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+
+                                    FirebaseAuth.getInstance().signOut();
+                                    Toast.makeText(getActivity(), "Nếu bạn đã xác thực, có thể đăng nhập để bắt đầu !!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        AlertDialog al = builder.create();
+        al.show();
     }
 
     private void Login(String idUser) {

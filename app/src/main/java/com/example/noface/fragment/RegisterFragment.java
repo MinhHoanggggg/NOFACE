@@ -3,6 +3,7 @@ package com.example.noface.fragment;
 import static com.example.noface.service.ServiceAPI.BASE_Service;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.noface.LoginActivity;
+import com.example.noface.StartActivity;
 import com.example.noface.model.Acc;
 import com.example.noface.model.Message;
 import com.example.noface.model.Posts;
@@ -132,7 +134,7 @@ public class RegisterFragment extends Fragment {
                             mAuth = FirebaseAuth.getInstance();
                             pushRealtime(mAuth.getCurrentUser());
 
-//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             id = mAuth.getCurrentUser().getUid();
                             String ava = "https://firebasestorage.googleapis.com/v0/b/noface-2e0d0.appspot.com/o/avatars%2Fuser.png?alt=media&token=2d9fd3dc-9a7d-4485-a501-9611e9f544aa";
                             Calendar c = Calendar.getInstance();
@@ -140,6 +142,7 @@ public class RegisterFragment extends Fragment {
                             String strDate = sdf.format(c.getTime());
                             Acc acc = new Acc(id,"Ẩn Danh",ava,0,1,strDate);
                             Create(acc);
+                            showDialog(user);
 
                         } else {
                             ShowNotifyUser.dismissProgressDialog();
@@ -149,6 +152,29 @@ public class RegisterFragment extends Fragment {
                         }
                     }
                 });
+    }
+    private void showDialog(FirebaseUser user){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xác thực Email");
+        builder.setMessage("Đã gửi email xác thực \n Vui lòng kiểm tra trong Gmail của bạn");
+        builder.setPositiveButton("Xác thực", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+
+                                    FirebaseAuth.getInstance().signOut();
+                                    Toast.makeText(getActivity(), "Nếu bạn đã xác thực, có thể đăng nhập để bắt đầu !!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        AlertDialog al = builder.create();
+        al.show();
     }
     //API
     private void Create(Acc a) {
@@ -169,7 +195,7 @@ public class RegisterFragment extends Fragment {
         if (message.getStatus() == 1) {
             Toast.makeText(getContext(), "Đăng ký thành công nè", Toast.LENGTH_LONG).show();
 
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+
         }
         if (message.getStatus() == 0)
             Toast.makeText(getContext(),  "Ủa ??", Toast.LENGTH_LONG).show();
