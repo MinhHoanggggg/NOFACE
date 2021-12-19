@@ -131,7 +131,8 @@ public class PostManagerFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lUser = snapshot.getValue(User.class);
                 if (!lUser.getName().isEmpty()) {
-                    txtName.setText(lUser.getName());
+                    int len = user.getUid().length();
+                    txtName.setText(lUser.getName()+" #"+user.getUid().substring(len-4, len));
                 }
                 if (getActivity() == null) {
                     return;

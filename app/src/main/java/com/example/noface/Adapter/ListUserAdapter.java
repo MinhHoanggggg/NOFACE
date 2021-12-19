@@ -50,7 +50,10 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         User user = lUsers.get(i);
-        holder.tv_name.setText(user.getName());
+
+
+        int len = user.getIdUser().length();
+        holder.tv_name.setText(user.getName()+" #"+user.getIdUser().substring(len-4, len));
 
         if (user.getStatus().equals("online")) {
             holder.img_on.setVisibility(View.VISIBLE);

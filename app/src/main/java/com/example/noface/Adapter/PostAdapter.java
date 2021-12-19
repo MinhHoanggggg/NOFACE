@@ -88,7 +88,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         DataToken dataToken = new DataToken(context.getApplicationContext());
         token = dataToken.getToken();
-
+        String idUser = lstPost.get(position).getIDUser().trim();
+        int len = idUser.length();
+        holder.tv_name.setText("Ẩn danh");
         ArrayList<Likes> alLikes = lstPost.get(position).getLikes();
         String id = user.getUid();
         for (Likes likes : alLikes) {
@@ -102,7 +104,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         }
         int idPost = lstPost.get(position).getIDPost();
-        String idUser = lstPost.get(position).getIDUser();
+
         setUserPost(idUser.trim(), holder.imgAvatar);
 
         holder.CbLike.setOnClickListener(new View.OnClickListener() {

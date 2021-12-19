@@ -190,7 +190,9 @@ public class ProfileUser extends AppCompatActivity {
         }
         ShowNotifyUser.dismissProgressDialog();
         if (user.getUid().equals(idUser.trim())){
-            txtNameUser.setText(name);
+
+            int len = idUser.trim().length();
+            txtNameUser.setText(name+"#"+idUser.substring(len-4, len));
             btn_chat.setVisibility(View.GONE);
             btnFr.setVisibility(View.GONE);
         } else
